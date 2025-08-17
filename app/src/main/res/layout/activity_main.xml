@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:padding="16dp"
+    android:background="@color/backgroundColor">
+
+    <!-- Titulo e botão de config top -->
+    <RelativeLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorSurface"
+        android:paddingHorizontal="8dp">
+
+        <ImageButton
+            android:id="@+id/btnExit"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_exit"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"
+            android:padding="12dp" />
+
+        <TextView
+            android:id="@+id/txtCabecalho"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/app_name"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="24sp"
+            android:textStyle="bold"/>
+
+        <ImageButton
+            android:id="@+id/btnSettings"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_setting"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"
+            android:padding="12dp"/>
+    </RelativeLayout>
+
+    <!-- Mensagem Boas vindas-->
+    <TextView
+        android:id="@+id/welcomeMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/topBar"
+        android:layout_marginTop="16dp"
+        android:text="@string/txtMain"
+        android:textAlignment="center"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="18sp"
+        android:lineSpacingExtra="4dp"/>
+
+    <!-- Imagem mascote -->
+    <ImageView
+        android:id="@+id/mascotImage"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_below="@id/welcomeMessage"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="32dp"
+        android:src="@drawable/img_mascote"/>
+
+    <!-- Container principal para os cards -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mascotImage"
+        android:orientation="vertical">
+
+        <!-- Primeira linha com 2 cards -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <!-- Botão 1 - Mapa -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/mapButton"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_weight="1"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="6dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/colorSurface"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/ic_map"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/txtBtnMap"
+                        android:textColor="?attr/colorPrimary"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Botão 2 - Localização -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/localizeButton"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_weight="1"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="6dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/colorSurface"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/ic_directions"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/txtBtnLocalize"
+                        android:textColor="?attr/colorPrimary"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+        <!-- Segunda linha com 2 cards -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <!-- Botão 3 - Rotas -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/myRoutesButton"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_weight="1"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="6dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/colorSurface"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/ic_routes"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/txtBtnRotas"
+                        android:textColor="?attr/colorPrimary"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Botão 4 - Meus Eventos -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/scheduleButton"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_weight="1"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="6dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/colorSurface"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/ic_schedule"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/txtBtnEventos"
+                        android:textColor="?attr/colorPrimary"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+        <!-- Terceira linha com 1 card ocupando a linha toda -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/contactsButton"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_margin="8dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="6dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/colorSurface"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_contacts"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/txtBtnContacts"
+                    android:textColor="?attr/colorPrimary"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</RelativeLayout>

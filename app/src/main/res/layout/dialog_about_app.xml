@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:background="?attr/colorSurface">
+
+        <!-- Seção Sobre -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/about_title"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/about_subtitle"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="16sp"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/about_target_audience"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="16sp"
+            android:layout_marginBottom="4dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/about_target_items"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="14sp"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/about_features_title"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="16sp"
+            android:layout_marginBottom="4dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/about_features_items"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="14sp"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Seção Versão -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/version_info"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textSize="14sp"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Seção Desenvolvedores -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/developed_by"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="14sp"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- Seção Referências -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/credits_title"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/icons_credits_title"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="16sp"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:autoLink="web"
+            android:text="@string/icons_credits"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/mascot_credit"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="14sp"/>
+
+    </LinearLayout>
+</ScrollView>

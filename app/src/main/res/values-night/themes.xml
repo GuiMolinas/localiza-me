@@ -1,0 +1,43 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.TCC" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Primary colors -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorPrimaryContainer">@color/colorPrimaryDark</item>
+        <item name="colorOnPrimaryContainer">@color/white</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <!-- Secondary colors -->
+        <item name="colorSecondary">@color/colorAccent</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorSecondaryContainer">@color/lightBlue</item>
+        <item name="colorOnSecondaryContainer">@color/black</item>
+
+        <!-- Surface colors -->
+        <item name="colorSurface">@color/surfaceColor</item>
+        <item name="colorOnSurface">@color/textColorPrimary</item>
+        <item name="colorSurfaceVariant">@color/lightGray</item>
+        <item name="colorOnSurfaceVariant">@color/textColorSecondary</item>
+
+        <!-- Background colors -->
+        <item name="android:colorBackground">@color/backgroundColor</item>
+        <item name="colorOnBackground">@color/textColorPrimary</item>
+
+        <!-- Error colors -->
+        <item name="colorError">@color/errorColor</item>
+        <item name="colorOnError">@color/black</item>
+
+        <!-- Status bar -->
+        <item name="android:statusBarColor">?attr/colorSurface</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:navigationBarColor">?attr/colorSurface</item>
+
+        <!-- Mantenha os mesmos component styles do tema claro -->
+        <item name="materialButtonStyle">@style/Widget.TCC.Button</item>
+        <item name="textAppearanceTitleMedium">@style/TextAppearance.TCC.Title.Medium</item>
+        <item name="colorControlActivated">@color/switchThumbColor</item>
+        <item name="colorSwitchThumbNormal">@color/switchTrackColor</item>
+    </style>
+</resources>

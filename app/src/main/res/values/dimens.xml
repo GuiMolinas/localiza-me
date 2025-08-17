@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Tamanhos de fonte padrão (pequeno) -->
+    <dimen name="text_size_small">14sp</dimen>
+    <dimen name="text_size_medium">16sp</dimen>
+    <dimen name="text_size_large">18sp</dimen>
+
+    <!-- Você pode adicionar outros tamanhos específicos se necessário -->
+</resources>

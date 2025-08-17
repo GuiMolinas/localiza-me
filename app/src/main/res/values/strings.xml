@@ -1,0 +1,86 @@
+<resources>
+    <string name="app_name">Localiza Me</string>
+    <string name="txtMain"> Seja bem-vindo(a) ao Localiza Me!\nEncontre seu caminho com facilidade. </string>
+    <string name="txtBtnContacts">Contatos</string>
+    <string name="txtBtnEventos"> Meus Eventos </string>
+    <string name="txtBtnRotas"> Minhas Rotas </string>
+    <string name="txtBtnLocalize"> Me Localizar </string>
+    <string name="txtBtnMap"> Mapa do Campus </string>
+    <string name="txtConfiguration"> Configurações </string>
+    <string name="txtAcessibility"> Acessibilidade </string>
+    <string name="txtNarratorMode"> Modo Narrador </string>
+    <string name="txtNarratorEx"> Ativa descrições de voz para elementos da tela </string>
+    <string name="txtTamanhoFonte"> Tamanho da Fonte </string>
+    <string name="txtTamanhoFonteEx"> Ajuste o tamanho do texto no aplicativo </string>
+    <string name="txtAlto"> Modo Alto Contraste </string>
+    <string name="txtAltoEx"> Melhora a visibilidade do conteúdo </string>
+    <string name="txtPreferences"> Preferências </string>
+    <string name="txtTheme"> Tema do Aplicativo </string>
+    <string name="txtThemeEx"> Escolha entre tema claro ou escuro </string>
+    <string name="txtNotifications"> Notificações </string>
+    <string name="txtNotificationsEx"> Gerencie suas preferências de notificação </string>
+    <string name="txtAbout"> Sobre </string>
+    <string name="txtVersion"> Versão </string>
+    <string name="txtVersionNum"> 1.0.0 </string>
+    <string name="txtDescription"> Conheça o app </string>
+    <string name="txtExit"> Sair </string>
+
+    <!-- Sobre -->
+    <string name="about_title">🌟 Sobre o Localiza Me</string>
+    <string name="about_subtitle">📍 O aplicativo perfeito para você navegar pelo campus da UNICID - Tatuapé sem preocupações!</string>
+    <string name="about_target_audience">Desenvolvido especialmente para quem:</string>
+    <string name="about_target_items">🔹 Sempre se perde no campus\n🔹 Precisa encontrar salas e laboratórios\n🔹 Quer economizar tempo entre aulas</string>
+    <string name="about_features_title">Com o Localiza Me você tem:</string>
+    <string name="about_features_items">✔️ Mapas interativos do campus\n✔️ Rotas inteligentes personalizadas\n✔️ Agendamento de eventos recorrentes e especiais\n✔️ Salvar suas rotas favoritas\n✔️ Lista de contatos importantes\n✔️ Recurso para Acessibilidade</string>
+    <string name="version_info">📌 Versão: 1.0.0</string>
+    <string name="developed_by">👨‍💻 Desenvolvido por: Queridinhos</string>
+    <string name="credits_title">📚 Créditos e Referências</string>
+    <string name="icons_credits_title">🎨 Ícones e Imagens:</string>
+    <string name="mascot_credit">🤖 Mascote criado pelo Microsoft Copilot</string>
+
+    <!-- Créditos dos ícones (mantenha o formato com \n) -->
+    <string name="icons_credits">
+    Settings icons created by Freepik - Flaticon\n
+    Log out icons created by Smashicons - Flaticon\n
+    University icons created by Smashicons - Flaticon\n
+    Contact icons created by Cuputo - Flaticon\n
+    Schedule icons created by Freepik - Flaticon\n
+    Direction icons created by Vector Stall - Flaticon\n
+    Save icons created by Freepik - Flaticon\n
+    Acessible icons created by ViconsDesign - Flaticon\n
+    Font icons created by Freepik - Flaticon\n
+    Bright icons created by Freepik - Flaticon\n
+    Theme icons created by Awicon - Flaticon\n
+    Notification icons created by Freepik - Flaticon\n
+    Info icons created by Freepik - Flaticon\n
+    Terms and conditions icons created by sonnycandra - Flaticon\n
+    Arrow icons created by Kirill Kazachek - Flaticon
+</string>
+    <!-- Contatos -->
+    <string name="contacts_title">Contatos</string>
+    <string name="unicid_tatuape">UNICID Tatuapé</string>
+    <string name="cruzeiro_sul">Cruzeiro do Sul</string>
+
+    <!-- Departamentos -->
+    <string name="central_atendimento">Central de Atendimento</string>
+    <string name="secretaria">Secretaria</string>
+    <string name="biblioteca">Biblioteca</string>
+
+    <!-- Labels -->
+    <string name="telefone">Telefone:</string>
+    <string name="email">Email:</string>
+
+    <!-- Contatos UNICID Tatuapé -->
+    <string name="unicid_telefone_central">(11) 2225-1000</string>
+    <string name="unicid_email_central">atendimento.tatuape@unicid.edu.br</string>
+    <string name="unicid_telefone_secretaria">(11) 2225-1010</string>
+    <string name="unicid_email_secretaria">secretaria.tatuape@unicid.edu.br</string>
+    <string name="unicid_telefone_biblioteca">(11) 2225-1020</string>
+    <string name="unicid_email_biblioteca">biblioteca.tatuape@unicid.edu.br</string>
+
+    <!-- Contatos Cruzeiro do Sul -->
+    <string name="cruzeiro_telefone_central">(11) 2225-2000</string>
+    <string name="cruzeiro_email_central">atendimento.cruzeiro@unicid.edu.br</string>
+    <string name="cruzeiro_telefone_secretaria">(11) 2225-2010</string>
+    <string name="cruzeiro_email_secretaria">secretaria.cruzeiro@unicid.edu.br</string>
+</resources>
