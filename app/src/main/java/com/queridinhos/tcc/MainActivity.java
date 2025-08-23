@@ -37,7 +37,7 @@ public class MainActivity extends BaseActivity implements View
         //Botões
         CardView mapButton = findViewById(R.id.mapButton);
         CardView localizeButton = findViewById(R.id.localizeButton);
-        CardView myRoutesButton = findViewById(R.id.myRoutesButton);
+        CardView myRoutesButton = findViewById(R.id.HistoryButton);
         CardView scheduleButton = findViewById(R.id.scheduleButton);
         CardView contactsButton = findViewById(R.id.contactsButton);
         ImageButton exitButton = findViewById(R.id.btnExit);
@@ -66,7 +66,7 @@ public class MainActivity extends BaseActivity implements View
         } else if (id == R.id.localizeButton) {
             intent = new Intent(this, LocalizeActivity.class);
             startActivity(intent);
-        } else if (id == R.id.myRoutesButton) {
+        } else if (id == R.id.HistoryButton) {
             intent = new Intent(this, RoutesActivity.class);
             startActivity(intent);
         } else if (id == R.id.scheduleButton) {

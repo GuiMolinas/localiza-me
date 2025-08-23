@@ -168,7 +168,7 @@
 
             <!-- Botão 3 - Rotas -->
             <androidx.cardview.widget.CardView
-                android:id="@+id/myRoutesButton"
+                android:id="@+id/HistoryButton"
                 android:layout_width="0dp"
                 android:layout_height="120dp"
                 android:layout_weight="1"
@@ -193,7 +193,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="@string/txtBtnRotas"
+                        android:text="@string/txtBtnHistorico"
                         android:textColor="?attr/colorPrimary"
                         android:textSize="16sp"
                         android:textStyle="bold" />

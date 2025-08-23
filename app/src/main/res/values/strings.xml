@@ -3,7 +3,7 @@
     <string name="txtMain"> Seja bem-vindo(a) ao Localiza Me!\nEncontre seu caminho com facilidade. </string>
     <string name="txtBtnContacts">Contatos</string>
     <string name="txtBtnEventos"> Meus Eventos </string>
-    <string name="txtBtnRotas"> Minhas Rotas </string>
+    <string name="txtBtnHistorico"> Histórico </string>
     <string name="txtBtnLocalize"> Me Localizar </string>
     <string name="txtBtnMap"> Mapa do Campus </string>
     <string name="txtConfiguration"> Configurações </string>
