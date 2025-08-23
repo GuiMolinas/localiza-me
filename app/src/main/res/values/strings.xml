@@ -40,21 +40,6 @@
 
     <!-- Créditos dos ícones (mantenha o formato com \n) -->
     <string name="icons_credits">
-    Settings icons created by Freepik - Flaticon\n
-    Log out icons created by Smashicons - Flaticon\n
-    University icons created by Smashicons - Flaticon\n
-    Contact icons created by Cuputo - Flaticon\n
-    Schedule icons created by Freepik - Flaticon\n
-    Direction icons created by Vector Stall - Flaticon\n
-    Save icons created by Freepik - Flaticon\n
-    Acessible icons created by ViconsDesign - Flaticon\n
-    Font icons created by Freepik - Flaticon\n
-    Bright icons created by Freepik - Flaticon\n
-    Theme icons created by Awicon - Flaticon\n
-    Notification icons created by Freepik - Flaticon\n
-    Info icons created by Freepik - Flaticon\n
-    Terms and conditions icons created by sonnycandra - Flaticon\n
-    Arrow icons created by Kirill Kazachek - Flaticon
 </string>
     <!-- Contatos -->
     <string name="contacts_title">Contatos</string>
@@ -83,4 +68,16 @@
     <string name="cruzeiro_email_central">atendimento.cruzeiro@unicid.edu.br</string>
     <string name="cruzeiro_telefone_secretaria">(11) 2225-2010</string>
     <string name="cruzeiro_email_secretaria">secretaria.cruzeiro@unicid.edu.br</string>
+
+    <!-- Descrição -->
+    <string name="contacts_icon"> Icon Contacts</string>
+    <string name="history_icon"> History Icon </string>
+    <string name="schedule_icon"> Schedule Icon </string>
+    <string name="localize_icon"> Localize Icon </string>
+    <string name="map_icon"> Map Icon </string>
+    <string name="mascot_image_description"> Mascote Icon </string>
+    <string name="settings_button"> Settings Button </string>
+    <string name="exit_button"> Exit Button </string>
+
+
 </resources>

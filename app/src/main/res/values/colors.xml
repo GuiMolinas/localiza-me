@@ -18,6 +18,7 @@
     <!-- Cores de texto -->
     <color name="textColorPrimary">#DE000000</color> <!-- 87% preto -->
     <color name="textColorSecondary">#8A000000</color> <!-- 54% preto -->
+    <color name="primaryBlue">#1976D2</color>
 
     <!-- Cores para componentes -->
     <color name="switchThumbColor">#2196F3</color>
