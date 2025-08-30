@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorOnBackground"
+    android:background="@color/backgroundColor"
     tools:context=".ScheduleActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
@@ -13,7 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorSurface"
-        android:elevation="4dp">
+        android:elevation="4dp"
+        android:theme="?attr/actionBarTheme">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -47,6 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/toolbar"
+        android:theme="@style/Theme.TCC"
         android:layout_margin="8dp"/>
 
     <androidx.recyclerview.widget.RecyclerView

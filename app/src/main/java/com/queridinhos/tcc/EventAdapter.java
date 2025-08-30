@@ -65,7 +65,9 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
             eventDescription.setText(event.getDescription());
 
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
-            eventDate.setText(sdf.format(new Date(event.getStartDate())));
+            String startDate = sdf.format(new Date(event.getStartDate()));
+            String endDate = sdf.format(new Date(event.getEndDate()));
+            eventDate.setText(String.format("%s - %s", startDate, endDate));
 
             itemView.setOnClickListener(v -> listener.onItemClick(event));
         }
