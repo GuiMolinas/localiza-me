@@ -79,5 +79,8 @@
     <string name="settings_button"> Settings Button </string>
     <string name="exit_button"> Exit Button </string>
 
+    <!-- Calendário -->
+    <string name="schedule_title"> Meus Eventos </string>
+
 
 </resources>
