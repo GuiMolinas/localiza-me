@@ -14,11 +14,12 @@ import androidx.appcompat.app.AppCompatDelegate;
 public class BaseActivity extends AppCompatActivity implements View.OnClickListener {
 
     // Constantes para temas
+    // Gabriel esteve Aqui
     protected static final int THEME_LIGHT = 0;
     protected static final int THEME_DARK = 1;
     protected static final int THEME_SYSTEM = 2;
 
-    // Constantes para tamanho de fontes
+    // Constantes para tamanho de fonte
     protected static final int FONT_SIZE_SMALL = 0;
     protected static final int FONT_SIZE_MEDIUM = 1;
     protected static final int FONT_SIZE_LARGE = 2;
