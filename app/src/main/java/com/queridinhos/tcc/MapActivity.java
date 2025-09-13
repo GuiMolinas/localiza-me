@@ -20,7 +20,6 @@ import com.mapbox.maps.extension.style.expressions.generated.Expression;
 import com.mapbox.maps.extension.style.layers.generated.FillLayer;
 import com.mapbox.maps.extension.style.layers.generated.RasterLayer;
 import com.mapbox.maps.extension.style.sources.generated.GeoJsonSource;
-// A importação correta que precisamos
 import com.mapbox.maps.extension.style.sources.generated.ImageSource;
 import com.mapbox.maps.plugin.gestures.GesturesUtils;
 import com.mapbox.maps.plugin.gestures.OnMapClickListener;
@@ -72,7 +71,6 @@ public class MapActivity extends AppCompatActivity {
         double mapWidth = 1598.0;
         double mapHeight = 950.0;
 
-        // A lista de coordenadas DEVE ser do tipo Point.
         List<Point> coordinates = Arrays.asList(
                 Point.fromLngLat(0, mapHeight),
                 Point.fromLngLat(mapWidth, mapHeight),
@@ -80,22 +78,16 @@ public class MapActivity extends AppCompatActivity {
                 Point.fromLngLat(0, 0)
         );
 
-        // ✅ ESTA É A ABORDAGEM CORRETA E FINAL
-        // 1. Crie a ImageSource APENAS com as coordenadas.
         ImageSource imageSource = new ImageSource.Builder(IMAGE_SOURCE_ID)
                 .coordinates(coordinates)
                 .build();
         style.addSource(imageSource);
 
-        // 2. Crie a camada que usará a fonte.
         RasterLayer rasterLayer = new RasterLayer("map-image-layer", IMAGE_SOURCE_ID);
         style.addLayer(rasterLayer);
 
-        // 3. Carregue o Bitmap.
-        // Lembre-se de usar o nome correto do seu arquivo. Se for "mapa-atualizado.jpg", use R.drawable.mapa_atualizado
         Bitmap mapBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.mapa);
 
-        // 4. ATUALIZE a fonte que JÁ EXISTE no estilo.
         ImageSource sourceFromStyle = (ImageSource) style.getSource(IMAGE_SOURCE_ID);
         if (sourceFromStyle != null) {
             sourceFromStyle.updateImage(mapBitmap);
@@ -106,25 +98,125 @@ public class MapActivity extends AppCompatActivity {
     private void setupPOIs(Style style) {
         List<Feature> features = new ArrayList<>();
 
+        // Bloco A - Exemplo Correto
         features.add(Feature.fromGeometry(
                 Polygon.fromLngLats(Collections.singletonList(
                         Arrays.asList(
-                                Point.fromLngLat(460, 480), Point.fromLngLat(580, 480),
-                                Point.fromLngLat(580, 360), Point.fromLngLat(460, 360),
-                                Point.fromLngLat(460, 480)
+                                Point.fromLngLat(669, 554), // Canto 1
+                                Point.fromLngLat(713, 615), // Canto 2
+                                Point.fromLngLat(943, 552), // Canto 3
+                                Point.fromLngLat(899, 459), // Canto 4
+                                Point.fromLngLat(669, 554)  // Canto 1 novamente para fechar
                         ))),
-                createPoiProperties("Bloco A", "Prédio principal com salas de aula e laboratórios.")
+                createPoiProperties("Bloco A", "Prédio com salas de aula e laboratórios.")
         ));
 
+        // TODO: Faça o mesmo para os outros blocos. Adicione os 4 (ou mais) cantos de cada um.
+        // Biblioteca
         features.add(Feature.fromGeometry(
                 Polygon.fromLngLats(Collections.singletonList(
                         Arrays.asList(
-                                Point.fromLngLat(360, 560), Point.fromLngLat(450, 560),
-                                Point.fromLngLat(450, 510), Point.fromLngLat(360, 510),
-                                Point.fromLngLat(360, 560)
+                                Point.fromLngLat(765, 358),
+                                Point.fromLngLat(800, 358),
+                                Point.fromLngLat(800, 300),
+                                Point.fromLngLat(765, 300),
+                                Point.fromLngLat(765, 358)
                         ))),
                 createPoiProperties("Biblioteca", "Acervo de livros, salas de estudo e computadores.")
         ));
+
+        // Bloco B
+        features.add(Feature.fromGeometry(
+                Polygon.fromLngLats(Collections.singletonList(
+                        Arrays.asList(
+                                Point.fromLngLat(934, 632),
+                                Point.fromLngLat(1000, 632),
+                                Point.fromLngLat(1000, 580),
+                                Point.fromLngLat(934, 580),
+                                Point.fromLngLat(934, 632)
+                        ))),
+                createPoiProperties("Bloco B", "Descrição do Bloco B.")
+        ));
+
+        // Bloco C
+        features.add(Feature.fromGeometry(
+                Polygon.fromLngLats(Collections.singletonList(
+                        Arrays.asList(
+                                Point.fromLngLat(934, 632),
+                                Point.fromLngLat(1000, 632),
+                                Point.fromLngLat(1000, 580),
+                                Point.fromLngLat(934, 580),
+                                Point.fromLngLat(934, 632)
+                        ))),
+                createPoiProperties("Bloco C", "Descrição do Bloco C.")
+        ));
+
+        // Bloco D
+        features.add(Feature.fromGeometry(
+                Polygon.fromLngLats(Collections.singletonList(
+                        Arrays.asList(
+                                Point.fromLngLat(934, 632),
+                                Point.fromLngLat(1000, 632),
+                                Point.fromLngLat(1000, 580),
+                                Point.fromLngLat(934, 580),
+                                Point.fromLngLat(934, 632)
+                        ))),
+                createPoiProperties("Bloco D", "Descrição do Bloco D.")
+        ));
+
+        // Bloco E
+        features.add(Feature.fromGeometry(
+                Polygon.fromLngLats(Collections.singletonList(
+                        Arrays.asList(
+                                Point.fromLngLat(934, 632),
+                                Point.fromLngLat(1000, 632),
+                                Point.fromLngLat(1000, 580),
+                                Point.fromLngLat(934, 580),
+                                Point.fromLngLat(934, 632)
+                        ))),
+                createPoiProperties("Bloco E", "Descrição do Bloco E.")
+        ));
+
+        // Bloco F
+        features.add(Feature.fromGeometry(
+                Polygon.fromLngLats(Collections.singletonList(
+                        Arrays.asList(
+                                Point.fromLngLat(934, 632),
+                                Point.fromLngLat(1000, 632),
+                                Point.fromLngLat(1000, 580),
+                                Point.fromLngLat(934, 580),
+                                Point.fromLngLat(934, 632)
+                        ))),
+                createPoiProperties("Bloco F", "Descrição do Bloco F.")
+        ));
+
+        // Bloco G
+        features.add(Feature.fromGeometry(
+                Polygon.fromLngLats(Collections.singletonList(
+                        Arrays.asList(
+                                Point.fromLngLat(934, 632),
+                                Point.fromLngLat(1000, 632),
+                                Point.fromLngLat(1000, 580),
+                                Point.fromLngLat(934, 580),
+                                Point.fromLngLat(934, 632)
+                        ))),
+                createPoiProperties("Bloco G", "Descrição do Bloco G.")
+        ));
+
+        // Bloco Alfa
+        features.add(Feature.fromGeometry(
+                Polygon.fromLngLats(Collections.singletonList(
+                        Arrays.asList(
+                                Point.fromLngLat(934, 632),
+                                Point.fromLngLat(1000, 632),
+                                Point.fromLngLat(1000, 580),
+                                Point.fromLngLat(934, 580),
+                                Point.fromLngLat(934, 632)
+                        ))),
+                createPoiProperties("Bloco Alfa", "Descrição do Bloco Alfa.")
+        ));
+
+
 
         featureCollection = FeatureCollection.fromFeatures(features);
         poiSource = new GeoJsonSource.Builder(POI_SOURCE_ID)
@@ -157,8 +249,8 @@ public class MapActivity extends AppCompatActivity {
         mapboxMap.queryRenderedFeatures(
                 mapboxMap.pixelForCoordinate(point),
                 options -> {
-                    if (options != null && !options.isEmpty()) {
-                        Feature clickedFeature = options.get(0).getFeature();
+                    if (options.getValue() != null && !options.getValue().isEmpty()) {
+                        Feature clickedFeature = options.getValue().get(0).getFeature();
                         String featureName = clickedFeature.getStringProperty(PROPERTY_NAME);
                         if (featureName != null) {
                             selectFeature(featureName);
@@ -194,7 +286,6 @@ public class MapActivity extends AppCompatActivity {
         }
     }
 
-    // Métodos de ciclo de vida do MapView
     @Override
     protected void onStart() {
         super.onStart();
