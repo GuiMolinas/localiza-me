@@ -82,5 +82,7 @@
     <!-- Calendário -->
     <string name="schedule_title"> Meus Eventos </string>
 
+    <string name="mapbox_access_token" translatable="false">pk.eyJ1IjoiZ3VpbW9sIiwiYSI6ImNtZmhqanc5MjBjY2UyaW9lZDduMWd3YnkifQ.fHVj3c1v3_Io-Aj93lr6QA</string>
+
 
 </resources>
