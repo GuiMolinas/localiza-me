@@ -40,4 +40,6 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    implementation("com.mapbox.maps:android:11.4.1")
+    implementation(libs.mapbox.android.sdk)
 }
