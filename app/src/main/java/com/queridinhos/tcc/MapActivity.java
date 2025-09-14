@@ -1,10 +1,15 @@
 package com.queridinhos.tcc;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.RelativeLayout; // Alterado de LinearLayout
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import com.github.chrisbanes.photoview.PhotoView;
@@ -22,6 +27,8 @@ public class MapActivity extends AppCompatActivity {
     private TextView infoTitle;
     private TextView infoDescription;
     private TextView debugCoordinates;
+    private RelativeLayout header; // Alterado de LinearLayout
+
 
     private final List<ClickableArea> clickableAreas = new ArrayList<>();
 
@@ -47,11 +54,17 @@ public class MapActivity extends AppCompatActivity {
         infoTitle = findViewById(R.id.infoTitle);
         infoDescription = findViewById(R.id.infoDescription);
         debugCoordinates = findViewById(R.id.debugCoordinates);
+        header = findViewById(R.id.header);
+        ImageButton backButton = findViewById(R.id.backButton);
+
+        backButton.setOnClickListener(v -> finish());
+
 
         mapImageView.setMinimumScale(1.0f);
         mapImageView.setMaximumScale(4.0f);
 
         setupClickableAreas();
+        animateHeader();
 
         mapImageView.setOnViewTapListener((view, x, y) -> {
             float[] touchPoint = { x, y };
@@ -78,6 +91,18 @@ public class MapActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void animateHeader() {
+        header.setAlpha(0f);
+        header.setTranslationY(-header.getHeight());
+        header.animate()
+                .alpha(1f)
+                .translationY(0f)
+                .setDuration(500)
+                .setStartDelay(300)
+                .start();
+    }
+
 
     private void setupClickableAreas() {
         // As áreas foram expandidas para cobrir toda a construção, facilitando o clique.
@@ -141,10 +166,26 @@ public class MapActivity extends AppCompatActivity {
     private void showInfoCard(String title, String description) {
         infoTitle.setText(title);
         infoDescription.setText(description);
-        infoCard.setVisibility(View.VISIBLE);
+        if (infoCard.getVisibility() == View.GONE) {
+            infoCard.setAlpha(0f);
+            infoCard.setVisibility(View.VISIBLE);
+            ObjectAnimator fadeIn = ObjectAnimator.ofFloat(infoCard, "alpha", 0f, 1f);
+            fadeIn.setDuration(300);
+            fadeIn.start();
+        }
     }
 
     private void hideInfoCard() {
-        infoCard.setVisibility(View.GONE);
+        if (infoCard.getVisibility() == View.VISIBLE) {
+            ObjectAnimator fadeOut = ObjectAnimator.ofFloat(infoCard, "alpha", 1f, 0f);
+            fadeOut.setDuration(300);
+            fadeOut.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    infoCard.setVisibility(View.GONE);
+                }
+            });
+            fadeOut.start();
+        }
     }
 }

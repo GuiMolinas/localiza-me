@@ -82,5 +82,8 @@
     <!-- Calendário -->
     <string name="schedule_title"> Meus Eventos </string>
 
+    <string name="map_title">Mapa Interativo</string>
+    <string name="map_header_text">Clique em uma área do mapa para ver os detalhes</string>
+
 
 </resources>
