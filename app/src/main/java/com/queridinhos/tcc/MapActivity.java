@@ -4,12 +4,13 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.graphics.Matrix;
+import android.graphics.Path;
 import android.graphics.RectF;
+import android.graphics.Region;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout; // Alterado de LinearLayout
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import com.github.chrisbanes.photoview.PhotoView;
@@ -20,27 +21,40 @@ import java.util.Locale;
 
 public class MapActivity extends AppCompatActivity {
 
-    private static final String TAG = "MapActivity";
-
     private PhotoView mapImageView;
     private MaterialCardView infoCard;
     private TextView infoTitle;
     private TextView infoDescription;
     private TextView debugCoordinates;
-    private RelativeLayout header; // Alterado de LinearLayout
-
+    private RelativeLayout header;
+    private ClickableAreaDebugView clickableAreaDebugView;
 
     private final List<ClickableArea> clickableAreas = new ArrayList<>();
 
-    private static class ClickableArea {
-        final RectF bounds;
+    public static class ClickableArea {
+        private final Path path;
+        private final Region region;
         final String name;
         final String description;
 
-        ClickableArea(RectF bounds, String name, String description) {
-            this.bounds = bounds;
+        ClickableArea(Path path, String name, String description) {
+            this.path = path;
             this.name = name;
             this.description = description;
+
+            // Cria uma região a partir do Path para facilitar a detecção de cliques
+            RectF rectF = new RectF();
+            path.computeBounds(rectF, true);
+            this.region = new Region();
+            this.region.setPath(path, new Region((int) rectF.left, (int) rectF.top, (int) rectF.right, (int) rectF.bottom));
+        }
+
+        public boolean contains(float x, float y) {
+            return region.contains((int) x, (int) y);
+        }
+
+        public Path getPath() {
+            return path;
         }
     }
 
@@ -55,16 +69,19 @@ public class MapActivity extends AppCompatActivity {
         infoDescription = findViewById(R.id.infoDescription);
         debugCoordinates = findViewById(R.id.debugCoordinates);
         header = findViewById(R.id.header);
+        clickableAreaDebugView = findViewById(R.id.clickableAreaDebugView);
         ImageButton backButton = findViewById(R.id.backButton);
 
         backButton.setOnClickListener(v -> finish());
-
 
         mapImageView.setMinimumScale(1.0f);
         mapImageView.setMaximumScale(4.0f);
 
         setupClickableAreas();
+        clickableAreaDebugView.setClickableAreas(clickableAreas);
         animateHeader();
+
+        mapImageView.setOnMatrixChangeListener(rect -> clickableAreaDebugView.setMatrix(mapImageView.getImageMatrix()));
 
         mapImageView.setOnViewTapListener((view, x, y) -> {
             float[] touchPoint = { x, y };
@@ -79,7 +96,7 @@ public class MapActivity extends AppCompatActivity {
 
             boolean areaClicked = false;
             for (ClickableArea area : clickableAreas) {
-                if (area.bounds.contains(imageX, imageY)) {
+                if (area.contains(imageX, imageY)) { // Lógica de clique atualizada
                     showInfoCard(area.name, area.description);
                     areaClicked = true;
                     break;
@@ -103,65 +120,93 @@ public class MapActivity extends AppCompatActivity {
                 .start();
     }
 
-
     private void setupClickableAreas() {
-        // As áreas foram expandidas para cobrir toda a construção, facilitando o clique.
-        // Formato: new RectF(left, top, right, bottom)
+        // Bloco Alfa
+        Path pathAlfa = new Path();
+        pathAlfa.moveTo(2359, 947);
+        pathAlfa.lineTo(3415, 742);
+        pathAlfa.lineTo(3734, 1215);
+        pathAlfa.lineTo(3287, 1369);
+        pathAlfa.lineTo(3386, 1519);
+        pathAlfa.lineTo(2853, 1690);
+        pathAlfa.close();
+        clickableAreas.add(new ClickableArea(pathAlfa, "Bloco Alfa", "Prédio mais novo, com auditório e salas de pós-graduação."));
 
-        // Bloco A (Expandido)
-        clickableAreas.add(new ClickableArea(
-                new RectF(1750, 1250, 2500, 1500),
-                "Bloco A", "Prédio principal, com salas de aula e laboratórios de informática."
-        ));
+        // Bloco A
+        Path pathA = new Path();
+        pathA.moveTo(1761, 1389);
+        pathA.lineTo(2361, 1193);
+        pathA.lineTo(2472, 1374);
+        pathA.lineTo(1872, 1619);
+        pathA.close();
+        clickableAreas.add(new ClickableArea(pathA, "Bloco A", "Prédio principal, com salas de aula e laboratórios de informática."));
 
-        // Bloco B (Expandido)
-        clickableAreas.add(new ClickableArea(
-                new RectF(1900, 1550, 2700, 1800),
-                "Bloco B", "Este bloco contém as salas do curso de Direito e o Núcleo de Prática Jurídica."
-        ));
+        // Bloco B
+        Path pathB = new Path();
+        pathB.moveTo(1932, 1664);
+        pathB.lineTo(2534, 1469);
+        pathB.lineTo(2651, 1639);
+        pathB.lineTo(2045, 1873);
+        pathB.close();
+        clickableAreas.add(new ClickableArea(pathB, "Bloco B", "Este bloco contém as salas do curso de Direito e o Núcleo de Prática Jurídica."));
 
-        // Bloco C (Expandido)
-        clickableAreas.add(new ClickableArea(
-                new RectF(1400, 1500, 2000, 1900),
-                "Bloco C", "Aqui ficam os laboratórios de saúde e as clínicas de atendimento à comunidade."
-        ));
+        // Bloco C
+        Path pathC = new Path();
+        pathC.moveTo(1440, 1427);
+        pathC.lineTo(1643, 1371);
+        pathC.lineTo(1953, 1870);
+        pathC.lineTo(1755, 1929);
+        pathC.close();
+        clickableAreas.add(new ClickableArea(pathC, "Bloco C", "Aqui ficam os laboratórios de saúde e as clínicas de atendimento à comunidade."));
 
-        // Bloco D (Expandido)
-        clickableAreas.add(new ClickableArea(
-                new RectF(1100, 1100, 1600, 1400),
-                "Bloco D", "Descrição do Bloco D."
-        ));
+        // Bloco D
+        Path pathD = new Path();
+        pathD.moveTo(1123, 1113);
+        pathD.lineTo(1364, 1001);
+        pathD.lineTo(1586, 1317);
+        pathD.lineTo(1385, 1430);
+        pathD.lineTo(1331, 1358);
+        pathD.lineTo(1257, 1371);
+        pathD.close();
+        clickableAreas.add(new ClickableArea(pathD, "Bloco D", "Descrição do Bloco D."));
 
-        // Bloco E (Expandido)
-        clickableAreas.add(new ClickableArea(
-                new RectF(900, 1600, 1400, 1800),
-                "Bloco E", "Descrição do Bloco E."
-        ));
+        // Bloco E
+        Path pathE = new Path();
+        pathE.moveTo(926, 1647);
+        pathE.lineTo(1056, 1537);
+        pathE.lineTo(1370, 1685);
+        pathE.lineTo(1219, 1884);
+        pathE.close();
+        clickableAreas.add(new ClickableArea(pathE, "Bloco E", "Descrição do Bloco E."));
 
-        // Bloco F (Expandido)
-        clickableAreas.add(new ClickableArea(
-                new RectF(850, 1850, 1150, 1950),
-                "Bloco F", "Descrição do Bloco F."
-        ));
+        // Bloco F
+        Path pathF = new Path();
+        pathF.moveTo(860, 1888);
+        pathF.lineTo(1088, 1816);
+        pathF.lineTo(1125, 1915);
+        pathF.lineTo(918, 1978);
+        pathF.close();
+        clickableAreas.add(new ClickableArea(pathF, "Bloco F", "Descrição do Bloco F."));
 
-        // Bloco G (Expandido)
-        clickableAreas.add(new ClickableArea(
-                new RectF(650, 1650, 1000, 1800),
-                "Bloco G", "Descrição do Bloco G."
-        ));
+        // Bloco G
+        Path pathG = new Path();
+        pathG.moveTo(663, 1733);
+        pathG.lineTo(818, 1608);
+        pathG.lineTo(926, 1694);
+        pathG.lineTo(768, 1847);
+        pathG.close();
+        clickableAreas.add(new ClickableArea(pathG, "Bloco G", "Descrição do Bloco G."));
 
-        // Bloco Alfa (Expandido)
-        clickableAreas.add(new ClickableArea(
-                new RectF(2500, 900, 3850, 1350),
-                "Bloco Alfa", "Prédio mais novo, com auditório e salas de pós-graduação."
-        ));
-
-        // Biblioteca (Expandido)
-        clickableAreas.add(new ClickableArea(
-                new RectF(1600, 1150, 2350, 1300),
-                "Biblioteca", "Acervo de livros, salas de estudo e computadores."
-        ));
+        // Biblioteca
+        Path pathBiblioteca = new Path();
+        pathBiblioteca.moveTo(1640, 1256);
+        pathBiblioteca.lineTo(2215, 1021);
+        pathBiblioteca.lineTo(2306, 1164);
+        pathBiblioteca.lineTo(1723, 1381);
+        pathBiblioteca.close();
+        clickableAreas.add(new ClickableArea(pathBiblioteca, "Biblioteca", "Acervo de livros, salas de estudo e computadores."));
     }
+
 
     private void showInfoCard(String title, String description) {
         infoTitle.setText(title);
