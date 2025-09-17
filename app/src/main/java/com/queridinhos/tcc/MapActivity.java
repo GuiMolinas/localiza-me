@@ -42,7 +42,6 @@ public class MapActivity extends AppCompatActivity {
             this.name = name;
             this.description = description;
 
-            // Cria uma região a partir do Path para facilitar a detecção de cliques
             RectF rectF = new RectF();
             path.computeBounds(rectF, true);
             this.region = new Region();
@@ -78,40 +77,45 @@ public class MapActivity extends AppCompatActivity {
         mapImageView.setMaximumScale(4.0f);
 
         setupClickableAreas();
-        clickableAreaDebugView.setClickableAreas(clickableAreas);
         animateHeader();
 
-        mapImageView.setOnMatrixChangeListener(rect -> clickableAreaDebugView.setMatrix(mapImageView.getImageMatrix()));
+        mapImageView.setOnMatrixChangeListener(rect -> {
+            if (clickableAreaDebugView != null) {
+                clickableAreaDebugView.setMatrix(mapImageView.getImageMatrix());
+            }
+        });
 
         mapImageView.setOnViewTapListener((view, x, y) -> {
             float[] touchPoint = { x, y };
             Matrix inverseMatrix = new Matrix();
-            mapImageView.getImageMatrix().invert(inverseMatrix);
-            inverseMatrix.mapPoints(touchPoint);
-            float imageX = touchPoint[0];
-            float imageY = touchPoint[1];
+            if (mapImageView.getImageMatrix() != null) {
+                mapImageView.getImageMatrix().invert(inverseMatrix);
+                inverseMatrix.mapPoints(touchPoint);
+                float imageX = touchPoint[0];
+                float imageY = touchPoint[1];
 
-            String coordsText = String.format(Locale.US, "X: %.1f, Y: %.1f", imageX, imageY);
-            debugCoordinates.setText(coordsText);
+                String coordsText = String.format(Locale.US, "X: %.1f, Y: %.1f", imageX, imageY);
+                debugCoordinates.setText(coordsText);
 
-            boolean areaClicked = false;
-            for (ClickableArea area : clickableAreas) {
-                if (area.contains(imageX, imageY)) { // Lógica de clique atualizada
-                    showInfoCard(area.name, area.description);
-                    areaClicked = true;
-                    break;
+                boolean areaClicked = false;
+                for (ClickableArea area : clickableAreas) {
+                    if (area.contains(imageX, imageY)) {
+                        showInfoCard(area.name, area.description);
+                        areaClicked = true;
+                        break;
+                    }
                 }
-            }
 
-            if (!areaClicked) {
-                hideInfoCard();
+                if (!areaClicked) {
+                    hideInfoCard();
+                }
             }
         });
     }
 
     private void animateHeader() {
         header.setAlpha(0f);
-        header.setTranslationY(-header.getHeight());
+        header.setTranslationY(-150);
         header.animate()
                 .alpha(1f)
                 .translationY(0f)
@@ -120,8 +124,19 @@ public class MapActivity extends AppCompatActivity {
                 .start();
     }
 
+    /**
+     * MÉTODO FINAL E CORRETO
+     * Use as coordenadas de pixel EXATAS que você obtém da ferramenta de debug do app.
+     * Não faça nenhum cálculo, apenas insira os números diretamente.
+     */
     private void setupClickableAreas() {
-        // Bloco Alfa
+        clickableAreas.clear();
+
+        // --- INSTRUÇÕES ---
+        // 1. Rode o app e anote as coordenadas X e Y de cada ponto que você tocar.
+        // 2. Coloque esses números diretamente aqui, substituindo os valores de exemplo.
+
+        // Bloco Alfa - SUBSTITUA OS VALORES ABAIXO PELOS SEUS
         Path pathAlfa = new Path();
         pathAlfa.moveTo(2359, 947);
         pathAlfa.lineTo(3415, 742);
@@ -207,30 +222,27 @@ public class MapActivity extends AppCompatActivity {
         clickableAreas.add(new ClickableArea(pathBiblioteca, "Biblioteca", "Acervo de livros, salas de estudo e computadores."));
     }
 
-
     private void showInfoCard(String title, String description) {
         infoTitle.setText(title);
         infoDescription.setText(description);
         if (infoCard.getVisibility() == View.GONE) {
             infoCard.setAlpha(0f);
             infoCard.setVisibility(View.VISIBLE);
-            ObjectAnimator fadeIn = ObjectAnimator.ofFloat(infoCard, "alpha", 0f, 1f);
-            fadeIn.setDuration(300);
-            fadeIn.start();
+            ObjectAnimator.ofFloat(infoCard, "alpha", 0f, 1f).setDuration(300).start();
         }
     }
 
     private void hideInfoCard() {
         if (infoCard.getVisibility() == View.VISIBLE) {
-            ObjectAnimator fadeOut = ObjectAnimator.ofFloat(infoCard, "alpha", 1f, 0f);
-            fadeOut.setDuration(300);
-            fadeOut.addListener(new AnimatorListenerAdapter() {
+            ObjectAnimator animator = ObjectAnimator.ofFloat(infoCard, "alpha", 1f, 0f);
+            animator.setDuration(300);
+            animator.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     infoCard.setVisibility(View.GONE);
                 }
             });
-            fadeOut.start();
+            animator.start();
         }
     }
 }
