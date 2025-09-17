@@ -76,6 +76,9 @@ public class MapActivity extends AppCompatActivity {
         mapImageView.setMinimumScale(1.0f);
         mapImageView.setMaximumScale(4.0f);
 
+        // ATIVA A VISIBILIDADE DA CAMADA DE DEBUG
+        clickableAreaDebugView.setVisibility(View.VISIBLE);
+
         setupClickableAreas();
         animateHeader();
 
@@ -124,102 +127,118 @@ public class MapActivity extends AppCompatActivity {
                 .start();
     }
 
-    /**
-     * MÉTODO FINAL E CORRETO
-     * Use as coordenadas de pixel EXATAS que você obtém da ferramenta de debug do app.
-     * Não faça nenhum cálculo, apenas insira os números diretamente.
-     */
     private void setupClickableAreas() {
         clickableAreas.clear();
 
-        // --- INSTRUÇÕES ---
-        // 1. Rode o app e anote as coordenadas X e Y de cada ponto que você tocar.
-        // 2. Coloque esses números diretamente aqui, substituindo os valores de exemplo.
-
-        // Bloco Alfa - SUBSTITUA OS VALORES ABAIXO PELOS SEUS
+        // Bloco Alfa
         Path pathAlfa = new Path();
-        pathAlfa.moveTo(2359, 947);
-        pathAlfa.lineTo(3415, 742);
-        pathAlfa.lineTo(3734, 1215);
-        pathAlfa.lineTo(3287, 1369);
-        pathAlfa.lineTo(3386, 1519);
-        pathAlfa.lineTo(2853, 1690);
+        pathAlfa.moveTo(900, 360);
+        pathAlfa.lineTo(958, 343);
+        pathAlfa.lineTo(957, 305);
+        pathAlfa.lineTo(1106, 257);
+        pathAlfa.lineTo(1156, 333);
+        pathAlfa.lineTo(1309, 284);
+        pathAlfa.lineTo(1421, 465);
+        pathAlfa.lineTo(1251, 521);
+        pathAlfa.lineTo(1289, 580);
+        pathAlfa.lineTo(1086, 642);
         pathAlfa.close();
         clickableAreas.add(new ClickableArea(pathAlfa, "Bloco Alfa", "Prédio mais novo, com auditório e salas de pós-graduação."));
 
         // Bloco A
         Path pathA = new Path();
-        pathA.moveTo(1761, 1389);
-        pathA.lineTo(2361, 1193);
-        pathA.lineTo(2472, 1374);
-        pathA.lineTo(1872, 1619);
+        pathA.moveTo(670, 530);
+        pathA.lineTo(900, 457);
+        pathA.lineTo(945, 523);
+        pathA.lineTo(945, 548);
+        pathA.lineTo(714, 617);
+        pathA.lineTo(669, 553);
         pathA.close();
         clickableAreas.add(new ClickableArea(pathA, "Bloco A", "Prédio principal, com salas de aula e laboratórios de informática."));
 
         // Bloco B
         Path pathB = new Path();
-        pathB.moveTo(1932, 1664);
-        pathB.lineTo(2534, 1469);
-        pathB.lineTo(2651, 1639);
-        pathB.lineTo(2045, 1873);
+        pathB.moveTo(737, 633);
+        pathB.lineTo(966, 560);
+        pathB.lineTo(1009, 626);
+        pathB.lineTo(1009, 649);
+        pathB.lineTo(779, 715);
+        pathB.lineTo(734, 653);
         pathB.close();
         clickableAreas.add(new ClickableArea(pathB, "Bloco B", "Este bloco contém as salas do curso de Direito e o Núcleo de Prática Jurídica."));
 
         // Bloco C
         Path pathC = new Path();
-        pathC.moveTo(1440, 1427);
-        pathC.lineTo(1643, 1371);
-        pathC.lineTo(1953, 1870);
-        pathC.lineTo(1755, 1929);
+        pathC.moveTo(550, 577);
+        pathC.lineTo(549, 546);
+        pathC.lineTo(626, 522);
+        pathC.lineTo(745, 700);
+        pathC.lineTo(746, 716);
+        pathC.lineTo(667, 736);
         pathC.close();
         clickableAreas.add(new ClickableArea(pathC, "Bloco C", "Aqui ficam os laboratórios de saúde e as clínicas de atendimento à comunidade."));
 
         // Bloco D
         Path pathD = new Path();
-        pathD.moveTo(1123, 1113);
-        pathD.lineTo(1364, 1001);
-        pathD.lineTo(1586, 1317);
-        pathD.lineTo(1385, 1430);
-        pathD.lineTo(1331, 1358);
-        pathD.lineTo(1257, 1371);
+        pathD.moveTo(426, 438);
+        pathD.lineTo(425, 424);
+        pathD.lineTo(453, 414);
+        pathD.lineTo(455, 394);
+        pathD.lineTo(527, 372);
+        pathD.lineTo(603, 504);
+        pathD.lineTo(604, 523);
+        pathD.lineTo(526, 544);
+        pathD.lineTo(507, 518);
+        pathD.lineTo(480, 525);
         pathD.close();
         clickableAreas.add(new ClickableArea(pathD, "Bloco D", "Descrição do Bloco D."));
 
         // Bloco E
         Path pathE = new Path();
-        pathE.moveTo(926, 1647);
-        pathE.lineTo(1056, 1537);
-        pathE.lineTo(1370, 1685);
-        pathE.lineTo(1219, 1884);
+        pathE.moveTo(351, 628);
+        pathE.lineTo(397, 579);
+        pathE.lineTo(519, 641);
+        pathE.lineTo(520, 672);
+        pathE.lineTo(465, 716);
+        pathE.lineTo(397, 686);
         pathE.close();
         clickableAreas.add(new ClickableArea(pathE, "Bloco E", "Descrição do Bloco E."));
 
         // Bloco F
         Path pathF = new Path();
-        pathF.moveTo(860, 1888);
-        pathF.lineTo(1088, 1816);
-        pathF.lineTo(1125, 1915);
-        pathF.lineTo(918, 1978);
+        pathF.moveTo(328, 725);
+        pathF.lineTo(327, 706);
+        pathF.lineTo(381, 679);
+        pathF.lineTo(428, 712);
+        pathF.lineTo(428, 730);
+        pathF.lineTo(351, 755);
         pathF.close();
         clickableAreas.add(new ClickableArea(pathF, "Bloco F", "Descrição do Bloco F."));
 
         // Bloco G
         Path pathG = new Path();
-        pathG.moveTo(663, 1733);
-        pathG.lineTo(818, 1608);
-        pathG.lineTo(926, 1694);
-        pathG.lineTo(768, 1847);
+        pathG.moveTo(251, 660);
+        pathG.lineTo(255, 635);
+        pathG.lineTo(315, 614);
+        pathG.lineTo(367, 651);
+        pathG.lineTo(319, 673);
+        pathG.lineTo(319, 697);
+        pathG.lineTo(287, 705);
         pathG.close();
         clickableAreas.add(new ClickableArea(pathG, "Bloco G", "Descrição do Bloco G."));
 
         // Biblioteca
         Path pathBiblioteca = new Path();
-        pathBiblioteca.moveTo(1640, 1256);
-        pathBiblioteca.lineTo(2215, 1021);
-        pathBiblioteca.lineTo(2306, 1164);
-        pathBiblioteca.lineTo(1723, 1381);
+        pathBiblioteca.moveTo(623, 477);
+        pathBiblioteca.lineTo(625, 459);
+        pathBiblioteca.lineTo(842, 381);
+        pathBiblioteca.lineTo(880, 443);
+        pathBiblioteca.lineTo(879, 454);
+        pathBiblioteca.lineTo(656, 526);
         pathBiblioteca.close();
         clickableAreas.add(new ClickableArea(pathBiblioteca, "Biblioteca", "Acervo de livros, salas de estudo e computadores."));
+
+        clickableAreaDebugView.setClickableAreas(clickableAreas);
     }
 
     private void showInfoCard(String title, String description) {
