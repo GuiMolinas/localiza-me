@@ -3,6 +3,7 @@ package com.queridinhos.tcc;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.content.SharedPreferences;
 import android.graphics.Matrix;
 import android.graphics.Path;
 import android.graphics.RectF;
@@ -77,7 +78,10 @@ public class MapActivity extends AppCompatActivity {
         mapImageView.setMaximumScale(4.0f);
 
         // ATIVA A VISIBILIDADE DA CAMADA DE DEBUG
-        clickableAreaDebugView.setVisibility(View.VISIBLE);
+        SharedPreferences prefs = getSharedPreferences("VisualizarCliquePrefs", MODE_PRIVATE);
+        boolean visualizarClique = prefs.getBoolean("visualizarClique", false);
+        clickableAreaDebugView.setVisibility(visualizarClique ? View.VISIBLE : View.GONE);
+
 
         setupClickableAreas();
         animateHeader();

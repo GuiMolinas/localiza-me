@@ -85,5 +85,9 @@
     <string name="map_title">Mapa Interativo</string>
     <string name="map_header_text">Clique em uma área do mapa para ver os detalhes</string>
 
+    <string name="txtVisualizarClique">Visualizar Clique</string>
+    <string name="txtVisualizarCliqueEx">Mostra a área de clique no mapa</string>
+
+
 
 </resources>

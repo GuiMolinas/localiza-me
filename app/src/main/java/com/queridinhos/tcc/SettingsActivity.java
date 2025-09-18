@@ -14,6 +14,7 @@ import android.widget.Spinner;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -24,6 +25,8 @@ public class SettingsActivity extends BaseActivity {
     private static final String THEME_KEY = "selectedTheme";
     private static final String FONT_SIZE_PREFS = "FontSizePrefs";
     private static final String FONT_SIZE_KEY = "selectedFontSize";
+    private static final String VISUALIZAR_CLIQUE_PREFS = "VisualizarCliquePrefs";
+    private static final String VISUALIZAR_CLIQUE_KEY = "visualizarClique";
 
     private ValueAnimator currentAnimator;
 
@@ -48,6 +51,19 @@ public class SettingsActivity extends BaseActivity {
         setupAboutAppButton();
         setupThemeSpinner();
         setupFontSizeSpinner();
+        setupVisualizarCliqueSwitch();
+    }
+
+    private void setupVisualizarCliqueSwitch() {
+        SwitchCompat visualizarCliqueSwitch = findViewById(R.id.visualizarCliqueSwitch);
+        SharedPreferences prefs = getSharedPreferences(VISUALIZAR_CLIQUE_PREFS, MODE_PRIVATE);
+        visualizarCliqueSwitch.setChecked(prefs.getBoolean(VISUALIZAR_CLIQUE_KEY, false));
+
+        visualizarCliqueSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            SharedPreferences.Editor editor = getSharedPreferences(VISUALIZAR_CLIQUE_PREFS, MODE_PRIVATE).edit();
+            editor.putBoolean(VISUALIZAR_CLIQUE_KEY, isChecked);
+            editor.apply();
+        });
     }
 
     private void setupBackButton() {
