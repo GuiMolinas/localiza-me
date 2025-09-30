@@ -3,6 +3,7 @@ package com.queridinhos.tcc;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.util.AttributeSet;
@@ -16,6 +17,7 @@ public class RouteView extends View {
     private PointF endPoint;
     private float animatedValue = 0f;
     private ValueAnimator animator;
+    private Matrix matrix = new Matrix(); // Matriz para a transformação
 
     public RouteView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -23,6 +25,12 @@ public class RouteView extends View {
         paint.setStrokeWidth(10f);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeCap(Paint.Cap.ROUND);
+    }
+
+    // Método para receber a matriz do ImageView
+    public void setMatrix(Matrix matrix) {
+        this.matrix = matrix;
+        invalidate(); // Força a view a redesenhar
     }
 
     public void setRoute(PointF startPoint, PointF endPoint) {
@@ -48,6 +56,9 @@ public class RouteView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if (startPoint != null && endPoint != null) {
+            canvas.save(); // Salva o estado atual do canvas
+            canvas.concat(matrix); // Aplica a matriz de transformação
+
             // Desenha a linha da rota
             float currentX = startPoint.x + (endPoint.x - startPoint.x) * animatedValue;
             float currentY = startPoint.y + (endPoint.y - startPoint.y) * animatedValue;
@@ -60,6 +71,8 @@ public class RouteView extends View {
                 endCirclePaint.setStyle(Paint.Style.FILL);
                 canvas.drawCircle(endPoint.x, endPoint.y, 20, endCirclePaint);
             }
+
+            canvas.restore(); // Restaura o canvas ao estado original
         }
     }
 }

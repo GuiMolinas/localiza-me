@@ -25,7 +25,6 @@
     <string name="txtDescription"> Conheça o app </string>
     <string name="txtExit"> Sair </string>
 
-    <!-- Sobre -->
     <string name="about_title">🌟 Sobre o Localiza Me</string>
     <string name="about_subtitle">📍 O aplicativo perfeito para você navegar pelo campus da UNICID - Tatuapé sem preocupações!</string>
     <string name="about_target_audience">Desenvolvido especialmente para quem:</string>
@@ -38,24 +37,19 @@
     <string name="icons_credits_title">🎨 Ícones e Imagens:</string>
     <string name="mascot_credit">🤖 Mascote criado pelo Microsoft Copilot</string>
 
-    <!-- Créditos dos ícones (mantenha o formato com \n) -->
     <string name="icons_credits">
 </string>
-    <!-- Contatos -->
     <string name="contacts_title">Contatos</string>
     <string name="unicid_tatuape">UNICID Tatuapé</string>
     <string name="cruzeiro_sul">Cruzeiro do Sul</string>
 
-    <!-- Departamentos -->
     <string name="central_atendimento">Central de Atendimento</string>
     <string name="secretaria">Secretaria</string>
     <string name="biblioteca">Biblioteca</string>
 
-    <!-- Labels -->
     <string name="telefone">Telefone:</string>
     <string name="email">Email:</string>
 
-    <!-- Contatos UNICID Tatuapé -->
     <string name="unicid_telefone_central">(11) 2225-1000</string>
     <string name="unicid_email_central">atendimento.tatuape@unicid.edu.br</string>
     <string name="unicid_telefone_secretaria">(11) 2225-1010</string>
@@ -63,13 +57,11 @@
     <string name="unicid_telefone_biblioteca">(11) 2225-1020</string>
     <string name="unicid_email_biblioteca">biblioteca.tatuape@unicid.edu.br</string>
 
-    <!-- Contatos Cruzeiro do Sul -->
     <string name="cruzeiro_telefone_central">(11) 2225-2000</string>
     <string name="cruzeiro_email_central">atendimento.cruzeiro@unicid.edu.br</string>
     <string name="cruzeiro_telefone_secretaria">(11) 2225-2010</string>
     <string name="cruzeiro_email_secretaria">secretaria.cruzeiro@unicid.edu.br</string>
 
-    <!-- Descrição -->
     <string name="contacts_icon"> Icon Contacts</string>
     <string name="history_icon"> History Icon </string>
     <string name="schedule_icon"> Schedule Icon </string>
@@ -79,10 +71,10 @@
     <string name="settings_button"> Settings Button </string>
     <string name="exit_button"> Exit Button </string>
 
-    <!-- Calendário -->
     <string name="schedule_title"> Meus Eventos </string>
 
     <string name="map_title">Mapa Interativo</string>
+    <string name="localize_title">Me Localizar</string>
     <string name="map_header_text">Clique em uma área do mapa para ver os detalhes</string>
 
     <string name="txtVisualizarClique">Visualizar Clique</string>
