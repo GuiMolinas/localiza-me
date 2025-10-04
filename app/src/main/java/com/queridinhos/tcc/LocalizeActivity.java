@@ -25,13 +25,16 @@ public class LocalizeActivity extends AppCompatActivity {
     private Spinner spinnerFrom;
     private Spinner spinnerTo;
     private Button btnTraceRoute;
-    private ImageButton backButton; // Botão de voltar
+    private ImageButton backButton;
     private ClickableAreaDebugView clickableAreaDebugView;
     private RouteView routeView;
     private ImageView mapImageView;
     private final List<MapActivity.ClickableArea> clickableAreas = new ArrayList<>();
     private final Map<String, Path> locations = new LinkedHashMap<>();
     private final Map<String, PointF> locationCenters = new HashMap<>();
+
+    // --- NOVO: Grafo de Navegação ---
+    private final Map<String, Node> navigationGraph = new HashMap<>();
     private final String HINT = "-- Selecionar --";
 
     @Override
@@ -42,13 +45,14 @@ public class LocalizeActivity extends AppCompatActivity {
         spinnerFrom = findViewById(R.id.spinner_from);
         spinnerTo = findViewById(R.id.spinner_to);
         btnTraceRoute = findViewById(R.id.btn_trace_route);
-        backButton = findViewById(R.id.backButton); // Inicializa o botão
+        backButton = findViewById(R.id.backButton);
         clickableAreaDebugView = findViewById(R.id.clickableAreaDebugView);
         routeView = findViewById(R.id.routeView);
         mapImageView = findViewById(R.id.mapImageView);
 
         initializeLocationsAndAreas();
-        setupMapMatrixListener(); // Configura o listener para a matriz
+        initializeNavigationGraph(); // --- NOVO ---
+        setupMapMatrixListener();
 
         ArrayList<String> locationNames = new ArrayList<>();
         locationNames.add(HINT);
@@ -58,44 +62,107 @@ public class LocalizeActivity extends AppCompatActivity {
         spinnerFrom.setAdapter(adapter);
         spinnerTo.setAdapter(adapter);
 
-        // Ação do botão de voltar
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish(); // Fecha a atividade atual
-            }
-        });
+        backButton.setOnClickListener(v -> finish());
 
-        btnTraceRoute.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String from = spinnerFrom.getSelectedItem().toString();
-                String to = spinnerTo.getSelectedItem().toString();
-
-                if (from.equals(HINT) || to.equals(HINT)) {
-                    Toast.makeText(LocalizeActivity.this, "Por favor, selecione um local de partida e um de chegada.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                MapActivity.ClickableArea fromArea = findAreaByName(from);
-                MapActivity.ClickableArea toArea = findAreaByName(to);
-
-                if (fromArea != null && toArea != null) {
-                    List<MapActivity.ClickableArea> areasToHighlight = new ArrayList<>();
-                    areasToHighlight.add(fromArea);
-                    areasToHighlight.add(toArea);
-                    clickableAreaDebugView.setClickableAreas(areasToHighlight);
-                }
-
-                PointF fromPoint = locationCenters.get(from);
-                PointF toPoint = locationCenters.get(to);
-
-                if (fromPoint != null && toPoint != null) {
-                    routeView.setRoute(fromPoint, toPoint);
-                }
-            }
-        });
+        btnTraceRoute.setOnClickListener(v -> traceRoute());
     }
+
+    private void traceRoute() {
+        String from = spinnerFrom.getSelectedItem().toString();
+        String to = spinnerTo.getSelectedItem().toString();
+
+        if (from.equals(HINT) || to.equals(HINT)) {
+            Toast.makeText(LocalizeActivity.this, "Por favor, selecione um local de partida e um de chegada.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Node startNode = findNearestNode(locationCenters.get(from));
+        Node endNode = findNearestNode(locationCenters.get(to));
+
+        if (startNode != null && endNode != null) {
+
+            // --- LINHA MODIFICADA AQUI ---
+            // Agora passamos o "navigationGraph" para que o A* possa resetar os nós
+            List<Node> path = AStar.findPath(navigationGraph, startNode, endNode);
+            // -----------------------------
+
+            if (path != null && !path.isEmpty()) {
+                List<PointF> routePoints = new ArrayList<>();
+                routePoints.add(locationCenters.get(from));
+                for (Node node : path) {
+                    routePoints.add(new PointF(node.x, node.y));
+                }
+                routePoints.add(locationCenters.get(to));
+                routeView.setRoute(routePoints);
+            } else {
+                Toast.makeText(this, "Não foi possível encontrar uma rota.", Toast.LENGTH_SHORT).show();
+                routeView.clearRoute(); // Limpa a rota anterior da tela
+            }
+        }
+    }
+
+    private Node findNearestNode(PointF point) {
+        Node nearestNode = null;
+        double minDistance = Double.MAX_VALUE;
+
+        for (Node node : navigationGraph.values()) {
+            double distance = Math.sqrt(Math.pow(node.x - point.x, 2) + Math.pow(node.y - point.y, 2));
+            if (distance < minDistance) {
+                minDistance = distance;
+                nearestNode = node;
+            }
+        }
+        return nearestNode;
+    }
+
+    private void initializeNavigationGraph() {
+        // --- Definição dos Nós com base nas suas coordenadas ---
+        Node entradaA = new Node("entradaA", 990, 565);
+        Node entradaConjunto = new Node("entradaConjunto", 983, 505);
+        Node entradaB = new Node("entradaB", 871, 588);
+        Node entradaAB = new Node("entradaAB", 846, 570);
+        Node entradaAC = new Node("entradaAC", 688, 577);
+        Node entradaBiblioteca = new Node("entradaBiblioteca", 793, 478);
+        Node entradaCA = new Node("entradaCA", 681, 604);
+        Node entradaC = new Node("entradaC", 582, 533);
+        Node entradaE = new Node("entradaE", 494, 682);
+        Node entradaF = new Node("entradaF", 356, 689);
+        Node entradaG = new Node("entradaG", 317, 692); // Renomeei "entrada" para "entradaG" por clareza
+
+        // Adiciona todos ao grafo para referência
+        navigationGraph.put(entradaA.id, entradaA);
+        navigationGraph.put(entradaConjunto.id, entradaConjunto);
+        navigationGraph.put(entradaB.id, entradaB);
+        navigationGraph.put(entradaAB.id, entradaAB);
+        navigationGraph.put(entradaAC.id, entradaAC);
+        navigationGraph.put(entradaBiblioteca.id, entradaBiblioteca);
+        navigationGraph.put(entradaCA.id, entradaCA);
+        navigationGraph.put(entradaC.id, entradaC);
+        navigationGraph.put(entradaE.id, entradaE);
+        navigationGraph.put(entradaF.id, entradaF);
+        navigationGraph.put(entradaG.id, entradaG);
+
+        // --- Definição das Arestas (conexões lógicas entre os nós) ---
+        connectNodes(entradaG, entradaF);
+        connectNodes(entradaF, entradaE);
+        connectNodes(entradaE, entradaCA);
+        connectNodes(entradaCA, entradaC);
+        connectNodes(entradaCA, entradaAC);
+        connectNodes(entradaC, entradaAC);
+        connectNodes(entradaAC, entradaAB);
+        connectNodes(entradaAC, entradaBiblioteca);
+        connectNodes(entradaAB, entradaA);
+        connectNodes(entradaAB, entradaB);
+        connectNodes(entradaA, entradaConjunto);
+        connectNodes(entradaBiblioteca, entradaConjunto);
+    }
+
+    private void connectNodes(Node a, Node b) {
+        double distance = Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
+        a.addNeighbor(b, distance);
+        b.addNeighbor(a, distance); // Para caminhos de mão dupla
+    }
+
 
     private void setupMapMatrixListener() {
         ViewTreeObserver vto = mapImageView.getViewTreeObserver();
@@ -103,30 +170,15 @@ public class LocalizeActivity extends AppCompatActivity {
             @Override
             public void onGlobalLayout() {
                 mapImageView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-
-                // Obtém a matriz original calculada pelo fitCenter
                 Matrix matrix = mapImageView.getImageMatrix();
-
-                // --- MODIFICAÇÃO PARA ZOOM E PAN INICIAL ---
-                // Fator de zoom (1.0f = sem zoom, 1.2f = 20% de zoom)
                 float zoomFactor = 1.2f;
-                // Deslocamento vertical em pixels (valores positivos descem o mapa)
                 float verticalPan = 200f;
-
-                // Calcula o ponto central da view para o zoom
                 float pivotX = mapImageView.getWidth() / 2f;
                 float pivotY = mapImageView.getHeight() / 2f;
-
-                // Aplica o zoom e o deslocamento na matriz
                 matrix.postScale(zoomFactor, zoomFactor, pivotX, pivotY);
                 matrix.postTranslate(0, verticalPan);
-
-                // Define que o ImageView usará nossa matriz customizada
                 mapImageView.setScaleType(ImageView.ScaleType.MATRIX);
                 mapImageView.setImageMatrix(matrix);
-                // --- FIM DA MODIFICAÇÃO ---
-
-                // Passa a matriz MODIFICADA para as views de desenho
                 clickableAreaDebugView.setMatrix(matrix);
                 routeView.setMatrix(matrix);
             }
@@ -145,14 +197,12 @@ public class LocalizeActivity extends AppCompatActivity {
     private void addArea(String name, String description, Path path) {
         clickableAreas.add(new MapActivity.ClickableArea(path, name, description));
         locations.put(name, path);
-
         RectF rectF = new RectF();
         path.computeBounds(rectF, true);
         locationCenters.put(name, new PointF(rectF.centerX(), rectF.centerY()));
     }
 
     private void initializeLocationsAndAreas() {
-        // Bloco Alfa
         Path pathAlfa = new Path();
         pathAlfa.moveTo(900, 360);
         pathAlfa.lineTo(958, 343);
@@ -167,7 +217,6 @@ public class LocalizeActivity extends AppCompatActivity {
         pathAlfa.close();
         addArea("Bloco Alfa", "Prédio mais novo, com auditório e salas de pós-graduação.", pathAlfa);
 
-        // Bloco A
         Path pathA = new Path();
         pathA.moveTo(670, 530);
         pathA.lineTo(900, 457);
@@ -178,7 +227,6 @@ public class LocalizeActivity extends AppCompatActivity {
         pathA.close();
         addArea("Bloco A", "Prédio principal, com salas de aula e laboratórios de informática.", pathA);
 
-        // Bloco B
         Path pathB = new Path();
         pathB.moveTo(737, 633);
         pathB.lineTo(966, 560);
@@ -189,7 +237,6 @@ public class LocalizeActivity extends AppCompatActivity {
         pathB.close();
         addArea("Bloco B", "Este bloco contém as salas do curso de Direito e o Núcleo de Prática Jurídica.", pathB);
 
-        // Bloco C
         Path pathC = new Path();
         pathC.moveTo(550, 577);
         pathC.lineTo(549, 546);
@@ -200,7 +247,6 @@ public class LocalizeActivity extends AppCompatActivity {
         pathC.close();
         addArea("Bloco C", "Aqui ficam os laboratórios de saúde e as clínicas de atendimento à comunidade.", pathC);
 
-        // Bloco D
         Path pathD = new Path();
         pathD.moveTo(426, 438);
         pathD.lineTo(425, 424);
@@ -215,7 +261,6 @@ public class LocalizeActivity extends AppCompatActivity {
         pathD.close();
         addArea("Bloco D", "Descrição do Bloco D.", pathD);
 
-        // Bloco E
         Path pathE = new Path();
         pathE.moveTo(351, 628);
         pathE.lineTo(397, 579);
@@ -226,7 +271,6 @@ public class LocalizeActivity extends AppCompatActivity {
         pathE.close();
         addArea("Bloco E", "Descrição do Bloco E.", pathE);
 
-        // Bloco F
         Path pathF = new Path();
         pathF.moveTo(328, 725);
         pathF.lineTo(327, 706);
@@ -237,7 +281,6 @@ public class LocalizeActivity extends AppCompatActivity {
         pathF.close();
         addArea("Bloco F", "Descrição do Bloco F.", pathF);
 
-        // Bloco G
         Path pathG = new Path();
         pathG.moveTo(251, 660);
         pathG.lineTo(255, 635);
@@ -249,7 +292,6 @@ public class LocalizeActivity extends AppCompatActivity {
         pathG.close();
         addArea("Bloco G", "Descrição do Bloco G.", pathG);
 
-        // Biblioteca
         Path pathBiblioteca = new Path();
         pathBiblioteca.moveTo(623, 477);
         pathBiblioteca.lineTo(625, 459);
