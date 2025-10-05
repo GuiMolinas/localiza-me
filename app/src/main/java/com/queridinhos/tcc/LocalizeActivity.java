@@ -33,7 +33,6 @@ public class LocalizeActivity extends AppCompatActivity {
     private final Map<String, Path> locations = new LinkedHashMap<>();
     private final Map<String, PointF> locationCenters = new HashMap<>();
 
-    // --- NOVO: Grafo de Navegação ---
     private final Map<String, Node> navigationGraph = new HashMap<>();
     private final String HINT = "-- Selecionar --";
 
@@ -51,7 +50,7 @@ public class LocalizeActivity extends AppCompatActivity {
         mapImageView = findViewById(R.id.mapImageView);
 
         initializeLocationsAndAreas();
-        initializeNavigationGraph(); // --- NOVO ---
+        initializeNavigationGraph();
         setupMapMatrixListener();
 
         ArrayList<String> locationNames = new ArrayList<>();
@@ -63,7 +62,6 @@ public class LocalizeActivity extends AppCompatActivity {
         spinnerTo.setAdapter(adapter);
 
         backButton.setOnClickListener(v -> finish());
-
         btnTraceRoute.setOnClickListener(v -> traceRoute());
     }
 
@@ -80,11 +78,7 @@ public class LocalizeActivity extends AppCompatActivity {
         Node endNode = findNearestNode(locationCenters.get(to));
 
         if (startNode != null && endNode != null) {
-
-            // --- LINHA MODIFICADA AQUI ---
-            // Agora passamos o "navigationGraph" para que o A* possa resetar os nós
             List<Node> path = AStar.findPath(navigationGraph, startNode, endNode);
-            // -----------------------------
 
             if (path != null && !path.isEmpty()) {
                 List<PointF> routePoints = new ArrayList<>();
@@ -96,7 +90,7 @@ public class LocalizeActivity extends AppCompatActivity {
                 routeView.setRoute(routePoints);
             } else {
                 Toast.makeText(this, "Não foi possível encontrar uma rota.", Toast.LENGTH_SHORT).show();
-                routeView.clearRoute(); // Limpa a rota anterior da tela
+                routeView.clearRoute();
             }
         }
     }
@@ -116,53 +110,95 @@ public class LocalizeActivity extends AppCompatActivity {
     }
 
     private void initializeNavigationGraph() {
-        // --- Definição dos Nós com base nas suas coordenadas ---
+        // --- NÓS ---
         Node entradaA = new Node("entradaA", 990, 565);
-        Node entradaConjunto = new Node("entradaConjunto", 983, 505);
+        Node entradaAlfa = new Node("entradaAlfa", 983, 505);
         Node entradaB = new Node("entradaB", 871, 588);
-        Node entradaAB = new Node("entradaAB", 846, 570);
-        Node entradaAC = new Node("entradaAC", 688, 577);
         Node entradaBiblioteca = new Node("entradaBiblioteca", 793, 478);
-        Node entradaCA = new Node("entradaCA", 681, 604);
         Node entradaC = new Node("entradaC", 582, 533);
+        Node entradaD = new Node("entradaD", 572, 529);
         Node entradaE = new Node("entradaE", 494, 682);
         Node entradaF = new Node("entradaF", 356, 689);
-        Node entradaG = new Node("entradaG", 317, 692); // Renomeei "entrada" para "entradaG" por clareza
+        Node entradaG = new Node("entradaG", 317, 692);
+        Node entradaAB = new Node("entradaAB", 846, 570);
+        Node entradaAC = new Node("entradaAC", 688, 577);
+        Node entradaCA = new Node("entradaCA", 681, 604);
+        Node contornoAC = new Node("contornoAC", 707, 624);
+        Node contornoCD = new Node("contornoCD", 614, 513);
+        Node contornoCE = new Node("contornoCE", 561, 652);
+        Node contornoE = new Node("contornoE", 432, 620);
+        Node contornoGF = new Node("contornoGF", 329, 688);
+        Node corredorA = new Node("corredorA", 870, 515);
+        Node desvioE = new Node("desvioE", 525, 615);
+        Node contornoDBiblioteca = new Node("contornoDBiblioteca", 628, 513);
 
-        // Adiciona todos ao grafo para referência
+        // Adicionar TODOS os nós ao grafo
         navigationGraph.put(entradaA.id, entradaA);
-        navigationGraph.put(entradaConjunto.id, entradaConjunto);
+        navigationGraph.put(entradaAlfa.id, entradaAlfa);
         navigationGraph.put(entradaB.id, entradaB);
-        navigationGraph.put(entradaAB.id, entradaAB);
-        navigationGraph.put(entradaAC.id, entradaAC);
         navigationGraph.put(entradaBiblioteca.id, entradaBiblioteca);
-        navigationGraph.put(entradaCA.id, entradaCA);
         navigationGraph.put(entradaC.id, entradaC);
+        navigationGraph.put(entradaD.id, entradaD);
         navigationGraph.put(entradaE.id, entradaE);
         navigationGraph.put(entradaF.id, entradaF);
         navigationGraph.put(entradaG.id, entradaG);
+        navigationGraph.put(entradaAB.id, entradaAB);
+        navigationGraph.put(entradaAC.id, entradaAC);
+        navigationGraph.put(entradaCA.id, entradaCA);
+        navigationGraph.put(contornoAC.id, contornoAC);
+        navigationGraph.put(contornoCD.id, contornoCD);
+        navigationGraph.put(contornoCE.id, contornoCE);
+        navigationGraph.put(contornoE.id, contornoE);
+        navigationGraph.put(contornoGF.id, contornoGF);
+        navigationGraph.put(corredorA.id, corredorA);
+        navigationGraph.put(desvioE.id, desvioE);
+        navigationGraph.put(contornoDBiblioteca.id, contornoDBiblioteca);
 
-        // --- Definição das Arestas (conexões lógicas entre os nós) ---
-        connectNodes(entradaG, entradaF);
-        connectNodes(entradaF, entradaE);
-        connectNodes(entradaE, entradaCA);
-        connectNodes(entradaCA, entradaC);
-        connectNodes(entradaCA, entradaAC);
-        connectNodes(entradaC, entradaAC);
-        connectNodes(entradaAC, entradaAB);
-        connectNodes(entradaAC, entradaBiblioteca);
-        connectNodes(entradaAB, entradaA);
-        connectNodes(entradaAB, entradaB);
-        connectNodes(entradaA, entradaConjunto);
-        connectNodes(entradaBiblioteca, entradaConjunto);
+        // --- CONEXÕES LÓGICAS FINAIS COM A ÚLTIMA REGRA ---
+
+        // REGRA: Saída do Alfa é SOMENTE pelo Bloco A.
+        connectNodes(entradaAlfa, entradaA);
+
+        // Conexões do lado DIREITO do campus (A, B)
+        connectNodes(entradaA, entradaAB);
+        connectNodes(entradaB, entradaAB);
+
+        // REGRA: Caminho Alfa -> Biblioteca (passando por DENTRO de A)
+        connectNodes(entradaA, corredorA);
+        connectNodes(corredorA, entradaBiblioteca);
+
+        // Conexão da Biblioteca com o "hub" superior
+        connectNodes(entradaBiblioteca, contornoCD);
+
+        // "Hub" Superior (SÓ TEM SAÍDA PARA C E PARA O PONTO OBRIGATÓRIO)
+        connectNodes(contornoCD, entradaC);
+        connectNodes(contornoCD, contornoDBiblioteca); // Conexão para o novo ponto obrigatório
+
+        // REGRA: Para ir para D, E, F, G, deve passar pelo novo nó.
+        connectNodes(contornoDBiblioteca, entradaD); // <<< NOVA CONEXÃO AQUI
+        connectNodes(contornoDBiblioteca, desvioE);  // Conexão para o resto da esquerda
+
+        // O resto do caminho para a esquerda (como antes).
+        connectNodes(desvioE, contornoE);
+        connectNodes(contornoE, entradaE);
+        connectNodes(contornoE, contornoGF);
+        connectNodes(contornoGF, entradaF);
+        connectNodes(contornoGF, entradaG);
+
+        // Caminhos SECUNDÁRIOS por baixo (para quem vem do B, por exemplo)
+        connectNodes(entradaAB, contornoAC);
+        connectNodes(contornoAC, entradaCA);
+        connectNodes(entradaCA, contornoCE);
+        connectNodes(contornoCE, entradaC);
+        connectNodes(contornoCE, desvioE);
     }
+
 
     private void connectNodes(Node a, Node b) {
         double distance = Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
         a.addNeighbor(b, distance);
         b.addNeighbor(a, distance); // Para caminhos de mão dupla
     }
-
 
     private void setupMapMatrixListener() {
         ViewTreeObserver vto = mapImageView.getViewTreeObserver();
@@ -203,103 +239,24 @@ public class LocalizeActivity extends AppCompatActivity {
     }
 
     private void initializeLocationsAndAreas() {
-        Path pathAlfa = new Path();
-        pathAlfa.moveTo(900, 360);
-        pathAlfa.lineTo(958, 343);
-        pathAlfa.lineTo(957, 305);
-        pathAlfa.lineTo(1106, 257);
-        pathAlfa.lineTo(1156, 333);
-        pathAlfa.lineTo(1309, 284);
-        pathAlfa.lineTo(1421, 465);
-        pathAlfa.lineTo(1251, 521);
-        pathAlfa.lineTo(1289, 580);
-        pathAlfa.lineTo(1086, 642);
-        pathAlfa.close();
-        addArea("Bloco Alfa", "Prédio mais novo, com auditório e salas de pós-graduação.", pathAlfa);
+        addArea("Bloco Alfa", "Prédio mais novo, com auditório e salas de pós-graduação.", createPath(900, 360, 958, 343, 957, 305, 1106, 257, 1156, 333, 1309, 284, 1421, 465, 1251, 521, 1289, 580, 1086, 642));
+        addArea("Bloco A", "Prédio principal, com salas de aula e laboratórios de informática.", createPath(670, 530, 900, 457, 945, 523, 945, 548, 714, 617, 669, 553));
+        addArea("Bloco B", "Este bloco contém as salas do curso de Direito e o Núcleo de Prática Jurídica.", createPath(737, 633, 966, 560, 1009, 626, 1009, 649, 779, 715, 734, 653));
+        addArea("Bloco C", "Aqui ficam os laboratórios de saúde e as clínicas de atendimento à comunidade.", createPath(550, 577, 549, 546, 626, 522, 745, 700, 746, 716, 667, 736));
+        addArea("Bloco D", "Descrição do Bloco D.", createPath(426, 438, 425, 424, 453, 414, 455, 394, 527, 372, 603, 504, 604, 523, 526, 544, 507, 518, 480, 525));
+        addArea("Bloco E", "Descrição do Bloco E.", createPath(351, 628, 397, 579, 519, 641, 520, 672, 465, 716, 397, 686));
+        addArea("Bloco F", "Descrição do Bloco F.", createPath(328, 725, 327, 706, 381, 679, 428, 712, 428, 730, 351, 755));
+        addArea("Bloco G", "Descrição do Bloco G.", createPath(251, 660, 255, 635, 315, 614, 367, 651, 319, 673, 319, 697, 287, 705));
+        addArea("Biblioteca", "Acervo de livros, salas de estudo e computadores.", createPath(623, 477, 625, 459, 842, 381, 880, 443, 879, 454, 656, 526));
+    }
 
-        Path pathA = new Path();
-        pathA.moveTo(670, 530);
-        pathA.lineTo(900, 457);
-        pathA.lineTo(945, 523);
-        pathA.lineTo(945, 548);
-        pathA.lineTo(714, 617);
-        pathA.lineTo(669, 553);
-        pathA.close();
-        addArea("Bloco A", "Prédio principal, com salas de aula e laboratórios de informática.", pathA);
-
-        Path pathB = new Path();
-        pathB.moveTo(737, 633);
-        pathB.lineTo(966, 560);
-        pathB.lineTo(1009, 626);
-        pathB.lineTo(1009, 649);
-        pathB.lineTo(779, 715);
-        pathB.lineTo(734, 653);
-        pathB.close();
-        addArea("Bloco B", "Este bloco contém as salas do curso de Direito e o Núcleo de Prática Jurídica.", pathB);
-
-        Path pathC = new Path();
-        pathC.moveTo(550, 577);
-        pathC.lineTo(549, 546);
-        pathC.lineTo(626, 522);
-        pathC.lineTo(745, 700);
-        pathC.lineTo(746, 716);
-        pathC.lineTo(667, 736);
-        pathC.close();
-        addArea("Bloco C", "Aqui ficam os laboratórios de saúde e as clínicas de atendimento à comunidade.", pathC);
-
-        Path pathD = new Path();
-        pathD.moveTo(426, 438);
-        pathD.lineTo(425, 424);
-        pathD.lineTo(453, 414);
-        pathD.lineTo(455, 394);
-        pathD.lineTo(527, 372);
-        pathD.lineTo(603, 504);
-        pathD.lineTo(604, 523);
-        pathD.lineTo(526, 544);
-        pathD.lineTo(507, 518);
-        pathD.lineTo(480, 525);
-        pathD.close();
-        addArea("Bloco D", "Descrição do Bloco D.", pathD);
-
-        Path pathE = new Path();
-        pathE.moveTo(351, 628);
-        pathE.lineTo(397, 579);
-        pathE.lineTo(519, 641);
-        pathE.lineTo(520, 672);
-        pathE.lineTo(465, 716);
-        pathE.lineTo(397, 686);
-        pathE.close();
-        addArea("Bloco E", "Descrição do Bloco E.", pathE);
-
-        Path pathF = new Path();
-        pathF.moveTo(328, 725);
-        pathF.lineTo(327, 706);
-        pathF.lineTo(381, 679);
-        pathF.lineTo(428, 712);
-        pathF.lineTo(428, 730);
-        pathF.lineTo(351, 755);
-        pathF.close();
-        addArea("Bloco F", "Descrição do Bloco F.", pathF);
-
-        Path pathG = new Path();
-        pathG.moveTo(251, 660);
-        pathG.lineTo(255, 635);
-        pathG.lineTo(315, 614);
-        pathG.lineTo(367, 651);
-        pathG.lineTo(319, 673);
-        pathG.lineTo(319, 697);
-        pathG.lineTo(287, 705);
-        pathG.close();
-        addArea("Bloco G", "Descrição do Bloco G.", pathG);
-
-        Path pathBiblioteca = new Path();
-        pathBiblioteca.moveTo(623, 477);
-        pathBiblioteca.lineTo(625, 459);
-        pathBiblioteca.lineTo(842, 381);
-        pathBiblioteca.lineTo(880, 443);
-        pathBiblioteca.lineTo(879, 454);
-        pathBiblioteca.lineTo(656, 526);
-        pathBiblioteca.close();
-        addArea("Biblioteca", "Acervo de livros, salas de estudo e computadores.", pathBiblioteca);
+    private Path createPath(float... points) {
+        Path path = new Path();
+        path.moveTo(points[0], points[1]);
+        for (int i = 2; i < points.length; i += 2) {
+            path.lineTo(points[i], points[i+1]);
+        }
+        path.close();
+        return path;
     }
 }
