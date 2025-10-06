@@ -111,88 +111,84 @@ public class LocalizeActivity extends AppCompatActivity {
 
     private void initializeNavigationGraph() {
         // --- NÓS ---
-        Node entradaA = new Node("entradaA", 990, 565);
-        Node entradaAlfa = new Node("entradaAlfa", 983, 505);
-        Node entradaB = new Node("entradaB", 871, 588);
-        Node entradaBiblioteca = new Node("entradaBiblioteca", 793, 478);
-        Node entradaC = new Node("entradaC", 582, 533);
-        Node entradaD = new Node("entradaD", 572, 529);
-        Node entradaE = new Node("entradaE", 494, 682);
-        Node entradaF = new Node("entradaF", 356, 689);
-        Node entradaG = new Node("entradaG", 317, 692);
-        Node entradaAB = new Node("entradaAB", 846, 570);
-        Node entradaAC = new Node("entradaAC", 688, 577);
-        Node entradaCA = new Node("entradaCA", 681, 604);
-        Node contornoAC = new Node("contornoAC", 707, 624);
-        Node contornoCD = new Node("contornoCD", 614, 513);
-        Node contornoCE = new Node("contornoCE", 561, 652);
-        Node contornoE = new Node("contornoE", 432, 620);
-        Node contornoGF = new Node("contornoGF", 329, 688);
-        Node corredorA = new Node("corredorA", 870, 515);
-        Node desvioE = new Node("desvioE", 525, 615);
-        Node contornoDBiblioteca = new Node("contornoDBiblioteca", 628, 513);
+        Node entradaAlfa = new Node("Bloco Alfa", 996, 480);
+        Node entradaBlocoAlfa = new Node("Entrada Bloco Alfa", 986, 506);
+        Node hubAlfaB = new Node("Entrada Blocos AB", 987, 563);
+        Node contornoAB = new Node("Contorno AB", 722, 631);
+        Node contornoBibliotecaC = new Node("Contorno BibliotecaC", 636, 516);
+        Node contornoDC = new Node("Contorno DC", 522, 562);
+        Node entradaE = new Node("Bloco E", 464, 616);
+        Node contornoInternoE = new Node("Contorno InternoE", 431, 638);
+        Node entradaF = new Node("Bloco F", 353, 698);
+        Node entradaG = new Node("Bloco G", 317, 680);
+        Node entradaD = new Node("Bloco D", 572, 526);
+        Node entradaAB = new Node("Bloco AB", 846, 552);
+        Node entradaAC = new Node("Bloco AC", 691, 584);
+        Node entradaB = new Node("Bloco B", 879, 586);
+        Node entradaBiblioteca = new Node("Biblioteca", 789, 487);
+        Node entradaCA = new Node("Bloco CA", 692, 621);
+        Node entradaCD = new Node("Bloco CD", 581, 534);
+        Node contornoAC = new Node("Contorno Bloco AC", 702, 616);
+        Node corredorA = new Node("Corredor A", 790, 530);
+        Node contornoA_externo = new Node("Contorno A Externo", 850, 580);
 
         // Adicionar TODOS os nós ao grafo
-        navigationGraph.put(entradaA.id, entradaA);
         navigationGraph.put(entradaAlfa.id, entradaAlfa);
-        navigationGraph.put(entradaB.id, entradaB);
-        navigationGraph.put(entradaBiblioteca.id, entradaBiblioteca);
-        navigationGraph.put(entradaC.id, entradaC);
-        navigationGraph.put(entradaD.id, entradaD);
+        navigationGraph.put(entradaBlocoAlfa.id, entradaBlocoAlfa);
+        navigationGraph.put(hubAlfaB.id, hubAlfaB);
+        navigationGraph.put(contornoAB.id, contornoAB);
+        navigationGraph.put(contornoBibliotecaC.id, contornoBibliotecaC);
+        navigationGraph.put(contornoDC.id, contornoDC);
         navigationGraph.put(entradaE.id, entradaE);
+        navigationGraph.put(contornoInternoE.id, contornoInternoE);
         navigationGraph.put(entradaF.id, entradaF);
         navigationGraph.put(entradaG.id, entradaG);
+        navigationGraph.put(entradaD.id, entradaD);
         navigationGraph.put(entradaAB.id, entradaAB);
         navigationGraph.put(entradaAC.id, entradaAC);
+        navigationGraph.put(entradaB.id, entradaB);
+        navigationGraph.put(entradaBiblioteca.id, entradaBiblioteca);
         navigationGraph.put(entradaCA.id, entradaCA);
+        navigationGraph.put(entradaCD.id, entradaCD);
         navigationGraph.put(contornoAC.id, contornoAC);
-        navigationGraph.put(contornoCD.id, contornoCD);
-        navigationGraph.put(contornoCE.id, contornoCE);
-        navigationGraph.put(contornoE.id, contornoE);
-        navigationGraph.put(contornoGF.id, contornoGF);
         navigationGraph.put(corredorA.id, corredorA);
-        navigationGraph.put(desvioE.id, desvioE);
-        navigationGraph.put(contornoDBiblioteca.id, contornoDBiblioteca);
+        navigationGraph.put(contornoA_externo.id, contornoA_externo);
 
-        // --- CONEXÕES LÓGICAS FINAIS COM A ÚLTIMA REGRA ---
+        // --- CONEXÕES LÓGICAS ---
 
-        // REGRA: Saída do Alfa é SOMENTE pelo Bloco A.
-        connectNodes(entradaAlfa, entradaA);
+        // Lado Direito do Campus
+        connectNodes(entradaAlfa, entradaBlocoAlfa);
+        connectNodes(entradaBlocoAlfa, hubAlfaB);
+        connectNodes(hubAlfaB, entradaB);
+        connectNodes(hubAlfaB, contornoA_externo);
+        connectNodes(contornoA_externo, entradaAB);
+        connectNodes(contornoA_externo, entradaAC);
 
-        // Conexões do lado DIREITO do campus (A, B)
-        connectNodes(entradaA, entradaAB);
-        connectNodes(entradaB, entradaAB);
+        // ROTA PRINCIPAL OBRIGATÓRIA: Direita -> Esquerda (pelo caminho de CIMA)
+        connectNodes(entradaAC, contornoBibliotecaC);
 
-        // REGRA: Caminho Alfa -> Biblioteca (passando por DENTRO de A)
-        connectNodes(entradaA, corredorA);
+        // Rota de Baixo (AGORA É UM ACESSO LOCAL a partir do CENTRO)
+        connectNodes(contornoDC, entradaCA);
+        connectNodes(entradaCA, contornoAC);
+        connectNodes(contornoAC, contornoAB);
+
+        // Hub Central e Lado Esquerdo
+        connectNodes(contornoDC, entradaE);
+        connectNodes(contornoDC, contornoInternoE);
+        connectNodes(contornoDC, contornoBibliotecaC);
+        connectNodes(contornoDC, entradaD);
+        connectNodes(contornoBibliotecaC, entradaCD);
+        connectNodes(entradaCD, entradaD);
+
+        // Rota para Blocos F e G
+        connectNodes(contornoInternoE, entradaF);
+        connectNodes(contornoInternoE, entradaG);
+
+        // ROTA INTERNA EXCLUSIVA: Bloco A <--> Biblioteca
+        connectNodes(entradaAB, corredorA);
+        connectNodes(entradaAC, corredorA);
         connectNodes(corredorA, entradaBiblioteca);
-
-        // Conexão da Biblioteca com o "hub" superior
-        connectNodes(entradaBiblioteca, contornoCD);
-
-        // "Hub" Superior (SÓ TEM SAÍDA PARA C E PARA O PONTO OBRIGATÓRIO)
-        connectNodes(contornoCD, entradaC);
-        connectNodes(contornoCD, contornoDBiblioteca); // Conexão para o novo ponto obrigatório
-
-        // REGRA: Para ir para D, E, F, G, deve passar pelo novo nó.
-        connectNodes(contornoDBiblioteca, entradaD); // <<< NOVA CONEXÃO AQUI
-        connectNodes(contornoDBiblioteca, desvioE);  // Conexão para o resto da esquerda
-
-        // O resto do caminho para a esquerda (como antes).
-        connectNodes(desvioE, contornoE);
-        connectNodes(contornoE, entradaE);
-        connectNodes(contornoE, contornoGF);
-        connectNodes(contornoGF, entradaF);
-        connectNodes(contornoGF, entradaG);
-
-        // Caminhos SECUNDÁRIOS por baixo (para quem vem do B, por exemplo)
-        connectNodes(entradaAB, contornoAC);
-        connectNodes(contornoAC, entradaCA);
-        connectNodes(entradaCA, contornoCE);
-        connectNodes(contornoCE, entradaC);
-        connectNodes(contornoCE, desvioE);
     }
-
 
     private void connectNodes(Node a, Node b) {
         double distance = Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
@@ -219,15 +215,6 @@ public class LocalizeActivity extends AppCompatActivity {
                 routeView.setMatrix(matrix);
             }
         });
-    }
-
-    private MapActivity.ClickableArea findAreaByName(String name) {
-        for (MapActivity.ClickableArea area : clickableAreas) {
-            if (area.name.equals(name)) {
-                return area;
-            }
-        }
-        return null;
     }
 
     private void addArea(String name, String description, Path path) {
