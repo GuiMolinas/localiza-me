@@ -15,6 +15,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -33,7 +35,8 @@ public class LocalizeActivity extends AppCompatActivity {
     private final Map<String, Path> locations = new LinkedHashMap<>();
     private final Map<String, PointF> locationCenters = new HashMap<>();
 
-    private final Map<String, Node> navigationGraph = new HashMap<>();
+    // Mapa para armazenar os pontos de referência
+    private final Map<String, PointF> routePointsMap = new HashMap<>();
     private final String HINT = "-- Selecionar --";
 
     @Override
@@ -50,7 +53,7 @@ public class LocalizeActivity extends AppCompatActivity {
         mapImageView = findViewById(R.id.mapImageView);
 
         initializeLocationsAndAreas();
-        initializeNavigationGraph();
+        initializeRoutePoints(); // Carrega os pontos de rota
         setupMapMatrixListener();
 
         ArrayList<String> locationNames = new ArrayList<>();
@@ -74,126 +77,96 @@ public class LocalizeActivity extends AppCompatActivity {
             return;
         }
 
-        Node startNode = findNearestNode(locationCenters.get(from));
-        Node endNode = findNearestNode(locationCenters.get(to));
+        // Nova lógica de rotas fixas
+        List<PointF> path = getFixedRoute(from, to);
 
-        if (startNode != null && endNode != null) {
-            List<Node> path = AStar.findPath(navigationGraph, startNode, endNode);
-
-            if (path != null && !path.isEmpty()) {
-                List<PointF> routePoints = new ArrayList<>();
-                routePoints.add(locationCenters.get(from));
-                for (Node node : path) {
-                    routePoints.add(new PointF(node.x, node.y));
-                }
-                routePoints.add(locationCenters.get(to));
-                routeView.setRoute(routePoints);
-            } else {
-                Toast.makeText(this, "Não foi possível encontrar uma rota.", Toast.LENGTH_SHORT).show();
-                routeView.clearRoute();
-            }
+        if (path != null && !path.isEmpty()) {
+            List<PointF> fullPath = new ArrayList<>();
+            fullPath.add(locationCenters.get(from)); // Ponto inicial do bloco
+            fullPath.addAll(path);
+            fullPath.add(locationCenters.get(to)); // Ponto final do bloco
+            routeView.setRoute(fullPath);
+        } else {
+            Toast.makeText(this, "Rota não definida para este trajeto.", Toast.LENGTH_SHORT).show();
+            routeView.clearRoute();
         }
     }
 
-    private Node findNearestNode(PointF point) {
-        Node nearestNode = null;
-        double minDistance = Double.MAX_VALUE;
+    private void initializeRoutePoints() {
+        // Entradas dos Blocos
+        routePointsMap.put("Bloco Alfa", new PointF(996, 480));
+        routePointsMap.put("Bloco AB", new PointF(846, 552));
+        routePointsMap.put("Bloco AC", new PointF(691, 584));
+        routePointsMap.put("Bloco B", new PointF(879, 586));
+        routePointsMap.put("Biblioteca", new PointF(789, 487));
+        routePointsMap.put("Bloco CA", new PointF(692, 621));
+        routePointsMap.put("Bloco CD", new PointF(581, 534));
+        routePointsMap.put("Bloco D", new PointF(572, 526));
+        routePointsMap.put("Bloco E", new PointF(464, 616));
+        routePointsMap.put("Bloco F", new PointF(353, 698));
+        routePointsMap.put("Bloco G", new PointF(317, 680));
 
-        for (Node node : navigationGraph.values()) {
-            double distance = Math.sqrt(Math.pow(node.x - point.x, 2) + Math.pow(node.y - point.y, 2));
-            if (distance < minDistance) {
-                minDistance = distance;
-                nearestNode = node;
+        // Contornos e Pontos de Passagem
+        routePointsMap.put("Contorno Bloco AC", new PointF(702, 616));
+        routePointsMap.put("Contorno BibliotecaC", new PointF(636, 516));
+        routePointsMap.put("Contorno DC", new PointF(522, 562));
+        routePointsMap.put("Contorno InternoE", new PointF(431, 638));
+        routePointsMap.put("Contorno AB", new PointF(722, 631));
+        routePointsMap.put("Entrada Bloco Alfa", new PointF(986, 506));
+        routePointsMap.put("Entrada Blocos AB", new PointF(987, 563));
+
+        // Adicione outros pontos se necessário
+    }
+
+    private List<PointF> getFixedRoute(String from, String to) {
+        String routeKey = from + " -> " + to;
+
+        // --- ROTAS A PARTIR DO BLOCO ALFA ---
+        if (from.equals("Bloco Alfa")) {
+            switch (to) {
+                case "Bloco D":
+                    return getPointsFor("Entrada Bloco Alfa", "Entrada Blocos AB", "Contorno AB", "Contorno BibliotecaC", "Bloco D");
+                case "Bloco E":
+                    return getPointsFor("Entrada Bloco Alfa", "Entrada Blocos AB", "Contorno AB", "Contorno BibliotecaC", "Contorno DC", "Bloco E");
+                case "Bloco F":
+                    return getPointsFor("Entrada Bloco Alfa", "Entrada Blocos AB", "Contorno AB", "Contorno BibliotecaC", "Contorno DC", "Bloco E", "Contorno InternoE", "Bloco F");
+                case "Bloco G":
+                    return getPointsFor("Entrada Bloco Alfa", "Entrada Blocos AB", "Contorno AB", "Contorno BibliotecaC", "Contorno DC", "Bloco E", "Contorno InternoE", "Bloco G");
+                case "Bloco C":
+                    return getPointsFor("Entrada Bloco Alfa", "Entrada Blocos AB", "Contorno AB", "Contorno Bloco AC", "Bloco CA");
+                case "Bloco A":
+                    return getPointsFor("Entrada Bloco Alfa", "Entrada Blocos AB", "Bloco A");
+                case "Bloco B":
+                    return getPointsFor("Entrada Bloco Alfa", "Entrada Blocos AB", "Bloco B");
+                case "Biblioteca":
+                    return getPointsFor("Entrada Bloco Alfa", "Entrada Blocos AB", "Bloco A", "Biblioteca");
+                // Adicione outras rotas a partir do Bloco Alfa aqui
             }
         }
-        return nearestNode;
+
+        // --- ROTAS INVERSAS PARA O BLOCO ALFA ---
+        if (to.equals("Bloco Alfa")) {
+            List<PointF> path = getFixedRoute(to, from); // Chama a rota normal
+            if (path != null) {
+                Collections.reverse(path); // Apenas inverte a ordem dos pontos
+                return path;
+            }
+        }
+
+        // Adicione outras combinações de rotas aqui (ex: Bloco B -> Bloco G)
+
+        return null; // Rota não encontrada
     }
 
-    private void initializeNavigationGraph() {
-        // --- NÓS ---
-        Node entradaAlfa = new Node("Bloco Alfa", 996, 480);
-        Node entradaBlocoAlfa = new Node("Entrada Bloco Alfa", 986, 506);
-        Node hubAlfaB = new Node("Entrada Blocos AB", 987, 563);
-        Node contornoAB = new Node("Contorno AB", 722, 631);
-        Node contornoBibliotecaC = new Node("Contorno BibliotecaC", 636, 516);
-        Node contornoDC = new Node("Contorno DC", 522, 562);
-        Node entradaE = new Node("Bloco E", 464, 616);
-        Node contornoInternoE = new Node("Contorno InternoE", 431, 638);
-        Node entradaF = new Node("Bloco F", 353, 698);
-        Node entradaG = new Node("Bloco G", 317, 680);
-        Node entradaD = new Node("Bloco D", 572, 526);
-        Node entradaAB = new Node("Bloco AB", 846, 552);
-        Node entradaAC = new Node("Bloco AC", 691, 584);
-        Node entradaB = new Node("Bloco B", 879, 586);
-        Node entradaBiblioteca = new Node("Biblioteca", 789, 487);
-        Node entradaCA = new Node("Bloco CA", 692, 621);
-        Node entradaCD = new Node("Bloco CD", 581, 534);
-        Node contornoAC = new Node("Contorno Bloco AC", 702, 616);
-        Node corredorA = new Node("Corredor A", 790, 530);
-        Node contornoA_externo = new Node("Contorno A Externo", 850, 580);
-
-        // Adicionar TODOS os nós ao grafo
-        navigationGraph.put(entradaAlfa.id, entradaAlfa);
-        navigationGraph.put(entradaBlocoAlfa.id, entradaBlocoAlfa);
-        navigationGraph.put(hubAlfaB.id, hubAlfaB);
-        navigationGraph.put(contornoAB.id, contornoAB);
-        navigationGraph.put(contornoBibliotecaC.id, contornoBibliotecaC);
-        navigationGraph.put(contornoDC.id, contornoDC);
-        navigationGraph.put(entradaE.id, entradaE);
-        navigationGraph.put(contornoInternoE.id, contornoInternoE);
-        navigationGraph.put(entradaF.id, entradaF);
-        navigationGraph.put(entradaG.id, entradaG);
-        navigationGraph.put(entradaD.id, entradaD);
-        navigationGraph.put(entradaAB.id, entradaAB);
-        navigationGraph.put(entradaAC.id, entradaAC);
-        navigationGraph.put(entradaB.id, entradaB);
-        navigationGraph.put(entradaBiblioteca.id, entradaBiblioteca);
-        navigationGraph.put(entradaCA.id, entradaCA);
-        navigationGraph.put(entradaCD.id, entradaCD);
-        navigationGraph.put(contornoAC.id, contornoAC);
-        navigationGraph.put(corredorA.id, corredorA);
-        navigationGraph.put(contornoA_externo.id, contornoA_externo);
-
-        // --- CONEXÕES LÓGICAS ---
-
-        // Lado Direito do Campus
-        connectNodes(entradaAlfa, entradaBlocoAlfa);
-        connectNodes(entradaBlocoAlfa, hubAlfaB);
-        connectNodes(hubAlfaB, entradaB);
-        connectNodes(hubAlfaB, contornoA_externo);
-        connectNodes(contornoA_externo, entradaAB);
-        connectNodes(contornoA_externo, entradaAC);
-
-        // ROTA PRINCIPAL OBRIGATÓRIA: Direita -> Esquerda (pelo caminho de CIMA)
-        connectNodes(entradaAC, contornoBibliotecaC);
-
-        // Rota de Baixo (AGORA É UM ACESSO LOCAL a partir do CENTRO)
-        connectNodes(contornoDC, entradaCA);
-        connectNodes(entradaCA, contornoAC);
-        connectNodes(contornoAC, contornoAB);
-
-        // Hub Central e Lado Esquerdo
-        connectNodes(contornoDC, entradaE);
-        connectNodes(contornoDC, contornoInternoE);
-        connectNodes(contornoDC, contornoBibliotecaC);
-        connectNodes(contornoDC, entradaD);
-        connectNodes(contornoBibliotecaC, entradaCD);
-        connectNodes(entradaCD, entradaD);
-
-        // Rota para Blocos F e G
-        connectNodes(contornoInternoE, entradaF);
-        connectNodes(contornoInternoE, entradaG);
-
-        // ROTA INTERNA EXCLUSIVA: Bloco A <--> Biblioteca
-        connectNodes(entradaAB, corredorA);
-        connectNodes(entradaAC, corredorA);
-        connectNodes(corredorA, entradaBiblioteca);
-    }
-
-    private void connectNodes(Node a, Node b) {
-        double distance = Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
-        a.addNeighbor(b, distance);
-        b.addNeighbor(a, distance); // Para caminhos de mão dupla
+    // Método auxiliar para buscar os PointF a partir dos nomes
+    private List<PointF> getPointsFor(String... names) {
+        List<PointF> points = new ArrayList<>();
+        for (String name : names) {
+            if (routePointsMap.containsKey(name)) {
+                points.add(routePointsMap.get(name));
+            }
+        }
+        return points;
     }
 
     private void setupMapMatrixListener() {
