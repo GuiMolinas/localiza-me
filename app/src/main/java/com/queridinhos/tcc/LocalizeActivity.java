@@ -77,7 +77,14 @@ public class LocalizeActivity extends AppCompatActivity {
             return;
         }
 
-        // Nova lógica de rotas fixas
+        // NOVA VALIDAÇÃO: Verifica se os locais são iguais
+        if (from.equals(to)) {
+            Toast.makeText(LocalizeActivity.this, "Por favor, selecione locais distintos.", Toast.LENGTH_SHORT).show();
+            routeView.clearRoute(); // Limpa qualquer rota anterior
+            return;
+        }
+
+        // Lógica de rotas fixas
         List<PointF> path = getFixedRoute(from, to);
 
         if (path != null && !path.isEmpty()) {
@@ -95,16 +102,21 @@ public class LocalizeActivity extends AppCompatActivity {
     private void initializeRoutePoints() {
         // Entradas dos Blocos
         routePointsMap.put("Bloco Alfa", new PointF(996, 480));
-        routePointsMap.put("Bloco AB", new PointF(846, 552));
-        routePointsMap.put("Bloco AC", new PointF(691, 584));
+        routePointsMap.put("Bloco A", new PointF(807, 538)); // Ponto central para Bloco A
         routePointsMap.put("Bloco B", new PointF(879, 586));
-        routePointsMap.put("Biblioteca", new PointF(789, 487));
-        routePointsMap.put("Bloco CA", new PointF(692, 621));
-        routePointsMap.put("Bloco CD", new PointF(581, 534));
+        routePointsMap.put("Bloco C", new PointF(648, 640)); // Ponto central para Bloco C
         routePointsMap.put("Bloco D", new PointF(572, 526));
         routePointsMap.put("Bloco E", new PointF(464, 616));
         routePointsMap.put("Bloco F", new PointF(353, 698));
         routePointsMap.put("Bloco G", new PointF(317, 680));
+        routePointsMap.put("Biblioteca", new PointF(789, 487));
+
+        // Entradas específicas (se necessário para lógica, mas os centros acima são melhores para rotas)
+        routePointsMap.put("Bloco AB", new PointF(846, 552));
+        routePointsMap.put("Bloco AC", new PointF(691, 584));
+        routePointsMap.put("Bloco CA", new PointF(692, 621));
+        routePointsMap.put("Bloco CD", new PointF(581, 534));
+
 
         // Contornos e Pontos de Passagem
         routePointsMap.put("Contorno Bloco AC", new PointF(702, 616));
@@ -114,12 +126,9 @@ public class LocalizeActivity extends AppCompatActivity {
         routePointsMap.put("Contorno AB", new PointF(821, 596));
         routePointsMap.put("Entrada Bloco Alfa", new PointF(986, 506));
         routePointsMap.put("Entrada Blocos AB", new PointF(987, 563));
-
-        // Adicione outros pontos se necessário
     }
 
     private List<PointF> getFixedRoute(String from, String to) {
-        String routeKey = from + " -> " + to;
 
         // --- ROTAS A PARTIR DO BLOCO ALFA ---
         if (from.equals("Bloco Alfa")) {
@@ -131,7 +140,7 @@ public class LocalizeActivity extends AppCompatActivity {
                 case "Bloco F":
                     return getPointsFor("Entrada Bloco Alfa", "Entrada Blocos AB", "Contorno AB", "Contorno Bloco AC", "Contorno BibliotecaC", "Contorno DC", "Bloco E", "Contorno InternoE", "Bloco F");
                 case "Bloco G":
-                    return getPointsFor("Entrada Bloco Alfa", "Entrada Blocos AB", "Contorno AB", "Contorno Bloco AC", "Contorno Bloco AC", "Contorno BibliotecaC", "Contorno DC", "Bloco E", "Contorno InternoE", "Bloco G");
+                    return getPointsFor("Entrada Bloco Alfa", "Entrada Blocos AB", "Contorno AB", "Contorno Bloco AC", "Contorno BibliotecaC", "Contorno DC", "Bloco E", "Contorno InternoE", "Bloco G");
                 case "Bloco C":
                     return getPointsFor("Entrada Bloco Alfa", "Entrada Blocos AB", "Contorno AB", "Contorno Bloco AC", "Bloco CA");
                 case "Bloco A":
@@ -140,21 +149,31 @@ public class LocalizeActivity extends AppCompatActivity {
                     return getPointsFor("Entrada Bloco Alfa", "Entrada Blocos AB", "Bloco B");
                 case "Biblioteca":
                     return getPointsFor("Entrada Bloco Alfa", "Entrada Blocos AB", "Bloco A", "Biblioteca");
-                // Adicione outras rotas a partir do Bloco Alfa aqui
-            }
-        }
-
-        // --- ROTAS INVERSAS PARA O BLOCO ALFA ---
-        if (to.equals("Bloco Alfa")) {
-            List<PointF> path = getFixedRoute(to, from); // Chama a rota normal
-            if (path != null) {
-                Collections.reverse(path); // Apenas inverte a ordem dos pontos
-                return path;
             }
         }
 
         // --- ROTAS A PARTIR DO BLOCO A ---
         if (from.equals("Bloco A")) {
+            switch (to) {
+                case "Bloco D":
+                    return getPointsFor("Bloco AC", "Contorno BibliotecaC", "Bloco D");
+                case "Bloco E":
+                    return getPointsFor("Bloco AC", "Contorno BibliotecaC", "Contorno DC", "Bloco E");
+                case "Bloco F":
+                    return getPointsFor("Bloco AC", "Contorno BibliotecaC", "Contorno DC", "Bloco E", "Contorno InternoE", "Bloco F");
+                case "Bloco G":
+                    return getPointsFor("Bloco AC", "Contorno BibliotecaC", "Contorno DC", "Bloco E", "Contorno InternoE", "Bloco G");
+                case "Bloco C":
+                    return getPointsFor("Bloco AC", "Bloco CA");
+                case "Bloco B":
+                    return getPointsFor("Bloco B");
+                case "Biblioteca":
+                    return getPointsFor("Biblioteca");
+            }
+        }
+
+        // --- ROTAS A PARTIR DO BLOCO B ---
+        if (from.equals("Bloco B")) {
             switch (to) {
                 case "Bloco D":
                     return getPointsFor("Contorno AB", "Contorno Bloco AC", "Contorno BibliotecaC", "Bloco D");
@@ -166,26 +185,81 @@ public class LocalizeActivity extends AppCompatActivity {
                     return getPointsFor("Contorno AB", "Contorno Bloco AC", "Contorno BibliotecaC", "Contorno DC", "Bloco E", "Contorno InternoE", "Bloco G");
                 case "Bloco C":
                     return getPointsFor("Contorno AB", "Contorno Bloco AC", "Bloco CA");
-                case "Bloco B":
-                    return getPointsFor("Bloco B");
                 case "Biblioteca":
-                    return getPointsFor("Biblioteca");
-                // Adicione outras rotas a partir do Bloco Alfa aqui
+                    return getPointsFor("Bloco A", "Biblioteca");
             }
         }
 
-        // --- ROTAS INVERSAS PARA O BLOCO ALFA ---
-        if (to.equals("Bloco A")) {
-            List<PointF> path = getFixedRoute(to, from); // Chama a rota normal
-            if (path != null) {
-                Collections.reverse(path); // Apenas inverte a ordem dos pontos
-                return path;
+        // --- ROTAS A PARTIR DO BLOCO C ---
+        if (from.equals("Bloco C")) {
+            switch (to) {
+                case "Bloco D":
+                    return getPointsFor("Bloco CD", "Bloco D");
+                case "Bloco E":
+                    return getPointsFor("Bloco CD", "Contorno DC", "Bloco E");
+                case "Bloco F":
+                    return getPointsFor("Bloco CD", "Contorno DC", "Bloco E", "Contorno InternoE", "Bloco F");
+                case "Bloco G":
+                    return getPointsFor("Bloco CD", "Contorno DC", "Bloco E", "Contorno InternoE", "Bloco G");
+                case "Biblioteca":
+                    return getPointsFor("Bloco CA", "Bloco AC", "Bloco A", "Biblioteca");
             }
         }
 
-        // Adicione outras combinações de rotas aqui (ex: Bloco B -> Bloco G)
+        // --- ROTAS A PARTIR DO BLOCO D ---
+        if (from.equals("Bloco D")) {
+            switch (to) {
+                case "Bloco E":
+                    return getPointsFor("Contorno DC", "Bloco E");
+                case "Bloco F":
+                    return getPointsFor("Contorno DC", "Bloco E", "Contorno InternoE", "Bloco F");
+                case "Bloco G":
+                    return getPointsFor("Contorno DC", "Bloco E", "Contorno InternoE", "Bloco G");
+                case "Biblioteca":
+                    return getPointsFor("Contorno BibliotecaC", "Bloco AC", "Biblioteca");
+            }
+        }
 
-        return null; // Rota não encontrada
+        // --- ROTAS A PARTIR DO BLOCO E ---
+        if (from.equals("Bloco E")) {
+            switch (to) {
+                case "Bloco F":
+                    return getPointsFor("Contorno InternoE", "Bloco F");
+                case "Bloco G":
+                    return getPointsFor("Contorno InternoE", "Bloco G");
+                case "Biblioteca":
+                    return getPointsFor("Contorno DC", "Contorno BibliotecaC", "Bloco AC", "Biblioteca");
+            }
+        }
+
+        // --- ROTAS A PARTIR DO BLOCO F ---
+        if (from.equals("Bloco F")) {
+            switch (to) {
+                case "Bloco G":
+                    return getPointsFor("Bloco G");
+                case "Biblioteca":
+                    return getPointsFor("Contorno InternoE", "Bloco E", "Contorno DC", "Contorno BibliotecaC", "Bloco AC", "Biblioteca");
+            }
+        }
+
+        // --- ROTAS A PARTIR DO BLOCO G ---
+        if (from.equals("Bloco G")) {
+            switch (to) {
+                case "Biblioteca":
+                    return getPointsFor("Contorno InternoE", "Bloco E", "Contorno DC", "Contorno BibliotecaC", "Bloco AC", "Biblioteca");
+            }
+        }
+
+
+        // --- ROTAS INVERSAS ---
+        // Se a rota direta não foi encontrada, tenta a inversa
+        List<PointF> reversePath = getFixedRoute(to, from);
+        if (reversePath != null) {
+            Collections.reverse(reversePath);
+            return reversePath;
+        }
+
+        return null; // Rota não encontrada em nenhuma direção
     }
 
     // Método auxiliar para buscar os PointF a partir dos nomes
