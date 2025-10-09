@@ -21,12 +21,17 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class SettingsActivity extends BaseActivity {
 
+    // PREFERENCES KEYS
     private static final String PREFS_NAME = "ThemePrefs";
     private static final String THEME_KEY = "selectedTheme";
     private static final String FONT_SIZE_PREFS = "FontSizePrefs";
     private static final String FONT_SIZE_KEY = "selectedFontSize";
     private static final String VISUALIZAR_CLIQUE_PREFS = "VisualizarCliquePrefs";
     private static final String VISUALIZAR_CLIQUE_KEY = "visualizarClique";
+    private static final String COORDENADAS_PREFS = "CoordenadasPrefs";
+    private static final String COORDENADAS_KEY = "visualizarCoordenadas";
+    private static final String NOTIFICATIONS_PREFS = "NotificationsPrefs";
+    private static final String NOTIFICATIONS_KEY = "notificationsEnabled";
 
     private ValueAnimator currentAnimator;
 
@@ -52,6 +57,21 @@ public class SettingsActivity extends BaseActivity {
         setupThemeSpinner();
         setupFontSizeSpinner();
         setupVisualizarCliqueSwitch();
+        setupCoordenadasSwitch();
+        setupNotificationsSwitch(); // Adicionado
+    }
+
+    private void setupNotificationsSwitch() {
+        SwitchCompat notificationsSwitch = findViewById(R.id.notificationsSwitch);
+        SharedPreferences prefs = getSharedPreferences(NOTIFICATIONS_PREFS, MODE_PRIVATE);
+        // Notificações ativadas por padrão (true)
+        notificationsSwitch.setChecked(prefs.getBoolean(NOTIFICATIONS_KEY, true));
+
+        notificationsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            SharedPreferences.Editor editor = getSharedPreferences(NOTIFICATIONS_PREFS, MODE_PRIVATE).edit();
+            editor.putBoolean(NOTIFICATIONS_KEY, isChecked);
+            editor.apply();
+        });
     }
 
     private void setupVisualizarCliqueSwitch() {
@@ -62,6 +82,18 @@ public class SettingsActivity extends BaseActivity {
         visualizarCliqueSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             SharedPreferences.Editor editor = getSharedPreferences(VISUALIZAR_CLIQUE_PREFS, MODE_PRIVATE).edit();
             editor.putBoolean(VISUALIZAR_CLIQUE_KEY, isChecked);
+            editor.apply();
+        });
+    }
+
+    private void setupCoordenadasSwitch() {
+        SwitchCompat coordenadasSwitch = findViewById(R.id.coordenadasSwitch);
+        SharedPreferences prefs = getSharedPreferences(COORDENADAS_PREFS, MODE_PRIVATE);
+        coordenadasSwitch.setChecked(prefs.getBoolean(COORDENADAS_KEY, false));
+
+        coordenadasSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            SharedPreferences.Editor editor = getSharedPreferences(COORDENADAS_PREFS, MODE_PRIVATE).edit();
+            editor.putBoolean(COORDENADAS_KEY, isChecked);
             editor.apply();
         });
     }
@@ -124,17 +156,14 @@ public class SettingsActivity extends BaseActivity {
     private void applyThemeWithTransition(int position) {
         View rootView = findViewById(android.R.id.content);
 
-        // 1. Salva a preferência
         SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
         editor.putInt(THEME_KEY, position);
         editor.apply();
 
-        // 2. Animação de transição
         rootView.animate()
                 .alpha(0.7f)
                 .setDuration(100)
                 .withEndAction(() -> {
-                    // 3. Aplica o tema
                     switch (position) {
                         case THEME_LIGHT:
                             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
@@ -146,8 +175,6 @@ public class SettingsActivity extends BaseActivity {
                             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
                             break;
                     }
-
-                    // 4. Restaura a visibilidade
                     new Handler().postDelayed(() -> {
                         rootView.animate()
                                 .alpha(1f)
@@ -176,12 +203,9 @@ public class SettingsActivity extends BaseActivity {
     }
 
     private void applyFontSizeChange(int position) {
-        // 1. Salva a preferência
         SharedPreferences.Editor editor = getSharedPreferences(FONT_SIZE_PREFS, MODE_PRIVATE).edit();
         editor.putInt(FONT_SIZE_KEY, position);
         editor.apply();
-
-        // 2. Aplica com animação
         applyFontSizeSmoothly();
     }
 

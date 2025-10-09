@@ -77,10 +77,15 @@ public class MapActivity extends AppCompatActivity {
         mapImageView.setMinimumScale(1.0f);
         mapImageView.setMaximumScale(4.0f);
 
-        // ATIVA A VISIBILIDADE DA CAMADA DE DEBUG
+        // ATIVA/DESATIVA A VISIBILIDADE DA CAMADA DE DEBUG (ÁREAS DE CLIQUE)
         SharedPreferences prefs = getSharedPreferences("VisualizarCliquePrefs", MODE_PRIVATE);
         boolean visualizarClique = prefs.getBoolean("visualizarClique", false);
         clickableAreaDebugView.setVisibility(visualizarClique ? View.VISIBLE : View.GONE);
+
+        // ATIVA/DESATIVA A VISIBILIDADE DAS COORDENADAS DE DEBUG (TEXTO X, Y)
+        SharedPreferences coordsPrefs = getSharedPreferences("CoordenadasPrefs", MODE_PRIVATE);
+        boolean visualizarCoordenadas = coordsPrefs.getBoolean("visualizarCoordenadas", false);
+        debugCoordinates.setVisibility(visualizarCoordenadas ? View.VISIBLE : View.GONE);
 
 
         setupClickableAreas();

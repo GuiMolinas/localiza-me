@@ -80,6 +80,9 @@
     <string name="txtVisualizarClique">Visualizar Clique</string>
     <string name="txtVisualizarCliqueEx">Mostra a área de clique no mapa</string>
 
+    <string name="txtVisualizarCoordenadas">Visualizar Coordenadas</string>
+    <string name="txtVisualizarCoordenadasEx">Mostra as coordenadas de toque no mapa</string>
+
 
 
 </resources>

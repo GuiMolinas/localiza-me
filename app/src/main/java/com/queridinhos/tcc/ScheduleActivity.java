@@ -1,13 +1,19 @@
 package com.queridinhos.tcc;
 
 import android.Manifest;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.view.View;
@@ -33,6 +39,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ScheduleActivity extends AppCompatActivity {
 
@@ -49,6 +56,8 @@ public class ScheduleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
 
+        NotificationHelper.createNotificationChannel(this);
+
         calendarView = findViewById(R.id.calendarView);
         eventsRecyclerView = findViewById(R.id.eventsRecyclerView);
         addEventFab = findViewById(R.id.addEventFab);
@@ -62,12 +71,13 @@ public class ScheduleActivity extends AppCompatActivity {
             Calendar calendar = Calendar.getInstance();
             calendar.set(year, month, dayOfMonth);
             selectedDate = calendar.getTimeInMillis();
-            checkCalendarPermissions();
+            checkPermissions();
         });
 
         addEventFab.setOnClickListener(v -> showAddOrUpdateEventDialog(null));
 
-        checkCalendarPermissions();
+        checkPermissions();
+        setupTestNotificationButton();
     }
 
     private void setupRecyclerView() {
@@ -76,26 +86,47 @@ public class ScheduleActivity extends AppCompatActivity {
         eventsRecyclerView.setAdapter(eventAdapter);
     }
 
-    private void checkCalendarPermissions() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR}, CALENDAR_PERMISSION_REQUEST_CODE);
+    private void checkPermissions() {
+        List<String> permissionsToRequest = new ArrayList<>();
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+            permissionsToRequest.add(Manifest.permission.READ_CALENDAR);
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+            permissionsToRequest.add(Manifest.permission.WRITE_CALENDAR);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                permissionsToRequest.add(Manifest.permission.POST_NOTIFICATIONS);
+            }
+        }
+
+        if (!permissionsToRequest.isEmpty()) {
+            ActivityCompat.requestPermissions(this, permissionsToRequest.toArray(new String[0]), CALENDAR_PERMISSION_REQUEST_CODE);
         } else {
             loadEventsForDate(selectedDate);
         }
     }
 
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == CALENDAR_PERMISSION_REQUEST_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            boolean allGranted = true;
+            for (int result : grantResults) {
+                if (result != PackageManager.PERMISSION_GRANTED) {
+                    allGranted = false;
+                    break;
+                }
+            }
+            if (allGranted) {
                 loadEventsForDate(selectedDate);
             } else {
-                Toast.makeText(this, "Permissão de calendário negada", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Permissões necessárias negadas.", Toast.LENGTH_SHORT).show();
             }
         }
     }
+
 
     private void loadEventsForDate(long date) {
         eventList.clear();
@@ -124,6 +155,11 @@ public class ScheduleActivity extends AppCompatActivity {
                 CalendarContract.Instances.BEGIN,
                 CalendarContract.Instances.END
         };
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+            checkPermissions();
+            return;
+        }
 
         Cursor cursor = contentResolver.query(builder.build(), projection, null, null, null);
 
@@ -205,7 +241,6 @@ public class ScheduleActivity extends AppCompatActivity {
                 startCalendar.set(Calendar.MINUTE, Integer.parseInt(startTime[1]));
             }
 
-
             Calendar endCalendar = Calendar.getInstance();
             endCalendar.setTimeInMillis(selectedDate);
             String[] endTime = endTimeInput.getText().toString().split(":");
@@ -246,13 +281,16 @@ public class ScheduleActivity extends AppCompatActivity {
         }
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
-            checkCalendarPermissions();
+            checkPermissions();
             return;
         }
-        cr.insert(CalendarContract.Events.CONTENT_URI, values);
-
-        Toast.makeText(this, "Evento adicionado", Toast.LENGTH_SHORT).show();
-        loadEventsForDate(selectedDate);
+        Uri newEvent = cr.insert(CalendarContract.Events.CONTENT_URI, values);
+        if (newEvent != null) {
+            long eventId = Long.parseLong(newEvent.getLastPathSegment());
+            scheduleNotifications(eventId, title, description, startTime);
+            Toast.makeText(this, "Evento adicionado", Toast.LENGTH_SHORT).show();
+            loadEventsForDate(selectedDate);
+        }
     }
 
     private void updateEvent(long eventId, String title, String description, boolean isRecurring, long startTime, long endTime) {
@@ -272,6 +310,11 @@ public class ScheduleActivity extends AppCompatActivity {
         Uri updateUri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, eventId);
         cr.update(updateUri, values, null, null);
 
+        // Sempre cancele as notificações antigas
+        cancelNotifications(eventId);
+        // E reagende as novas (o método scheduleNotifications já verifica o switch)
+        scheduleNotifications(eventId, title, description, startTime);
+
         Toast.makeText(this, "Evento atualizado", Toast.LENGTH_SHORT).show();
         loadEventsForDate(selectedDate);
     }
@@ -281,7 +324,96 @@ public class ScheduleActivity extends AppCompatActivity {
         Uri deleteUri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, eventId);
         cr.delete(deleteUri, null, null);
 
+        cancelNotifications(eventId);
+
         Toast.makeText(this, "Evento excluído", Toast.LENGTH_SHORT).show();
         loadEventsForDate(selectedDate);
+    }
+
+    private void scheduleNotifications(long eventId, String title, String description, long startTime) {
+        SharedPreferences prefs = getSharedPreferences("NotificationsPrefs", MODE_PRIVATE);
+        boolean notificationsEnabled = prefs.getBoolean("notificationsEnabled", true);
+
+        if (!notificationsEnabled) {
+            return; // Se as notificações estiverem desativadas, não faz nada
+        }
+
+        long[] notificationTimes = {
+                startTime - 60 * 60 * 1000, // 1 hora antes
+                startTime - 30 * 60 * 1000, // 30 mins antes
+                startTime - 10 * 60 * 1000  // 10 mins antes
+        };
+
+        for (int i = 0; i < notificationTimes.length; i++) {
+            if (notificationTimes[i] > System.currentTimeMillis()) {
+                scheduleSingleNotification(eventId, title, description, notificationTimes[i], i);
+            }
+        }
+    }
+
+    private void scheduleSingleNotification(long eventId, String title, String description, long time, int requestCode) {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, NotificationReceiver.class);
+        intent.putExtra("title", title);
+        intent.putExtra("description", description);
+        intent.putExtra("notification_id", (int) eventId + requestCode);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                this, (int) eventId + requestCode, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+        );
+
+        if (alarmManager != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                if (alarmManager.canScheduleExactAlarms()) {
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, pendingIntent);
+                }
+            } else {
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, pendingIntent);
+            }
+        }
+    }
+
+
+    private void cancelNotifications(long eventId) {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        for (int i = 0; i < 3; i++) {
+            Intent intent = new Intent(this, NotificationReceiver.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                    this, (int) eventId + i, intent,
+                    PendingIntent.FLAG_NO_CREATE | PendingIntent.FLAG_IMMUTABLE
+            );
+
+            if (pendingIntent != null && alarmManager != null) {
+                alarmManager.cancel(pendingIntent);
+            }
+        }
+    }
+
+    private void setupTestNotificationButton() {
+        View testButton = findViewById(R.id.testNotificationButton);
+        final AtomicInteger clickCount = new AtomicInteger(0);
+
+        testButton.setOnClickListener(v -> {
+            int count = clickCount.incrementAndGet();
+            if (count >= 5) {
+                SharedPreferences prefs = getSharedPreferences("NotificationsPrefs", MODE_PRIVATE);
+                boolean notificationsEnabled = prefs.getBoolean("notificationsEnabled", true);
+
+                if (notificationsEnabled) {
+                    Toast.makeText(this, "Notificação de teste em 5 segundos!", Toast.LENGTH_SHORT).show();
+                    scheduleSingleNotification(
+                            -1,
+                            "Notificação de Teste",
+                            "Se você está vendo isso, está funcionando!",
+                            System.currentTimeMillis() + 5000,
+                            999
+                    );
+                } else {
+                    Toast.makeText(this, "As notificações estão desativadas!", Toast.LENGTH_SHORT).show();
+                }
+                clickCount.set(0); // Reseta a contagem
+            }
+        });
     }
 }
