@@ -1,50 +1,83 @@
-// src/main/java/com/queridinhos/tcc/InternalMapActivity.java
+// app/src/main/java/com/queridinhos/tcc/InternalMapActivity.java
 package com.queridinhos.tcc;
 
 import android.os.Bundle;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.github.chrisbanes.photoview.PhotoView;
-
+import androidx.viewpager2.widget.ViewPager2;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class InternalMapActivity extends AppCompatActivity {
 
-    private PhotoView internalMapImageView;
+    private ViewPager2 floorViewPager;
+    private TextView floorNameTextView;
     private ImageButton backButton;
 
-    // Mapeamento dos nomes dos blocos para os recursos de imagem
-    private final Map<String, Integer> blockMapImages = new HashMap<>();
+    // Estrutura de dados atualizada para suportar múltiplos andares por bloco
+    private final Map<String, List<FloorMap>> blockFloorsMap = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_internal_map);
 
-        internalMapImageView = findViewById(R.id.internalMapImageView);
+        floorViewPager = findViewById(R.id.floorViewPager);
+        floorNameTextView = findViewById(R.id.floorNameTextView);
         backButton = findViewById(R.id.backButtonInternal);
 
-        // Preenche o mapa com as imagens internas (você precisará adicionar essas imagens)
         initializeBlockMaps();
 
         String blockName = getIntent().getStringExtra("BLOCK_NAME");
+        List<FloorMap> floors = blockFloorsMap.get(blockName);
 
-        if (blockName != null && blockMapImages.containsKey(blockName)) {
-            internalMapImageView.setImageResource(blockMapImages.get(blockName));
+        if (floors != null && !floors.isEmpty()) {
+            // Configura o ViewPager2 com o nosso adaptador
+            FloorMapAdapter adapter = new FloorMapAdapter(floors);
+            floorViewPager.setAdapter(adapter);
+
+            // Atualiza o nome do andar quando o usuário arrasta a tela
+            floorViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+                @Override
+                public void onPageSelected(int position) {
+                    super.onPageSelected(position);
+                    floorNameTextView.setText(floors.get(position).getFloorName());
+                }
+            });
+
+            // Define o nome do primeiro andar ao carregar a tela
+            floorNameTextView.setText(floors.get(0).getFloorName());
+
         } else {
-            Toast.makeText(this, "Mapa interno não disponível para este bloco.", Toast.LENGTH_LONG).show();
-            // Opcional: mostrar uma imagem padrão de "não encontrado"
-            // internalMapImageView.setImageResource(R.drawable.mapa_nao_encontrado);
+            Toast.makeText(this, "Mapas internos não disponíveis para este bloco.", Toast.LENGTH_LONG).show();
         }
 
         backButton.setOnClickListener(v -> finish());
     }
 
+    /**
+     * Aqui você associa cada bloco a uma LISTA de andares.
+     */
     private void initializeBlockMaps() {
-        blockMapImages.put("Bloco A", R.drawable.mapa_interno_bloco_a1);
+        // Exemplo para o Bloco A, que tem Térreo e 1º Andar
+        List<FloorMap> blocoAFloors = new ArrayList<>();
+        // Adicione os arquivos de imagem na pasta res/drawable
+        blocoAFloors.add(new FloorMap("Térreo", R.drawable.mapa_bloco_a_terreo));
+        blocoAFloors.add(new FloorMap("Piso Superior", R.drawable.mapa_bloco_a_1andar));
+        blockFloorsMap.put("Bloco A", blocoAFloors);
+
+        // Exemplo para a Biblioteca, que tem apenas um andar (ou mapa)
+        List<FloorMap> bibliotecaFloors = new ArrayList<>();
+        //bibliotecaFloors.add(new FloorMap("Biblioteca", R.drawable.mapa_interno_biblioteca));
+        blockFloorsMap.put("Biblioteca", bibliotecaFloors);
+
+        // Adicione os outros blocos e seus respectivos andares aqui...
+        // List<FloorMap> blocoBFloors = new ArrayList<>();
+        // ...
+        // blockFloorsMap.put("Bloco B", blocoBFloors);
     }
 }
