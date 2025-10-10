@@ -1,5 +1,8 @@
 package com.queridinhos.tcc;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -9,17 +12,24 @@ import android.graphics.Path;
 import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.view.View;
-import android.animation.ValueAnimator;
+
 import java.util.List;
 
 public class RouteView extends View {
 
-    private Paint paint = new Paint();
+    private final Paint paint = new Paint();
     private List<PointF> routePoints;
     private float animatedValue = 0f;
     private ValueAnimator animator;
     private Matrix matrix = new Matrix();
-    private Path routePath = new Path();
+    private final Path routePath = new Path();
+
+    // 1. Interface para o callback de finalização da animação
+    public interface OnRouteAnimationEndListener {
+        void onAnimationEnd();
+    }
+
+    private OnRouteAnimationEndListener animationEndListener;
 
     public RouteView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -39,10 +49,21 @@ public class RouteView extends View {
 
     /**
      * Define a rota a ser desenhada a partir de uma lista de pontos.
+     * Mantido para compatibilidade.
      * @param points A lista de PointF que compõe a rota.
      */
     public void setRoute(List<PointF> points) {
+        setRoute(points, null); // Chama a nova versão com um listener nulo
+    }
+
+    /**
+     * Define a rota a ser desenhada e notifica quando a animação termina.
+     * @param points A lista de PointF que compõe a rota.
+     * @param listener O callback a ser chamado no final da animação.
+     */
+    public void setRoute(List<PointF> points, OnRouteAnimationEndListener listener) {
         this.routePoints = points;
+        this.animationEndListener = listener; // Armazena o listener
         if (points != null && points.size() > 1) {
             buildPath();
             startAnimation();
@@ -84,6 +105,19 @@ public class RouteView extends View {
             animatedValue = (float) animation.getAnimatedValue();
             invalidate();
         });
+
+        // 2. Adiciona um listener para detectar o fim da animação
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                // 3. Chama o callback se ele não for nulo
+                if (animationEndListener != null) {
+                    animationEndListener.onAnimationEnd();
+                }
+            }
+        });
+
         animator.start();
     }
 

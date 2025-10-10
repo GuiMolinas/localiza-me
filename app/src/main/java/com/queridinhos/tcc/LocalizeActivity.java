@@ -1,11 +1,13 @@
 package com.queridinhos.tcc;
 
+import android.content.Intent;
 import android.graphics.Matrix;
 import android.graphics.Path;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.os.Bundle;
-import android.view.View;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.ViewTreeObserver;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -13,9 +15,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -77,14 +80,12 @@ public class LocalizeActivity extends AppCompatActivity {
             return;
         }
 
-        // NOVA VALIDAÇÃO: Verifica se os locais são iguais
         if (from.equals(to)) {
             Toast.makeText(LocalizeActivity.this, "Por favor, selecione locais distintos.", Toast.LENGTH_SHORT).show();
             routeView.clearRoute(); // Limpa qualquer rota anterior
             return;
         }
 
-        // Lógica de rotas fixas
         List<PointF> path = getFixedRoute(from, to);
 
         if (path != null && !path.isEmpty()) {
@@ -92,7 +93,22 @@ public class LocalizeActivity extends AppCompatActivity {
             fullPath.add(locationCenters.get(from)); // Ponto inicial do bloco
             fullPath.addAll(path);
             fullPath.add(locationCenters.get(to)); // Ponto final do bloco
-            routeView.setRoute(fullPath);
+
+            // MODIFICAÇÃO PRINCIPAL AQUI
+            // Chama setRoute com o novo listener para lidar com o fim da animação
+            routeView.setRoute(fullPath, () -> {
+                // Este código é executado QUANDO a animação da rota termina.
+                Toast.makeText(LocalizeActivity.this, "Você chegou ao seu destino!", Toast.LENGTH_SHORT).show();
+
+                // Adiciona um delay de 2 segundos (2000 ms) antes de mudar de tela
+                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                    // Após o delay, inicia a nova atividade do mapa interno
+                    Intent intent = new Intent(LocalizeActivity.this, InternalMapActivity.class);
+                    // Envia o nome do bloco de destino para a próxima tela
+                    intent.putExtra("BLOCK_NAME", to);
+                    startActivity(intent);
+                }, 2000); // 2000ms = 2 segundos
+            });
         } else {
             Toast.makeText(this, "Rota não definida para este trajeto.", Toast.LENGTH_SHORT).show();
             routeView.clearRoute();
