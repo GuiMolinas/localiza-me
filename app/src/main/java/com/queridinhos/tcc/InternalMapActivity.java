@@ -66,8 +66,8 @@ public class InternalMapActivity extends AppCompatActivity {
         // Exemplo para o Bloco A, que tem Térreo e 1º Andar
         List<FloorMap> blocoAFloors = new ArrayList<>();
         // Adicione os arquivos de imagem na pasta res/drawable
-        blocoAFloors.add(new FloorMap("Térreo", R.drawable.mapa_bloco_a_terreo));
-        blocoAFloors.add(new FloorMap("Piso Superior", R.drawable.mapa_bloco_a_1andar));
+        blocoAFloors.add(new FloorMap("Térreo", R.drawable.terreo_a));
+        blocoAFloors.add(new FloorMap("Piso Superior", R.drawable.superior_a));
         blockFloorsMap.put("Bloco A", blocoAFloors);
 
         // Exemplo para a Biblioteca, que tem apenas um andar (ou mapa)
