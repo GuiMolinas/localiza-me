@@ -70,14 +70,50 @@ public class InternalMapActivity extends AppCompatActivity {
         blocoAFloors.add(new FloorMap("Piso Superior", R.drawable.superior_a));
         blockFloorsMap.put("Bloco A", blocoAFloors);
 
-        // Exemplo para a Biblioteca, que tem apenas um andar (ou mapa)
-        List<FloorMap> bibliotecaFloors = new ArrayList<>();
-        //bibliotecaFloors.add(new FloorMap("Biblioteca", R.drawable.mapa_interno_biblioteca));
-        blockFloorsMap.put("Biblioteca", bibliotecaFloors);
+        List<FloorMap> blocoBFloors = new ArrayList<>();
+        // Adicione os arquivos de imagem na pasta res/drawable
+        blocoBFloors.add(new FloorMap("Térreo", R.drawable.terreo_b));
+        blockFloorsMap.put("Bloco B", blocoBFloors);
 
-        // Adicione os outros blocos e seus respectivos andares aqui...
-        // List<FloorMap> blocoBFloors = new ArrayList<>();
-        // ...
-        // blockFloorsMap.put("Bloco B", blocoBFloors);
+        List<FloorMap> blocoCFloors = new ArrayList<>();
+        // Adicione os arquivos de imagem na pasta res/drawable
+        blocoCFloors.add(new FloorMap("Térreo", R.drawable.terreo_c));
+        blocoCFloors.add(new FloorMap("1° Pavimento", R.drawable.primeiro_c));
+        blocoCFloors.add(new FloorMap("2º Pavimento", R.drawable.segundo_c));
+        blocoCFloors.add(new FloorMap("3º Pavimento", R.drawable.terceiro_c));
+        blockFloorsMap.put("Bloco C", blocoCFloors);
+
+        List<FloorMap> blocoDFloors = new ArrayList<>();
+        // Adicione os arquivos de imagem na pasta res/drawable
+        blocoDFloors.add(new FloorMap("Térreo", R.drawable.terreo_d));
+        blocoDFloors.add(new FloorMap("1° Pavimento", R.drawable.primeiro_d));
+        blocoDFloors.add(new FloorMap("2º Pavimento", R.drawable.segundo_d));
+        blockFloorsMap.put("Bloco D", blocoDFloors);
+
+        List<FloorMap> blocoEFloors = new ArrayList<>();
+        // Adicione os arquivos de imagem na pasta res/drawable
+        blocoEFloors.add(new FloorMap("Térreo", R.drawable.terreo_e));
+        blocoEFloors.add(new FloorMap("1° Pavimento", R.drawable.primeiro_e));
+        blocoEFloors.add(new FloorMap("2º Pavimento", R.drawable.segundo_e));
+        blockFloorsMap.put("Bloco E", blocoEFloors);
+
+        List<FloorMap> blocoFFloors = new ArrayList<>();
+        // Adicione os arquivos de imagem na pasta res/drawable
+        blocoFFloors.add(new FloorMap("Térreo", R.drawable.terreo_f));
+        blocoFFloors.add(new FloorMap("1° Pavimento", R.drawable.primeiro_f));
+        blockFloorsMap.put("Bloco F", blocoFFloors);
+
+        List<FloorMap> blocoGFloors = new ArrayList<>();
+        // Adicione os arquivos de imagem na pasta res/drawable
+        blocoGFloors.add(new FloorMap("Térreo", R.drawable.terreo_g));
+        blocoGFloors.add(new FloorMap("1° Pavimento", R.drawable.primeiro_g));
+        blocoGFloors.add(new FloorMap("2º Pavimento", R.drawable.segundo_g));
+        blocoGFloors.add(new FloorMap("3º Pavimento", R.drawable.terceiro_g));
+        blocoGFloors.add(new FloorMap("4º Pavimento", R.drawable.quarto_g));
+        blockFloorsMap.put("Bloco G", blocoGFloors);
+
+
+
+
     }
 }
