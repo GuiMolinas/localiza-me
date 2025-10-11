@@ -1,5 +1,3 @@
-//testando o teste
-//outro teste
 package com.queridinhos.tcc;
 
 import android.content.DialogInterface;
@@ -37,7 +35,6 @@ public class MainActivity extends BaseActivity implements View
         //Botões
         CardView mapButton = findViewById(R.id.mapButton);
         CardView localizeButton = findViewById(R.id.localizeButton);
-        CardView myRoutesButton = findViewById(R.id.HistoryButton);
         CardView scheduleButton = findViewById(R.id.scheduleButton);
         CardView contactsButton = findViewById(R.id.contactsButton);
         ImageButton exitButton = findViewById(R.id.btnExit);
@@ -45,7 +42,6 @@ public class MainActivity extends BaseActivity implements View
 
         mapButton.setOnClickListener(this);
         localizeButton.setOnClickListener(this);
-        myRoutesButton.setOnClickListener(this);
         scheduleButton.setOnClickListener(this);
         contactsButton.setOnClickListener(this);
         exitButton.setOnClickListener(this);
@@ -65,9 +61,6 @@ public class MainActivity extends BaseActivity implements View
             startActivity(intent);
         } else if (id == R.id.localizeButton) {
             intent = new Intent(this, LocalizeActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.HistoryButton) {
-            intent = new Intent(this, RoutesActivity.class);
             startActivity(intent);
         } else if (id == R.id.scheduleButton) {
             intent = new Intent(this, ScheduleActivity.class);

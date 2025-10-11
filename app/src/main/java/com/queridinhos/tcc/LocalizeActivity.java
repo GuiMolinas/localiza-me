@@ -94,20 +94,21 @@ public class LocalizeActivity extends AppCompatActivity {
             fullPath.addAll(path);
             fullPath.add(locationCenters.get(to)); // Ponto final do bloco
 
-            // MODIFICAÇÃO PRINCIPAL AQUI
-            // Chama setRoute com o novo listener para lidar com o fim da animação
             routeView.setRoute(fullPath, () -> {
                 // Este código é executado QUANDO a animação da rota termina.
                 Toast.makeText(LocalizeActivity.this, "Você chegou ao seu destino!", Toast.LENGTH_SHORT).show();
 
-                // Adiciona um delay de 2 segundos (2000 ms) antes de mudar de tela
-                new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                    // Após o delay, inicia a nova atividade do mapa interno
-                    Intent intent = new Intent(LocalizeActivity.this, InternalMapActivity.class);
-                    // Envia o nome do bloco de destino para a próxima tela
-                    intent.putExtra("BLOCK_NAME", to);
-                    startActivity(intent);
-                }, 2000); // 2000ms = 2 segundos
+                // Se o destino não for a Biblioteca, abre o mapa interno.
+                if (!to.equals("Biblioteca")) {
+                    // Adiciona um delay de 2 segundos (2000 ms) antes de mudar de tela
+                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                        // Após o delay, inicia a nova atividade do mapa interno
+                        Intent intent = new Intent(LocalizeActivity.this, InternalMapActivity.class);
+                        // Envia o nome do bloco de destino para a próxima tela
+                        intent.putExtra("BLOCK_NAME", to);
+                        startActivity(intent);
+                    }, 2000); // 2000ms = 2 segundos
+                }
             });
         } else {
             Toast.makeText(this, "Rota não definida para este trajeto.", Toast.LENGTH_SHORT).show();
