@@ -26,7 +26,8 @@
             android:adjustViewBounds="true"
             android:scaleType="centerInside"
             android:contentDescription="@string/exit_button"
-            android:padding="12dp"/>
+            android:padding="12dp"
+            app:tint="@color/iconTint"/>
 
         <TextView
             android:id="@+id/txtCabecalho"
@@ -49,7 +50,8 @@
             android:contentDescription="@string/settings_button"
             android:adjustViewBounds="true"
             android:scaleType="centerInside"
-            android:padding="12dp"/>
+            android:padding="12dp"
+            app:tint="@color/iconTint"/>
     </RelativeLayout>
 
     <TextView
@@ -72,7 +74,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
         android:src="@drawable/img_mascote"
-        android:contentDescription="@string/mascot_image_description"/>
+        android:contentDescription="@string/mascot_image_description" />
 
     <GridLayout
         android:id="@+id/buttonGrid"
@@ -109,7 +111,8 @@
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:src="@drawable/ic_map"
-                    android:contentDescription="@string/map_icon"/>
+                    android:contentDescription="@string/map_icon"
+                    app:tint="?attr/colorPrimary"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -146,7 +149,8 @@
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:src="@drawable/ic_routes"
-                    android:contentDescription="@string/localize_icon"/>
+                    android:contentDescription="@string/localize_icon"
+                    app:tint="?attr/colorPrimary"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -183,7 +187,8 @@
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:src="@drawable/ic_calendar"
-                    android:contentDescription="@string/schedule_icon" />
+                    android:contentDescription="@string/schedule_icon"
+                    app:tint="?attr/colorPrimary"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -220,7 +225,8 @@
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:src="@drawable/ic_contacts"
-                    android:contentDescription="@string/contacts_icon"/>
+                    android:contentDescription="@string/contacts_icon"
+                    app:tint="?attr/colorPrimary"/>
 
                 <TextView
                     android:layout_width="wrap_content"

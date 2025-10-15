@@ -4,6 +4,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
@@ -14,9 +16,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class MainActivity extends BaseActivity implements View
+public class MainActivity extends BaseActivity implements View.OnClickListener {
 
-        .OnClickListener {
+    private Animation clickAnimation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +32,8 @@ public class MainActivity extends BaseActivity implements View
             return insets;
         });
 
-
+        // Carrega a animação
+        clickAnimation = AnimationUtils.loadAnimation(this, R.anim.button_click);
 
         //Botões
         CardView mapButton = findViewById(R.id.mapButton);
@@ -49,10 +52,10 @@ public class MainActivity extends BaseActivity implements View
 
     }
 
-
     //Clique
     @Override
     public void onClick(View v) {
+        v.startAnimation(clickAnimation); // Adiciona a animação ao clique
         Intent intent;
         int id = v.getId();
 

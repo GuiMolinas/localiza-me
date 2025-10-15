@@ -6,12 +6,12 @@
     <color name="lightBlue">#BBDEFB</color>
 
     <!-- Cores de tema claro -->
-    <color name="colorPrimary">#1565C0</color>
-    <color name="colorPrimaryDark">#0D47A1</color>
-    <color name="colorAccent">#2196F3</color>
+    <color name="colorPrimary">#1976D2</color>
+    <color name="colorPrimaryDark">#004BA0</color>
+    <color name="colorAccent">#42A5F5</color>
 
     <!-- Cores de fundo -->
-    <color name="backgroundColor">#FAFAFA</color>
+    <color name="backgroundColor">#F5F5F5</color>
     <color name="surfaceColor">#FFFFFF</color>
     <color name="lightGray">#F5F5F5</color>
 
@@ -22,11 +22,11 @@
 
     <!-- Cores para componentes -->
     <color name="switchThumbColor">#2196F3</color>
-    <color name="switchTrackColor">#1565C0</color>
+    <color name="switchTrackColor">#BDBDBD</color>
 
     <!-- Cores de estado/semânticas -->
     <color name="errorColor">#D32F2F</color>
-    <color name="successColor">#4CAF50</color>
+    <color name="successColor">#388E3C</color>
 
     <!-- Cores auxiliares (usadas em componentes específicos) -->
     <color name="mediumGray">#757575</color>
@@ -34,4 +34,5 @@
     <color name="pink">#FF4081</color>
     <!-- res/values/colors.xml (tema claro) -->
     <color name="splashBackground">#1565C0</color> <!-- Mesmo valor que darkBlue -->
+    <color name="iconTint">#546E7A</color>
 </resources>
