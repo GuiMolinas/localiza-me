@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="?attr/colorSurface"
     tools:context=".InternalMapActivity">
 
@@ -46,6 +47,7 @@
 
     <ImageButton
         android:id="@+id/backButtonInternal"
+        app:tint="@color/iconTint"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_below="@id/header"
@@ -55,6 +57,7 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         android:padding="12dp"
         android:scaleType="centerInside"
-        android:src="@drawable/ic_arrow_back" />
+        android:src="@drawable/ic_arrow_back"
+        />
 
 </RelativeLayout>

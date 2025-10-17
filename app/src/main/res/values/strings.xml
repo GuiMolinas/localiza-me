@@ -30,9 +30,9 @@
     <string name="about_target_audience">Desenvolvido especialmente para quem:</string>
     <string name="about_target_items">🔹 Sempre se perde no campus\n🔹 Precisa encontrar salas e laboratórios\n🔹 Quer economizar tempo entre aulas</string>
     <string name="about_features_title">Com o Localiza Me você tem:</string>
-    <string name="about_features_items">✔️ Mapas interativos do campus\n✔️ Rotas inteligentes personalizadas\n✔️ Agendamento de eventos recorrentes e especiais\n✔️ Salvar suas rotas favoritas\n✔️ Lista de contatos importantes\n✔️ Recurso para Acessibilidade</string>
+    <string name="about_features_items">✔️ Mapas interativos do campus\n✔️ Rotas inteligentes personalizadas\n✔️ Agendamento de eventos recorrentes e especiais\n✔️ Lista de contatos importantes\n</string>
     <string name="version_info">📌 Versão: 1.0.0</string>
-    <string name="developed_by">👨‍💻 Desenvolvido por: Queridinhos</string>
+    <string name="developed_by">👨‍💻 Desenvolvido por: Guilherme dos Santos Molina</string>
     <string name="credits_title">📚 Créditos e Referências</string>
     <string name="icons_credits_title">🎨 Ícones e Imagens:</string>
     <string name="mascot_credit">🤖 Mascote criado pelo Microsoft Copilot</string>

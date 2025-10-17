@@ -36,7 +36,8 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:adjustViewBounds="true"
             android:scaleType="centerInside"
-            android:padding="12dp"/>
+            android:padding="12dp"
+            app:tint="@color/iconTint"/>
 
         <TextView
             android:layout_width="wrap_content"

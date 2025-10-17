@@ -41,7 +41,7 @@ public class HighlightView extends View {
         // Animação para piscar 3 vezes (6 segundos no total)
         animator = ValueAnimator.ofArgb(Color.TRANSPARENT, Color.argb(150, 255, 215, 0), Color.TRANSPARENT);
         animator.setDuration(1000); // 1 segundo para acender e apagar
-        animator.setRepeatCount(5); // Repete 5 vezes, totalizando 6 execuções
+        animator.setRepeatCount(2); // Repete 5 vezes, totalizando 6 execuções
         animator.addUpdateListener(animation -> {
             paint.setColor((Integer) animation.getAnimatedValue());
             invalidate();
