@@ -178,6 +178,23 @@ public class InternalMapActivity extends AppCompatActivity implements FloorMapAd
         blocoGRooms.add(new Room("Sala 002", 0, createPath(109f, 1303f, 817f, 1305f, 816f, 2221f, 107f, 2222f)));
         blocoGRooms.add(new Room("Portaria", 0, createPath(102f, 2502f, 695f, 2503f, 697f, 2817f, 102f, 2818f)));
 
+        blocoGRooms.add(new Room("Sala de Atendimento/Supervisão 09", 1, createPath(145f, 112f, 849f, 115f, 847f, 426f, 148f, 407f)));
+        blocoGRooms.add(new Room("Sala de Atendimento/Supervisão 08", 1, createPath(147f, 427f, 669f, 426f, 669f, 721f, 145f, 720f)));
+        blocoGRooms.add(new Room("Sala de Atendimento/Supervisão 07", 1, createPath(149f, 738f, 670f, 742f, 670f, 1033f, 145f, 1034f)));
+        blocoGRooms.add(new Room("Sala de Atendimento/Supervisão 04", 1, createPath(148f, 1315f, 672f, 1319f, 672f, 1613f, 147f, 1611f)));
+        blocoGRooms.add(new Room("Sala de Atendimento/Supervisão 05", 1, createPath(147f, 1633f, 671f, 1633f, 667f, 1923f, 147f, 1926f)));
+        blocoGRooms.add(new Room("Sala de Atendimento/Supervisão 06", 1, createPath(147f, 1942f, 856f, 1946f, 849f, 2238f, 147f, 2239f)));
+        blocoGRooms.add(new Room("Sala de Atendimento/Supervisão 01", 1, createPath(872f, 1320f, 1385f, 1318f, 1385f, 1611f, 874f, 1611f)));
+        blocoGRooms.add(new Room("Sala de Atendimento/Supervisão 02", 1, createPath(872f, 1632f, 1385f, 1633f, 1385f, 1924f, 875f, 1924f)));
+        blocoGRooms.add(new Room("Sala de Atendimento/Supervisão 03", 1, createPath(874f, 1942f, 1568f, 1946f, 1568f, 2237f, 873f, 2235f)));
+        blocoGRooms.add(new Room("Sala 104", 1, createPath(876f, 115f, 1580f, 116f, 1580f, 1032f, 874f, 1034f)));
+        blocoGRooms.add(new Room("Sala 105", 1, createPath(1601f, 113f, 2305f, 115f, 2306f, 1033f, 1597f, 1035f)));
+        blocoGRooms.add(new Room("Sala 108", 1, createPath(1840f, 1318f, 2560f, 1321f, 2560f, 2241f, 1842f, 2237f)));
+        blocoGRooms.add(new Room("Sala 107", 1, createPath(2577f, 1324f, 3289f, 1316f, 3286f, 2237f, 2580f, 2236f)));
+        blocoGRooms.add(new Room("Sala 106", 1, createPath(3306f, 1323f, 3427f, 1269f, 3615f, 1466f, 4102f, 1465f, 4258f, 1641f, 4255f, 2244f, 3305f, 2236f)));
+        blocoGRooms.add(new Room("San. Masculino (1° Pavimento)", 1, createPath(2646f, 287f, 3039f, 749f, 3139f, 753f, 3139f, 892f, 3003f, 893f, 3004f, 1035f, 2645f, 1031f)));
+        blocoGRooms.add(new Room("San. Feminino (1° Pavimento)", 1, createPath(3160f, 752f, 3500f, 752f, 4085f, 1442f, 3630f, 1444f, 3289f, 1046f, 3292f, 891f, 3159f, 894f)));
+
         // Adicione outras salas aqui...
         blockRoomsMap.put("Bloco G", blocoGRooms);
     }
