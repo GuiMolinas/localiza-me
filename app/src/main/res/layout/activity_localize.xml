@@ -79,7 +79,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:background="@android:color/white"
-                android:layout_marginBottom="8dp"/>
+                android:layout_marginBottom="8dp"
+                android:dropDownHeight="300dp"/>
 
             <Spinner
                 android:id="@+id/spinner_to"
@@ -92,7 +93,7 @@
                 android:id="@+id/btn_trace_route"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Traçar Rota"/>
+                android:text="@string/btnTracarRota"/>
         </LinearLayout>
     </LinearLayout>
 

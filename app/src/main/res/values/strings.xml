@@ -83,5 +83,7 @@
     <string name="txtVisualizarCoordenadas">Visualizar Coordenadas</string>
     <string name="txtVisualizarCoordenadasEx">Mostra as coordenadas de toque no mapa</string>
 
+    <string name="btnTracarRota">Traçar Rota</string>
+
 
 </resources>

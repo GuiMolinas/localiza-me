@@ -27,7 +27,8 @@
             android:layout_height="48dp"
             android:background="@android:drawable/btn_dropdown"
             android:paddingStart="8dp"
-            android:paddingEnd="8dp" />
+            android:paddingEnd="8dp"
+            android:dropDownHeight="250dp"/>
     </LinearLayout>
 
     <TextView
