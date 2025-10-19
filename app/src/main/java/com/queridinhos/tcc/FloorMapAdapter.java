@@ -42,7 +42,9 @@ public class FloorMapAdapter extends RecyclerView.Adapter<FloorMapAdapter.FloorM
         FloorMap floorMap = floorMaps.get(position);
         holder.bind(floorMap, mapTapListener);
         highlightViews.put(position, holder.highlightView);
-        holder.highlightView.clear();
+        if (holder.highlightView != null) {
+            holder.highlightView.clear();
+        }
     }
 
     @Override
@@ -66,35 +68,37 @@ public class FloorMapAdapter extends RecyclerView.Adapter<FloorMapAdapter.FloorM
         }
 
         public void bind(FloorMap floorMap, OnMapTapListener listener) {
-            Bitmap bitmap = decodeSampledBitmapFromResource(
-                    itemView.getResources(),
-                    floorMap.getImageResId(),
-                    2048,
-                    2048
-            );
+            Resources res = itemView.getResources();
+            int resId = floorMap.getImageResId();
+
+            // ===== ETAPA 1: LER AS DIMENSÕES ORIGINAIS DA IMAGEM =====
+            final BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeResource(res, resId, options);
+            final int originalImageWidth = options.outWidth;
+            final int originalImageHeight = options.outHeight;
+
+            // ===== ETAPA 2: CARREGAR A IMAGEM (POTENCIALMENTE REDUZIDA) =====
+            Bitmap bitmap = decodeSampledBitmapFromResource(res, resId, 2048, 2048);
             floorMapImageView.setImageBitmap(bitmap);
 
             // Ação para recalcular a matriz manualmente
             final Runnable updateManualMatrix = () -> {
-                if (bitmap == null || floorMapImageView.getWidth() == 0) return;
+                if (floorMapImageView.getWidth() == 0 || originalImageWidth == 0) return;
 
                 final int viewWidth = floorMapImageView.getWidth();
                 final int viewHeight = floorMapImageView.getHeight();
-                final int imageWidth = bitmap.getWidth();
-                final int imageHeight = bitmap.getHeight();
 
                 manualMatrix.reset();
 
-                // Calcula a escala para caber na tela (lógica do fitCenter)
-                float scaleX = (float) viewWidth / imageWidth;
-                float scaleY = (float) viewHeight / imageHeight;
-                float scale = Math.min(scaleX, scaleY); // Usa a menor escala para caber tudo
+                // ===== ETAPA 3: USAR AS DIMENSÕES ORIGINAIS NO CÁLCULO =====
+                float scaleX = (float) viewWidth / originalImageWidth;
+                float scaleY = (float) viewHeight / originalImageHeight;
+                float scale = Math.min(scaleX, scaleY);
 
-                // Calcula o espaço extra para centralizar
-                float dx = (viewWidth - imageWidth * scale) / 2f;
-                float dy = (viewHeight - imageHeight * scale) / 2f;
+                float dx = (viewWidth - originalImageWidth * scale) / 2f;
+                float dy = (viewHeight - originalImageHeight * scale) / 2f;
 
-                // Aplica a transformação
                 manualMatrix.postScale(scale, scale);
                 manualMatrix.postTranslate(dx, dy);
 
@@ -110,17 +114,27 @@ public class FloorMapAdapter extends RecyclerView.Adapter<FloorMapAdapter.FloorM
                 }
             });
 
-            // Listener para o Modo Desenvolvedor (agora usa a matriz manual para mais precisão)
+            // Listener para o Modo Desenvolvedor
             floorMapImageView.setOnViewTapListener((view, x, y) -> {
                 if (listener != null) {
                     float[] touchPoint = {x, y};
                     Matrix inverseMatrix = new Matrix();
-                    manualMatrix.invert(inverseMatrix); // Usa nossa matriz manual
+                    // Importante: ainda usamos a matriz do PhotoView aqui para pegar o zoom do usuário
+                    floorMapImageView.getImageMatrix().invert(inverseMatrix);
                     inverseMatrix.mapPoints(touchPoint);
                     listener.onMapTap(touchPoint[0], touchPoint[1]);
                 }
             });
+
+            // Se o usuário der zoom, precisamos voltar a usar a matriz da biblioteca
+            floorMapImageView.setOnMatrixChangeListener(rect -> {
+                if (highlightView != null) {
+                    // Isso garante que o destaque acompanhe o zoom e pan do usuário
+                    highlightView.setDrawMatrix(floorMapImageView.getImageMatrix());
+                }
+            });
         }
+
 
         public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId, int reqWidth, int reqHeight) {
             final BitmapFactory.Options options = new BitmapFactory.Options();

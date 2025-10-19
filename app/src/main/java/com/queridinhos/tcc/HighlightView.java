@@ -20,6 +20,7 @@ public class HighlightView extends View {
     private final Path transformedRoomPath = new Path();
     private final Matrix drawMatrix = new Matrix();
     private ValueAnimator animator;
+    private boolean isTestMode = false; // Flag para modo de teste
 
     public HighlightView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -27,13 +28,28 @@ public class HighlightView extends View {
         paint.setAntiAlias(true);
     }
 
-    // Recebe a matriz já calculada
     public void setDrawMatrix(Matrix matrix) {
         this.drawMatrix.set(matrix);
         invalidate();
     }
 
+    // NOVO MÉTODO DE TESTE
+    public void drawTestMarkers(int imageWidth, int imageHeight) {
+        isTestMode = true;
+        Path testPath = new Path();
+        // Círculos com raio de 50 pixels na imagem original
+        float markerRadius = 50f;
+        testPath.addCircle(0, 0, markerRadius, Path.Direction.CW); // Canto Superior Esquerdo
+        testPath.addCircle(imageWidth, 0, markerRadius, Path.Direction.CW); // Canto Superior Direito
+        testPath.addCircle(0, imageHeight, markerRadius, Path.Direction.CW); // Canto Inferior Esquerdo
+        testPath.addCircle(imageWidth, imageHeight, markerRadius, Path.Direction.CW); // Canto Inferior Direito
+        this.originalRoomPath = testPath;
+        invalidate();
+    }
+
+
     public void highlight(Path path, Runnable onAnimationEnd) {
+        isTestMode = false;
         this.originalRoomPath = new Path(path);
 
         if (animator != null && animator.isRunning()) animator.cancel();
@@ -59,15 +75,21 @@ public class HighlightView extends View {
     public void clear() {
         if (animator != null && animator.isRunning()) animator.cancel();
         this.originalRoomPath = null;
+        isTestMode = false;
         invalidate();
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (originalRoomPath != null && !originalRoomPath.isEmpty()) {
-            originalRoomPath.transform(drawMatrix, transformedRoomPath);
-            canvas.drawPath(transformedRoomPath, paint);
+        if (originalRoomPath == null || originalRoomPath.isEmpty()) return;
+
+        // Se estiver no modo de teste, usa uma cor diferente para ficar óbvio
+        if (isTestMode) {
+            paint.setColor(Color.argb(200, 255, 0, 255)); // Magenta
         }
+
+        originalRoomPath.transform(drawMatrix, transformedRoomPath);
+        canvas.drawPath(transformedRoomPath, paint);
     }
 }
