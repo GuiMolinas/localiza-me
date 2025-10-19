@@ -1,24 +1,22 @@
-// Substitua todo o conteúdo de app/src/main/java/com/queridinhos/tcc/FloorMapAdapter.java por este código
-
+// Substitua o conteúdo de app/src/main/java/com/queridinhos/tcc/FloorMapAdapter.java
 package com.queridinhos.tcc;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.graphics.RectF;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.github.chrisbanes.photoview.PhotoView;
 import java.util.List;
+import android.util.SparseArray;
 
 public class FloorMapAdapter extends RecyclerView.Adapter<FloorMapAdapter.FloorMapViewHolder> {
 
-    // Interface para comunicar os toques no mapa para a Activity
     public interface OnMapTapListener {
         void onMapTap(float imageX, float imageY);
     }
@@ -42,7 +40,7 @@ public class FloorMapAdapter extends RecyclerView.Adapter<FloorMapAdapter.FloorM
     @Override
     public void onBindViewHolder(@NonNull FloorMapViewHolder holder, int position) {
         FloorMap floorMap = floorMaps.get(position);
-        holder.bind(floorMap, mapTapListener); // Passa o listener para o ViewHolder
+        holder.bind(floorMap, mapTapListener);
         highlightViews.put(position, holder.highlightView);
         holder.highlightView.clear();
     }
@@ -59,6 +57,7 @@ public class FloorMapAdapter extends RecyclerView.Adapter<FloorMapAdapter.FloorM
     static class FloorMapViewHolder extends RecyclerView.ViewHolder {
         private final PhotoView floorMapImageView;
         private final HighlightView highlightView;
+        private final Matrix manualMatrix = new Matrix();
 
         public FloorMapViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -67,36 +66,70 @@ public class FloorMapAdapter extends RecyclerView.Adapter<FloorMapAdapter.FloorM
         }
 
         public void bind(FloorMap floorMap, OnMapTapListener listener) {
-            floorMapImageView.setImageBitmap(
-                    decodeSampledBitmapFromResource(
-                            itemView.getResources(),
-                            floorMap.getImageResId(),
-                            2048, // Aumentar a qualidade da imagem base
-                            2048
-                    )
+            Bitmap bitmap = decodeSampledBitmapFromResource(
+                    itemView.getResources(),
+                    floorMap.getImageResId(),
+                    2048,
+                    2048
             );
-            floorMapImageView.setMaximumScale(6.0f);
+            floorMapImageView.setImageBitmap(bitmap);
 
-            // Sincroniza a matriz do PhotoView (zoom/pan) com a HighlightView
-            floorMapImageView.setOnMatrixChangeListener(rect -> {
-                highlightView.setMatrix(floorMapImageView.getImageMatrix());
+            // Ação para recalcular a matriz manualmente
+            final Runnable updateManualMatrix = () -> {
+                if (bitmap == null || floorMapImageView.getWidth() == 0) return;
+
+                final int viewWidth = floorMapImageView.getWidth();
+                final int viewHeight = floorMapImageView.getHeight();
+                final int imageWidth = bitmap.getWidth();
+                final int imageHeight = bitmap.getHeight();
+
+                manualMatrix.reset();
+
+                // Calcula a escala para caber na tela (lógica do fitCenter)
+                float scaleX = (float) viewWidth / imageWidth;
+                float scaleY = (float) viewHeight / imageHeight;
+                float scale = Math.min(scaleX, scaleY); // Usa a menor escala para caber tudo
+
+                // Calcula o espaço extra para centralizar
+                float dx = (viewWidth - imageWidth * scale) / 2f;
+                float dy = (viewHeight - imageHeight * scale) / 2f;
+
+                // Aplica a transformação
+                manualMatrix.postScale(scale, scale);
+                manualMatrix.postTranslate(dx, dy);
+
+                highlightView.setDrawMatrix(manualMatrix);
+            };
+
+            // Espera o layout ficar pronto para fazer o cálculo inicial
+            floorMapImageView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    updateManualMatrix.run();
+                    floorMapImageView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
             });
 
-            // Listener de toque para o "Modo Desenvolvedor"
+            // Listener para o Modo Desenvolvedor (agora usa a matriz manual para mais precisão)
             floorMapImageView.setOnViewTapListener((view, x, y) -> {
                 if (listener != null) {
-                    // ESTA É A CORREÇÃO IMPORTANTE
-                    // Converte as coordenadas do toque na TELA para coordenadas da IMAGEM ORIGINAL
-                    float[] touchPoint = { x, y };
+                    float[] touchPoint = {x, y};
                     Matrix inverseMatrix = new Matrix();
-                    floorMapImageView.getImageMatrix().invert(inverseMatrix);
+                    manualMatrix.invert(inverseMatrix); // Usa nossa matriz manual
                     inverseMatrix.mapPoints(touchPoint);
                     listener.onMapTap(touchPoint[0], touchPoint[1]);
                 }
             });
         }
 
-        // --- Métodos para otimização de Bitmap (sem alterações) ---
+        public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId, int reqWidth, int reqHeight) {
+            final BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeResource(res, resId, options);
+            options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+            options.inJustDecodeBounds = false;
+            return BitmapFactory.decodeResource(res, resId, options);
+        }
         public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
             final int height = options.outHeight;
             final int width = options.outWidth;
@@ -109,15 +142,6 @@ public class FloorMapAdapter extends RecyclerView.Adapter<FloorMapAdapter.FloorM
                 }
             }
             return inSampleSize;
-        }
-
-        public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId, int reqWidth, int reqHeight) {
-            final BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inJustDecodeBounds = true;
-            BitmapFactory.decodeResource(res, resId, options);
-            options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-            options.inJustDecodeBounds = false;
-            return BitmapFactory.decodeResource(res, resId, options);
         }
     }
 }

@@ -220,6 +220,22 @@ public class InternalMapActivity extends AppCompatActivity implements FloorMapAd
         blocoGRooms.add(new Room("San. Masculino (4° Pavimento)", 4, createPath(2623f, 253f, 3021f, 717f, 3117f, 717f, 3119f, 851f, 2985f, 861f, 2983f, 995f, 2631f, 995f)));
         blocoGRooms.add(new Room("San. Masculino (Térreo)", 0, createPath(2607f, 267f, 2998f, 733f, 3099f, 735f, 3102f, 877f, 2966f, 876f, 2964f, 1018f, 2605f, 1017f)));
         blockRoomsMap.put("Bloco G", blocoGRooms);
+
+        List<Room> blocoDRooms = new ArrayList<>();
+        blocoDRooms.add(new Room("Lab. de Informática 02", 0, createPath(197f, 206f, 2323f, 191f, 2323f, 1342f, 160f, 1345f)));
+        blocoDRooms.add(new Room("Lab. de Informática 01", 0, createPath(142f, 1911f, 3196f, 1910f, 3198f, 3077f, 102f, 3004f)));
+        blocoDRooms.add(new Room("Lab. de Informática 03", 0, createPath(2719f, 193f, 4328f, 159f, 4295f, 1342f, 2722f, 1344f)));
+        blocoDRooms.add(new Room("Gabinete Professor Tempo Integral", 0, createPath(3226f, 1996f, 3687f, 1996f, 3682f, 3075f, 3228f, 3078f)));
+        blocoDRooms.add(new Room("Coordenação Curso de Enfer. ED. Fisica, Gestão Hosp., Hist.", 0, createPath(3709f, 2001f, 4276f, 1998f, 4246f, 3088f, 3715f, 3082f)));
+        blocoDRooms.add(new Room("Coordenação", 0, createPath(4280f, 3181f, 4650f, 3186f, 4633f, 3898f, 4267f, 3899f)));
+        blocoDRooms.add(new Room("Lab. Estudos sobre Desenvolvimento Motor Humano", 0, createPath(4661f, 3419f, 5383f, 3421f, 5378f, 3895f, 4655f, 3896f)));
+        blocoDRooms.add(new Room("Lab. Fisiologia", 0, createPath(5404f, 3192f, 7037f, 3205f, 7033f, 3415f, 6674f, 3412f, 6672f, 3901f, 5400f, 3899f)));
+        blocoDRooms.add(new Room("Sala Professor", 0, createPath(6693f, 3431f, 7033f, 3436f, 7032f, 3904f, 6692f, 3901f)));
+        blocoDRooms.add(new Room("Coleta", 0, createPath(7058f, 3200f, 7947f, 3209f, 8056f, 3907f, 7054f, 3904f)));
+        blocoDRooms.add(new Room("Lab. de Eng. Mecanica 01, Processos de Produção Mecanica e Robotica, Manufatura Integrada por Computador", 0, createPath(5313f, 1578f, 7761f, 1596f, 7953f, 3108f, 5270f, 3089f, 5276f, 2853f, 5043f, 2852f, 5070f, 1894f, 5306f, 1893f)));
+        blocoDRooms.add(new Room("Lab. de Eng. Mecanica 02, Circuitos Fluidos Mecanicos, Sistemas Sequenciais e Controle, Metalografia, Mat. de Construção Mecanica e Metrologia", 0, createPath(5834f, 129f, 7563f, 84f, 7756f, 1570f, 5313f, 1551f, 5313f, 1144f, 5839f, 1143f)));
+        blocoDRooms.add(new Room("Sanitario Feminino (Térreo)", 0, createPath(5118f, 146f, 5810f, 131f, 5818f, 621f, 5106f, 615f)));
+        blockRoomsMap.put("Bloco D", blocoDRooms);
     }
 
     private void initializeBlockMaps() {
