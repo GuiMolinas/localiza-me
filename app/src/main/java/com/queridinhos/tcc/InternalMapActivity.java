@@ -235,7 +235,24 @@ public class InternalMapActivity extends AppCompatActivity implements FloorMapAd
         blocoDRooms.add(new Room("Lab. de Eng. Mecanica 01, Processos de Produção Mecanica e Robotica, Manufatura Integrada por Computador", 0, createPath(5313f, 1578f, 7761f, 1596f, 7953f, 3108f, 5270f, 3089f, 5276f, 2853f, 5043f, 2852f, 5070f, 1894f, 5306f, 1893f)));
         blocoDRooms.add(new Room("Lab. de Eng. Mecanica 02, Circuitos Fluidos Mecanicos, Sistemas Sequenciais e Controle, Metalografia, Mat. de Construção Mecanica e Metrologia", 0, createPath(5834f, 129f, 7563f, 84f, 7756f, 1570f, 5313f, 1551f, 5313f, 1144f, 5839f, 1143f)));
         blocoDRooms.add(new Room("Sanitario Feminino (Térreo)", 0, createPath(5118f, 146f, 5810f, 131f, 5818f, 621f, 5106f, 615f)));
-        blocoDRooms.add(new Room("Sanitario Masculino (Térreo)", 0, createPath()));
+        blocoDRooms.add(new Room("Sanitario Masculino (Térreo)", 0, createPath(5295f, 639f, 5817f, 644f, 5821f, 1126f, 5282f, 1122f)));
+
+        blocoDRooms.add(new Room("Recepção", 1, createPath(871f, 1326f, 1509f, 1326f, 1506f, 1601f, 867f, 1614f)));
+        blocoDRooms.add(new Room("Clínica Nutrição", 1, createPath(894f, 175f, 1509f, 160f, 1508f, 1296f, 872f, 1296f)));
+        blocoDRooms.add(new Room("Bromatologia", 1, createPath(1539f, 159f, 1836f, 149f, 1838f, 1295f, 1539f, 1297f)));
+        blocoDRooms.add(new Room("Atendimento", 1, createPath(254, 3337f, 261f, 3727f, 1084f, 3723f, 1091f, 3896f, 1426f, 3901f, 1431f, 3661f, 1509f, 3658f, 1511f, 3436f, 1098f, 3433f, 1098f, 3348f)));
+        blocoDRooms.add(new Room("Coordenação de Cursos", 1, createPath(1525, 3439f, 2519f, 3444f, 2519f, 3177f, 3763f, 3178f, 3864f, 3901f, 1524f, 3888f)));
+        blocoDRooms.add(new Room("Sanitario Masculino (1° Pavimento)", 1, createPath(1531f, 3180f, 1926f, 3180f, 1925f, 3420f, 1528f, 3417f)));
+        blocoDRooms.add(new Room("Sanitario Feminino (1° Pavimento)", 1, createPath(1954f, 3177f, 2499f, 3182f, 2496f, 3425f, 1946f, 3422f)));
+        blocoDRooms.add(new Room("Laboratório Multidisciplinar de Alimentos", 1, createPath(1866f, 148f, 3345f, 94f, 3568f, 1776f, 2136f, 1780f, 2138f, 1395f, 1926f, 1390f, 1868f, 1303f)));
+        blocoDRooms.add(new Room("Recepção Farmacia Escola", 1, createPath(2151f, 1807f, 2553f, 1805f, 2553f, 2264f, 2126f, 2264f)));
+        blocoDRooms.add(new Room("Consultorio Farmaceutico", 1, createPath(2578f, 1809f, 2993f, 1812f, 2995f, 2065f, 2583f, 2065f)));
+        blocoDRooms.add(new Room("Vestiário/Paramnetação", 1, createPath(2578f, 2090f, 2997f, 2090f, 2995f, 2407f, 2578f, 2409f)));
+        blocoDRooms.add(new Room("Dispensação", 1, createPath(2129f, 2295f, 2556f, 2298f, 2554f, 2693f, 2451f, 2693f, 2451f, 2610f, 2131f, 2610f)));
+        blocoDRooms.add(new Room("Depósito de Reagentes", 1, createPath(2128f, 2638f, 2426f, 2638f, 2424f, 3119f, 2128f, 3121f)));
+        blocoDRooms.add(new Room("Lab. Semi Solidos e Liquidos", 1, createPath(2450f, 2718f, 3218f, 2711f, 3219f, 3122f, 2451f, 3123f)));
+        blocoDRooms.add(new Room("Lab. Solidos", 1, createPath(3416f, 2478f, 3663f, 2481f, 3753f, 3119f, 3246f, 3119f, 3248f, 2718f, 3403f, 2719f)));
+        blocoDRooms.add(new Room("Lab. Controle de Qualidade", 1, createPath(3018f, 1810f, 3568f, 1809f, 3661f, 2453f, 3416f, 2452f, 3418f, 2347f, 3199f, 2347f, 3199, 2228f, 3024f, 2230f)));
         blockRoomsMap.put("Bloco D", blocoDRooms);
     }
 
