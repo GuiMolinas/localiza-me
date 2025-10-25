@@ -264,8 +264,8 @@ public class InternalMapActivity extends AppCompatActivity implements FloorMapAd
         blocoERooms.add(new Room("Lab. Enfermagem 01 - Lab. de Suporte à Vida", 2, createPath(1514f, 2490f, 3538f, 2510f, 3523f, 3958f, 245f, 3923f, 195f, 3870f)));
         blocoERooms.add(new Room("Lab. Enfermagem 02", 2, createPath(5623f, 982f, 8127f, 1012f, 6999f, 4018f, 5068f, 3978f, 5088f, 2585f, 5622f, 2573f)));
         blocoERooms.add(new Room("Lab. Multidisciplinar 01 - Fisioterapia", 1, createPath(5628f, 979f, 8137f, 977f, 7002f, 4021f, 5070f, 3968f, 5092f, 2566f, 5625f, 2571f)));
-        blocoERooms.add(new Room("Lab. Multidisciplinar 02 - Fisioterapia", 1, createPath(2974f, 994f, 4375f, 387f, 4383f, 2492f, 3513f, 2430f, 3520f, 3940f, 210f, 3905f)));
-        blocoERooms.add(new Room("Multidisciplinar 03 - Fisioterapia", 2, createPath(2938f, 988f, 4379f, 992f, 4379f, 5489f, 1541f, 2465f)));
+        blocoERooms.add(new Room("Lab. Multidisciplinar 02 - Fisioterapia", 1, createPath(2974f, 994f, 4378f, 998f, 4383f, 2492f, 3513f, 2430f, 3520f, 3940f, 210f, 3905f)));
+        blocoERooms.add(new Room("Multidisciplinar 03 - Fisioterapia", 2, createPath(2938f, 988f, 4379f, 992f, 4379f, 2488f, 1541f, 2465f)));
         blocoERooms.add(new Room("San. Acessivel (1° Pavimento)", 1, createPath(4120f, 2972f, 4538f, 2975f, 4533f, 3475f, 4110f, 3465f)));
         blocoERooms.add(new Room("San. Acessivel (2° Pavimento)", 2, createPath(4114f, 2961f, 4539f, 2973f, 4529f, 3461f, 4106f, 3458f)));
         blocoERooms.add(new Room("San. Fem. (1° Pavimento)", 1, createPath(4575f, 2982f, 5045f, 2990f, 5023f, 3987f, 4275f, 3972f, 4285f, 3512f, 4565f, 3505f)));
