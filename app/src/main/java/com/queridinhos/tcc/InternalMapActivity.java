@@ -324,6 +324,12 @@ public class InternalMapActivity extends AppCompatActivity implements FloorMapAd
         blocoCRooms.add(new Room("Vestiário Masculino", 0, createPath(5910f, 2961f, 6657f, 2966f, 6655f, 3441f, 5710f, 3441f, 5715f, 3136f, 5908f, 3128f)));
         blockRoomsMap.put("Bloco C", blocoCRooms);
 
+        List<Room> blocoARooms = new ArrayList<>();
+        blocoARooms.add(new Room("Lab. de Informática - 10", 0, createPath(1130f, 1078f, 2177f, 1080f, 2175f, 2093f, 1123f, 2093f)));
+        blocoARooms.add(new Room("Lab. de Informática - 09", 0, createPath(2196f, 1082f, 3232f, 1080f, 3232f, 2088f, 2196f, 2093f)));
+        blocoARooms.add(new Room("Lab. de Informática - 08", 0, createPath(3250f, 1078f, 4288f, 1077f, 4292f, 2093f, 3250f, 2090f)));
+        blockRoomsMap.put("Bloco A", blocoARooms);
+
 
     }
 
