@@ -370,6 +370,61 @@ public class InternalMapActivity extends AppCompatActivity implements FloorMapAd
         blocoARooms.add(new Room("San. Masc. (Térreo)", 0, createPath(6680f, 2474f, 7072f, 2477f, 7072f, 3487f, 6680f, 3490f)));
         blockRoomsMap.put("Bloco A", blocoARooms);
 
+        List<Room> blocoBRooms = new ArrayList<>();
+// Salas do Bloco B em ordem alfabética
+        blocoBRooms.add(new Room("Apoio I", 0, createPath(2149f, 1651f, 3039f, 1656f, 3039f, 1923f, 2146f, 1983f)));
+        blocoBRooms.add(new Room("Apoio II", 0, createPath(8061f, 499f, 8721f, 491f, 8721f, 915f, 8061f, 915f)));
+        blocoBRooms.add(new Room("Clinicas de Odontologia 02 - 1", 1, createPath(299f, 1037f, 3293f, 1037f, 3290f, 3318f, 513f, 3320f, 513f, 1351f, 423f, 1277f, 295f, 1275f)));
+        blocoBRooms.add(new Room("Clinicas de Odontologia 02 - 2", 1, createPath(3328f, 1034f, 5664f, 1039f, 5665f, 3703f, 3331f, 3699f)));
+        blocoBRooms.add(new Room("Coordenação", 1, createPath(132f, 1296f, 420f, 1295f, 497f, 1358f, 497f, 2406f, 133f, 2405f)));
+        blocoBRooms.add(new Room("Coordenação Cursos - Biomedicina, Nutrição e Framacia", 1, createPath(5683f, 2555f, 6259f, 2558f, 6259f, 3699f, 5687f, 3701f)));
+        blocoBRooms.add(new Room("Dep. de Reagentes", 0, createPath(5788f, 2018f, 6061f, 2013f, 6066f, 2718f, 5791f, 2716f)));
+        blocoBRooms.add(new Room("Depósito", 1, createPath(3482f, 3375f, 3715f, 3374f, 3714f, 3701f, 3483f, 3700f)));
+        blocoBRooms.add(new Room("Enfermagem", 0, createPath(5789f, 487f, 6183f, 499f, 6181f, 1623f, 5782f, 1619f)));
+        blocoBRooms.add(new Room("Esterilização", 1, createPath(1727f, 3332f, 2237f, 3333f, 2237f, 3705f, 1727f, 3702f)));
+        blocoBRooms.add(new Room("Expurgo", 1, createPath(132f, 1036f, 277f, 1040f, 276f, 1281f, 134f, 1278f)));
+        blocoBRooms.add(new Room("Farmácia", 1, createPath(2749f, 2607f, 3292f, 2606f, 3292f, 3124f, 3157f, 3123f, 3157f, 3083f, 2891f, 3083f, 2889f, 3124f, 2749f, 3123f)));
+        blocoBRooms.add(new Room("Lab. Anatomia 1 - Fisiologia", 0, createPath(7543f, 2018f, 10191f, 2018f, 10196f, 3138f, 7567f, 3138f)));
+        blocoBRooms.add(new Room("Lab. Anatomia 2", 0, createPath(2148f, 499f, 4586f, 491f, 4585f, 1625f, 2146f, 1627f)));
+        blocoBRooms.add(new Room("Lab. Bioquimica", 0, createPath(3429f, 2016f, 4582f, 2011f, 4587f, 3141f, 3432f, 3141f)));
+        blocoBRooms.add(new Room("Lab. Histologia Biologia", 0, createPath(4610f, 2016f, 5765f, 2008f, 5770f, 3141f, 4613f, 3136f)));
+        blocoBRooms.add(new Room("Lab. Imaginologia", 0, createPath(8063f, 929f, 8723f, 929f, 8725f, 1621f, 8067f, 1627f)));
+        blocoBRooms.add(new Room("Lab. Microbiologia e Patologia", 0, createPath(4610f, 487f, 5764f, 497f, 5762f, 1627f, 4610f, 1625f)));
+        blocoBRooms.add(new Room("Lab. Multidisciplinar", 0, createPath(2146f, 2016f, 3396f, 2013f, 3404f, 3136f, 2141f, 3141f)));
+        blocoBRooms.add(new Room("Lab. Multidisciplinar Odontologia", 0, createPath(6977f, 493f, 8049f, 495f, 8047f, 1623f, 6975f, 1625f)));
+        blocoBRooms.add(new Room("Lab. Multidisciplinar Odontologia II - Dentista", 0, createPath(8747f, 487f, 10195f, 495f, 10199f, 1625f, 8747f, 1623f)));
+        blocoBRooms.add(new Room("Lab. Prótese", 1, createPath(136f, 529f, 467f, 531f, 471f, 1011f, 139f, 1014f)));
+        blocoBRooms.add(new Room("Material Contaminado/Lavagem", 1, createPath(2583f, 3337f, 3292f, 3337f, 3293f, 3705f, 2585f, 3701f)));
+        blocoBRooms.add(new Room("Material Esterilizado", 1, createPath(133f, 3333f, 1709f, 3334f, 1708f, 3705f, 131f, 3711f)));
+        blocoBRooms.add(new Room("Midias e Canais de Comunicação", 1, createPath(6282f, 2560f, 8839f, 2562f, 8837f, 3701f, 6279f, 3701f)));
+        blocoBRooms.add(new Room("Odontologia", 0, createPath(239f, 499f, 2122f, 496f, 2127f, 3142f, 238f, 3141f)));
+        blocoBRooms.add(new Room("Ossário", 0, createPath(6997f, 2433f, 7539f, 2433f, 7537f, 3138f, 6997f, 3136f)));
+        blocoBRooms.add(new Room("Professores", 1, createPath(133f, 2419f, 497f, 2421f, 498f, 3059f, 320f, 3060f, 319f, 3012f, 133f, 3011f)));
+        blocoBRooms.add(new Room("Raio X 1", 1, createPath(2752f, 1509f, 3014f, 1509f, 3017f, 1825f, 2749f, 1822f)));
+        blocoBRooms.add(new Room("Raio X 2", 1, createPath(3034f, 1510f, 3292f, 1511f, 3292f, 1824f, 3032f, 1825f)));
+        blocoBRooms.add(new Room("Raio X 3", 1, createPath(2749f, 1842f, 3015f, 1842f, 3014f, 2161f, 2751f, 2160f)));
+        blocoBRooms.add(new Room("Raio X 4", 1, createPath(3035f, 1845f, 3292f, 1844f, 3289f, 2158f, 3032f, 2161f)));
+        blocoBRooms.add(new Room("Recepção (Sem Intervenção)", 1, createPath(131f, 174f, 306f, 174f, 306f, 124f, 469f, 124f, 466f, 511f, 139f, 512f)));
+        blocoBRooms.add(new Room("Revelação 1", 1, createPath(2755f, 2371f, 3011f, 2367f, 3015f, 2586f, 2748f, 2587f)));
+        blocoBRooms.add(new Room("Revelação 2", 1, createPath(3032f, 2367f, 3284f, 2368f, 3294f, 2586f, 3032f, 2587f)));
+        blocoBRooms.add(new Room("Sala de Apoio", 0, createPath(10094f, 1650f, 10449f, 1657f, 10444f, 2065f, 10234f, 1990f, 10101f, 1987f)));
+        blocoBRooms.add(new Room("Sala de Aula 101", 1, createPath(6868f, 1035f, 8150f, 1039f, 8148f, 2181f, 6862f, 2177f)));
+        blocoBRooms.add(new Room("Sala de Aula 103", 1, createPath(8169f, 1039f, 9445f, 1037f, 9447f, 2177f, 8171f, 2177f)));
+        blocoBRooms.add(new Room("Sala de Aula 105", 1, createPath(9470f, 1037f, 10096f, 1039f, 10098f, 2179f, 9468f, 2179f)));
+        blocoBRooms.add(new Room("Sala de Aula 107", 1, createPath(8860f, 2558f, 10100f, 2560f, 10096f, 3703f, 8858f, 3701f)));
+        blocoBRooms.add(new Room("Sala de Preparo", 0, createPath(6387f, 2021f, 6979f, 2028f, 6969f, 3143f, 6384f, 3141f)));
+        blocoBRooms.add(new Room("San. Fem. (Piso Superior)", 1, createPath(134f, 3026f, 305f, 3028f, 306f, 3165f, 133f, 3163f)));
+        blocoBRooms.add(new Room("San. Fem. (Piso Superior)", 1, createPath(6445f, 1037f, 6843f, 1037f, 6845f, 2179f, 6445f, 2181f)));
+        blocoBRooms.add(new Room("San. Fem. (Térreo)", 0, createPath(6558f, 499f, 6948f, 501f, 6946f, 1051f, 6554f, 1049f)));
+        blocoBRooms.add(new Room("San. Masc. (Piso Superior)", 1, createPath(133f, 3179f, 308f, 3175f, 308f, 3318f, 130f, 3318f)));
+        blocoBRooms.add(new Room("San. Masc. (Piso Superior)", 1, createPath(5684f, 1035f, 6084f, 1037f, 6084f, 2180f, 5682f, 2180f)));
+        blocoBRooms.add(new Room("San. Masc. (Térreo)", 0, createPath(6556f, 1075f, 6946f, 1077f, 6950f, 1625f, 6562f, 1627f)));
+        blocoBRooms.add(new Room("Secagem/Selagem", 1, createPath(2256f, 3335f, 2567f, 3338f, 2565f, 3702f, 2256f, 3703f)));
+        blocoBRooms.add(new Room("Técnico III", 0, createPath(6994f, 2013f, 7332f, 2013f, 7332f, 2248f, 6994f, 2246f)));
+        blocoBRooms.add(new Room("Técnicos I", 0, createPath(6089f, 2011f, 6357f, 2016f, 6364f, 2716f, 6087f, 2713f)));
+        blocoBRooms.add(new Room("Técnicos II", 0, createPath(5794f, 2738f, 6354f, 2738f, 6357f, 3136f, 5792f, 3136f)));
+        blockRoomsMap.put("Bloco B", blocoBRooms);
+
 
     }
 
