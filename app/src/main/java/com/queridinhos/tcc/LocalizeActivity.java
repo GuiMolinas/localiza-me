@@ -94,22 +94,29 @@ public class LocalizeActivity extends AppCompatActivity {
             fullPath.addAll(path);
             fullPath.add(locationCenters.get(to)); // Ponto final do bloco
 
+            // ***** INÍCIO DA MODIFICAÇÃO *****
             routeView.setRoute(fullPath, () -> {
                 // Este código é executado QUANDO a animação da rota termina.
                 Toast.makeText(LocalizeActivity.this, "Você chegou ao seu destino!", Toast.LENGTH_SHORT).show();
 
-                // Se o destino não for a Biblioteca, abre o mapa interno.
-                if (!to.equals("Biblioteca")) {
-                    // Adiciona um delay de 2 segundos (2000 ms) antes de mudar de tela
+                // VERIFICA SE O BLOCO DE DESTINO TEM MAPA INTERNO
+                if (to.equals("Bloco Alfa") || to.equals("Bloco F")) {
+                    // Se for Bloco Alfa ou F, apenas mostra o aviso após um pequeno delay
                     new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                        // Após o delay, inicia a nova atividade do mapa interno
+                        Toast.makeText(LocalizeActivity.this, R.string.internal_map_unavailable, Toast.LENGTH_LONG).show();
+                    }, 1500); // 1.5 segundos de delay
+                } else if (!to.equals("Biblioteca")) {
+                    // Se for qualquer outro bloco (exceto Biblioteca), abre o mapa interno
+                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
                         Intent intent = new Intent(LocalizeActivity.this, InternalMapActivity.class);
-                        // Envia o nome do bloco de destino para a próxima tela
                         intent.putExtra("BLOCK_NAME", to);
                         startActivity(intent);
-                    }, 2000); // 2000ms = 2 segundos
+                    }, 2000); // 2 segundos de delay
                 }
+                // Se for a Biblioteca, não faz nada (como na lógica original)
             });
+            // ***** FIM DA MODIFICAÇÃO *****
+
         } else {
             Toast.makeText(this, "Rota não definida para este trajeto.", Toast.LENGTH_SHORT).show();
             routeView.clearRoute();

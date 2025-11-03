@@ -84,6 +84,7 @@
     <string name="txtVisualizarCoordenadasEx">Mostra as coordenadas de toque no mapa</string>
 
     <string name="btnTracarRota">Traçar Rota</string>
+    <string name="internal_map_unavailable">Mapa interno indisponível para este bloco.</string>
 
 
 </resources>
