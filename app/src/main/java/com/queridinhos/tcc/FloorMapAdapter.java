@@ -1,4 +1,4 @@
-// Substitua o conteúdo de app/src/main/java/com/queridinhos/tcc/FloorMapAdapter.java
+// app/src/main/java/com/queridinhos/tcc/FloorMapAdapter.java
 package com.queridinhos.tcc;
 
 import android.content.res.Resources;
@@ -8,7 +8,8 @@ import android.graphics.Matrix;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
+// Remova o ViewTreeObserver, não é mais necessário
+// import android.view.ViewTreeObserver;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.github.chrisbanes.photoview.PhotoView;
@@ -59,7 +60,9 @@ public class FloorMapAdapter extends RecyclerView.Adapter<FloorMapAdapter.FloorM
     static class FloorMapViewHolder extends RecyclerView.ViewHolder {
         private final PhotoView floorMapImageView;
         private final HighlightView highlightView;
-        private final Matrix manualMatrix = new Matrix();
+
+        // Não precisamos mais da matriz manual
+        // private final Matrix manualMatrix = new Matrix();
 
         public FloorMapViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -79,63 +82,49 @@ public class FloorMapAdapter extends RecyclerView.Adapter<FloorMapAdapter.FloorM
             final int originalImageHeight = options.outHeight;
 
             // ===== ETAPA 2: CARREGAR A IMAGEM (POTENCIALMENTE REDUZIDA) =====
+            // (Seu código original, está correto)
             Bitmap bitmap = decodeSampledBitmapFromResource(res, resId, 2048, 2048);
             floorMapImageView.setImageBitmap(bitmap);
 
-            // Ação para recalcular a matriz manualmente
-            final Runnable updateManualMatrix = () -> {
-                if (floorMapImageView.getWidth() == 0 || originalImageWidth == 0) return;
+            // ===== ETAPA 3: PEGAR AS DIMENSÕES DO BITMAP REDUZIDO =====
+            final int bitmapWidth = bitmap.getWidth();
+            final int bitmapHeight = bitmap.getHeight();
 
-                final int viewWidth = floorMapImageView.getWidth();
-                final int viewHeight = floorMapImageView.getHeight();
+            // ===== ETAPA 4: INFORMAR O HIGHLIGHTVIEW =====
+            // Esta é a nova linha crucial.
+            // Ela informa à view de destaque as dimensões originais E as novas.
+            highlightView.setImageInfo(originalImageWidth, originalImageHeight, bitmapWidth, bitmapHeight);
 
-                manualMatrix.reset();
-
-                // ===== ETAPA 3: USAR AS DIMENSÕES ORIGINAIS NO CÁLCULO =====
-                float scaleX = (float) viewWidth / originalImageWidth;
-                float scaleY = (float) viewHeight / originalImageHeight;
-                float scale = Math.min(scaleX, scaleY);
-
-                float dx = (viewWidth - originalImageWidth * scale) / 2f;
-                float dy = (viewHeight - originalImageHeight * scale) / 2f;
-
-                manualMatrix.postScale(scale, scale);
-                manualMatrix.postTranslate(dx, dy);
-
-                highlightView.setDrawMatrix(manualMatrix);
-            };
-
-            // Espera o layout ficar pronto para fazer o cálculo inicial
-            floorMapImageView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                @Override
-                public void onGlobalLayout() {
-                    updateManualMatrix.run();
-                    floorMapImageView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                }
-            });
+            // Não precisamos mais do cálculo manual da matriz
+            // O OnMatrixChangeListener fará todo o trabalho.
+            /* final Runnable updateManualMatrix = () -> { ... };
+            floorMapImageView.getViewTreeObserver().addOnGlobalLayoutListener(...);
+            */
 
             // Listener para o Modo Desenvolvedor
             floorMapImageView.setOnViewTapListener((view, x, y) -> {
                 if (listener != null) {
                     float[] touchPoint = {x, y};
                     Matrix inverseMatrix = new Matrix();
-                    // Importante: ainda usamos a matriz do PhotoView aqui para pegar o zoom do usuário
                     floorMapImageView.getImageMatrix().invert(inverseMatrix);
                     inverseMatrix.mapPoints(touchPoint);
+                    // IMPORTANTE: As coordenadas de toque agora são relativas
+                    // ao bitmap redimensionado (ex: 1024x768), não ao original.
                     listener.onMapTap(touchPoint[0], touchPoint[1]);
                 }
             });
 
-            // Se o usuário der zoom, precisamos voltar a usar a matriz da biblioteca
+            // Se o usuário der zoom, passamos a matriz para o HighlightView
+            // (Seu código original, está correto e é essencial)
             floorMapImageView.setOnMatrixChangeListener(rect -> {
                 if (highlightView != null) {
-                    // Isso garante que o destaque acompanhe o zoom e pan do usuário
                     highlightView.setDrawMatrix(floorMapImageView.getImageMatrix());
                 }
             });
         }
 
 
+        // (Seus métodos decodeSampledBitmapFromResource e calculateInSampleSize permanecem iguais)
         public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId, int reqWidth, int reqHeight) {
             final BitmapFactory.Options options = new BitmapFactory.Options();
             options.inJustDecodeBounds = true;
