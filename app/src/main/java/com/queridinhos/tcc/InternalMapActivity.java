@@ -48,6 +48,9 @@ public class InternalMapActivity extends AppCompatActivity implements FloorMapAd
         roomSpinner = findViewById(R.id.roomSpinner);
         backButton = findViewById(R.id.backButtonInternal);
 
+        // ADICIONE ESTA LINHA:
+        debugCoordinates = findViewById(R.id.debugCoordinates);
+
         initializeBlockMaps();
         initializeRooms();
 

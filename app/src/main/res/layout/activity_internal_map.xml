@@ -61,4 +61,18 @@
         android:src="@drawable/ic_arrow_back"
         />
 
+    <TextView
+        android:id="@+id/debugCoordinates"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/header"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="#80000000"
+        android:padding="6dp"
+        android:textColor="@android:color/white"
+        android:textSize="12sp"
+        tools:text="X: 123.4, Y: 567.8" />
+
 </RelativeLayout>
