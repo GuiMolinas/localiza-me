@@ -26,7 +26,7 @@
     <string name="txtExit"> Sair </string>
 
     <string name="about_title">🌟 Sobre o Localiza Me</string>
-    <string name="about_subtitle">📍 O aplicativo perfeito para você navegar pelo campus da UNICID - Tatuapé sem preocupações!</string>
+    <string name="about_subtitle">📍 Seu guia interativo para navegar pelo campus da UNICID - Tatuapé. Encontre salas, trace rotas e gerencie seus horários sem complicações.</string>
     <string name="about_target_audience">Desenvolvido especialmente para quem:</string>
     <string name="about_target_items">🔹 Sempre se perde no campus\n🔹 Precisa encontrar salas e laboratórios\n🔹 Quer economizar tempo entre aulas</string>
     <string name="about_features_title">Com o Localiza Me você tem:</string>
@@ -38,6 +38,7 @@
     <string name="mascot_credit">🤖 Mascote criado pelo Google Gemini</string>
 
     <string name="icons_credits">
+https://www.iconfinder.com
 </string>
     <string name="contacts_title">Contatos</string>
     <string name="unicid_tatuape">UNICID Tatuapé</string>
