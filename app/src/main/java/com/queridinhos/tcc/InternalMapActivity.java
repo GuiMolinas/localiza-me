@@ -1,4 +1,4 @@
-// Substitua todo o conteúdo de app/src/main/java/com/queridinhos/tcc/InternalMapActivity.java por este código
+
 
 package com.queridinhos.tcc;
 
@@ -24,7 +24,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-// A CORREÇÃO ESTÁ AQUI: Adicionamos a implementação da interface
+
 public class InternalMapActivity extends AppCompatActivity implements FloorMapAdapter.OnMapTapListener {
 
     private ViewPager2 floorViewPager;
@@ -48,7 +48,7 @@ public class InternalMapActivity extends AppCompatActivity implements FloorMapAd
         roomSpinner = findViewById(R.id.roomSpinner);
         backButton = findViewById(R.id.backButtonInternal);
 
-        // ADICIONE ESTA LINHA:
+
         debugCoordinates = findViewById(R.id.debugCoordinates);
 
         initializeBlockMaps();
@@ -59,7 +59,7 @@ public class InternalMapActivity extends AppCompatActivity implements FloorMapAd
         currentBlockRooms = blockRoomsMap.get(blockName);
 
         if (floors != null && !floors.isEmpty()) {
-            // Agora 'this' é um OnMapTapListener válido, e o erro não ocorrerá
+
             adapter = new FloorMapAdapter(floors, this);
             floorViewPager.setAdapter(adapter);
 
@@ -169,7 +169,7 @@ public class InternalMapActivity extends AppCompatActivity implements FloorMapAd
 
     private void initializeRooms() {
         List<Room> blocoGRooms = new ArrayList<>();
-// Salas do Bloco G em ordem alfabética
+        // Salas do Bloco G em ordem alfabética
         blocoGRooms.add(new Room("Lab. de Ergonomia e Acústica", 0, createPath(832f, 98f, 1540f, 102f, 1540f, 1017f, 835f, 1017f)));
         blocoGRooms.add(new Room("Lab. de Maquetes", 0, createPath(1805f, 1302f, 3248f, 1306f, 3249f, 2219f, 1805f, 2221f)));
         blocoGRooms.add(new Room("Portaria", 0, createPath(102f, 2502f, 695f, 2503f, 697f, 2817f, 102f, 2818f)));
@@ -225,6 +225,7 @@ public class InternalMapActivity extends AppCompatActivity implements FloorMapAd
         blockRoomsMap.put("Bloco G", blocoGRooms);
 
         List<Room> blocoDRooms = new ArrayList<>();
+        // Salas do Bloco D em ordem alfabética
         blocoDRooms.add(new Room("Atendimento", 1, createPath(254f, 3337f, 261f, 3727f, 1084f, 3723f, 1091f, 3896f, 1426f, 3901f, 1431f, 3661f, 1509f, 3658f, 1511f, 3436f, 1098f, 3433f, 1098f, 3348f)));
         blocoDRooms.add(new Room("Avaliação de Saúde Ocular", 2, createPath(2131f, 1007f, 3409f, 1009f, 3475f, 1485f, 2125f, 1486f)));
         blocoDRooms.add(new Room("Bromatologia", 1, createPath(1539f, 159f, 1836f, 149f, 1838f, 1295f, 1539f, 1297f)));
@@ -264,6 +265,7 @@ public class InternalMapActivity extends AppCompatActivity implements FloorMapAd
         blockRoomsMap.put("Bloco D", blocoDRooms);
 
         List<Room> blocoERooms = new ArrayList<>();
+        // Salas do Bloco E em ordem alfabética
         blocoERooms.add(new Room("Lab. Enfermagem 01 - Lab. de Suporte à Vida", 2, createPath(1514f, 2490f, 3538f, 2510f, 3523f, 3958f, 245f, 3923f, 195f, 3870f)));
         blocoERooms.add(new Room("Lab. Enfermagem 02", 2, createPath(5623f, 982f, 8127f, 1012f, 6999f, 4018f, 5068f, 3978f, 5088f, 2585f, 5622f, 2573f)));
         blocoERooms.add(new Room("Lab. Multidisciplinar 01 - Fisioterapia", 1, createPath(5628f, 979f, 8137f, 977f, 7002f, 4021f, 5070f, 3968f, 5092f, 2566f, 5625f, 2571f)));
@@ -278,6 +280,7 @@ public class InternalMapActivity extends AppCompatActivity implements FloorMapAd
         blockRoomsMap.put("Bloco E", blocoERooms);
 
         List<Room> blocoCRooms = new ArrayList<>();
+        // Salas do Bloco C em ordem alfabética
         blocoCRooms.add(new Room("Avaliação Sistematizada", 0, createPath(1349f, 2432f, 2092f, 2437f, 2092f, 2960f, 1352f, 2958f)));
         blocoCRooms.add(new Room("Coordenação", 0, createPath(4045f, 1254f, 4657f, 1262f, 4665f, 1820f, 4043f, 1814f)));
         blocoCRooms.add(new Room("Direção", 0, createPath(4039f, 1847f, 4665f, 1847f, 4663f, 2761f, 4047f, 2765f)));
@@ -374,7 +377,7 @@ public class InternalMapActivity extends AppCompatActivity implements FloorMapAd
         blockRoomsMap.put("Bloco A", blocoARooms);
 
         List<Room> blocoBRooms = new ArrayList<>();
-// Salas do Bloco B em ordem alfabética
+        // Salas do Bloco B em ordem alfabética
         blocoBRooms.add(new Room("Apoio I", 0, createPath(2149f, 1651f, 3039f, 1656f, 3039f, 1923f, 2146f, 1983f)));
         blocoBRooms.add(new Room("Apoio II", 0, createPath(8061f, 499f, 8721f, 491f, 8721f, 915f, 8061f, 915f)));
         blocoBRooms.add(new Room("Clinicas de Odontologia 02 - 1", 1, createPath(299f, 1037f, 3293f, 1037f, 3290f, 3318f, 513f, 3320f, 513f, 1351f, 423f, 1277f, 295f, 1275f)));
@@ -432,7 +435,6 @@ public class InternalMapActivity extends AppCompatActivity implements FloorMapAd
     }
 
     private void initializeBlockMaps() {
-        // ... seu código para inicializar os mapas dos blocos (sem alterações) ...
         List<FloorMap> blocoAFloors = new ArrayList<>();
         blocoAFloors.add(new FloorMap("Térreo", R.drawable.inferior_a));
         blocoAFloors.add(new FloorMap("Piso Superior", R.drawable.superior_a));

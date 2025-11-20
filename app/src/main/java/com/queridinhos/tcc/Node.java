@@ -9,10 +9,10 @@ public class Node {
     public final float y;
     public final List<Edge> neighbors = new ArrayList<>();
 
-    // Campos para o algoritmo A*
-    public Node parent = null;
-    public double gCost = Double.MAX_VALUE;
-    public double hCost = 0;
+    // Var usadas pelo A* dinamicamente
+    public Node parent = null; //Nó anterior ao encontrado
+    public double gCost = Double.MAX_VALUE; //Custo inicial
+    public double hCost = 0; //Estimativa
 
     public Node(String id, float x, float y) {
         this.id = id;
@@ -20,13 +20,14 @@ public class Node {
         this.y = y;
     }
 
-    // NOVO MÉTODO PARA LIMPAR O NÓ
+    //Limpa para nova busca
     public void reset() {
         parent = null;
         gCost = Double.MAX_VALUE;
         hCost = 0;
     }
 
+    //Custo total
     public double getFCost() {
         return gCost + hCost;
     }
@@ -35,9 +36,10 @@ public class Node {
         this.neighbors.add(new Edge(neighbor, weight));
     }
 
+    //Conexão de aresta entre nós
     public static class Edge {
         public final Node target;
-        public final double weight;
+        public final double weight; //Custo para atravessar aresta
 
         public Edge(Node target, double weight) {
             this.target = target;

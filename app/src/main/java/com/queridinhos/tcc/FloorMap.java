@@ -10,6 +10,7 @@ public class FloorMap {
         this.imageResId = imageResId;
     }
 
+    //Getters
     public String getFloorName() {
         return floorName;
     }

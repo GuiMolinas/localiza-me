@@ -95,11 +95,6 @@ public class FloorMapAdapter extends RecyclerView.Adapter<FloorMapAdapter.FloorM
             // Ela informa à view de destaque as dimensões originais E as novas.
             highlightView.setImageInfo(originalImageWidth, originalImageHeight, bitmapWidth, bitmapHeight);
 
-            // Não precisamos mais do cálculo manual da matriz
-            // O OnMatrixChangeListener fará todo o trabalho.
-            /* final Runnable updateManualMatrix = () -> { ... };
-            floorMapImageView.getViewTreeObserver().addOnGlobalLayoutListener(...);
-            */
 
             // Listener para o Modo Desenvolvedor
             floorMapImageView.setOnViewTapListener((view, x, y) -> {
@@ -115,7 +110,6 @@ public class FloorMapAdapter extends RecyclerView.Adapter<FloorMapAdapter.FloorM
             });
 
             // Se o usuário der zoom, passamos a matriz para o HighlightView
-            // (Seu código original, está correto e é essencial)
             floorMapImageView.setOnMatrixChangeListener(rect -> {
                 if (highlightView != null) {
                     highlightView.setDrawMatrix(floorMapImageView.getImageMatrix());

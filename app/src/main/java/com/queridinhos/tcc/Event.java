@@ -17,6 +17,7 @@ public class Event {
         this.isRecurring = isRecurring;
     }
 
+    //Getters
     public long getId() {
         return id;
     }

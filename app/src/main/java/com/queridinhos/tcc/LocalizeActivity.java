@@ -94,7 +94,6 @@ public class LocalizeActivity extends AppCompatActivity {
             fullPath.addAll(path);
             fullPath.add(locationCenters.get(to)); // Ponto final do bloco
 
-            // ***** INÍCIO DA MODIFICAÇÃO *****
             routeView.setRoute(fullPath, () -> {
                 // Este código é executado QUANDO a animação da rota termina.
                 Toast.makeText(LocalizeActivity.this, "Você chegou ao seu destino!", Toast.LENGTH_SHORT).show();
@@ -115,7 +114,7 @@ public class LocalizeActivity extends AppCompatActivity {
                 }
                 // Se for a Biblioteca, não faz nada (como na lógica original)
             });
-            // ***** FIM DA MODIFICAÇÃO *****
+
 
         } else {
             Toast.makeText(this, "Rota não definida para este trajeto.", Toast.LENGTH_SHORT).show();

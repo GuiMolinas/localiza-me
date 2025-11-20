@@ -66,7 +66,7 @@ public class HighlightView extends View {
         }
     }
 
-    // NOVO MÉTODO DE TESTE (seu código original)
+    // NOVO MÉTODO DE TESTE
     public void drawTestMarkers(int imageWidth, int imageHeight) {
         isTestMode = true;
         Path testPath = new Path();
@@ -90,7 +90,7 @@ public class HighlightView extends View {
 
         animator = ValueAnimator.ofArgb(Color.TRANSPARENT, Color.argb(150, 255, 215, 0), Color.TRANSPARENT);
         animator.setDuration(1000);
-        animator.setRepeatCount(5); // Seu código original
+        animator.setRepeatCount(5);
         animator.addUpdateListener(animation -> {
             paint.setColor((Integer) animation.getAnimatedValue());
             invalidate();
@@ -125,7 +125,7 @@ public class HighlightView extends View {
             paint.setColor(Color.argb(200, 255, 0, 255));
         }
 
-        // ===== ESTA É A CORREÇÃO =====
+
         // 1. Aplica o pré-dimensionamento (Converte de 4000px para 1024px)
         originalRoomPath.transform(preScaleMatrix, transformedRoomPath);
 

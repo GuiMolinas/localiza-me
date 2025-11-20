@@ -13,6 +13,7 @@ public class Room {
         this.area = area;
     }
 
+    //Getters
     public String getName() {
         return name;
     }
